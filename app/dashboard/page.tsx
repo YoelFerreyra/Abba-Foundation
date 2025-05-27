@@ -57,7 +57,7 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-5">
       <DashboardHeader
-        title="Panel Principal"
+        title="Principal"
         description={`Bienvenido al sistema de gestión del consultorio médico`}
       />
 

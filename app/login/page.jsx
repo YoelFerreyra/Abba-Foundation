@@ -11,6 +11,7 @@ import { auth } from "@/lib/firebaseClient";
 import { Mail, Lock } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { registerUser } from "@/actions";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,32 +29,32 @@ export default function LoginPage() {
       setError(err.message);
     }
   };
-
   const signInWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      //await registerUser(user);
+  
       router.push("/dashboard");
     } catch (err) {
       setError(err.message);
     }
   };
+  
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Imagen lado izquierdo */}
       <div className="hidden md:flex md:w-1/2 bg-blue-600 items-center justify-center">
-
-      <Image
-  src="/background2.jpg"
-  alt="Login Illustration"
-  className="object-cover h-full w-full"
-  width={800}
-  height={800}
-/>
+        <Image
+          src="/background2.jpg"
+          alt="Login Illustration"
+          className="object-cover h-full w-full"
+          width={800}
+          height={800}
+        />
       </div>
-
-      {/* Formulario lado derecho */}
       <div className="flex items-center justify-center w-full md:w-1/2 p-6 bg-gray-50">
         <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
           <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">

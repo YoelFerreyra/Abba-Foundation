@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { redirect, usePathname } from "next/navigation"
 import { CalendarDays, FileText, Home, User, CreditCard, ClipboardList, Menu, X, LogOut, Settings, User2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -16,7 +16,7 @@ export function DashboardSidebar() {
 
   const routes = [
     {
-      label: "Panel Principal",
+      label: "Principal",
       icon: Home,
       href: "/dashboard",
       active: pathname === "/dashboard",
@@ -40,10 +40,10 @@ export function DashboardSidebar() {
       active: pathname === "/dashboard/perfil",
     },
     {
-      label: "Pagos",
+      label: "Finanzas",
       icon: CreditCard,
-      href: "/dashboard/pagos",
-      active: pathname === "/dashboard/pagos",
+      href: "/dashboard/finanzas",
+      active: pathname === "/dashboard/finanzas",
     },
     {
       label: "Historial Médico",
@@ -54,14 +54,19 @@ export function DashboardSidebar() {
     {
       label: "Usuarios",
       icon: User2,
-      href: "/dashboard/users",
-      active: pathname === "/dashboard/historial",
+      href: "/dashboard/usuarios",
+      active: pathname === "/dashboard/usuarios",
+    },
+    {
+      label: "Pacientes",
+      icon: User2,
+      href: "/dashboard/pacientes",
+      active: pathname === "/dashboard/pacientes",
     },
   ]
   const logout = async () => {
     await signOut(auth)
-    console.log("User signed out");
-    
+    redirect("/login")
   }
 
   return (
@@ -81,7 +86,7 @@ export function DashboardSidebar() {
                 className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-all ${
                   route.active
                     ? "bg-teal-100 text-teal-900"
-                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    : " hover:bg-muted hover:text-foreground"
                 }`}
               >
                 <route.icon className={`h-4 w-4 ${route.active ? "text-teal-900" : ""}`} />

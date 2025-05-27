@@ -9,11 +9,15 @@ import {
 } from "firebase/auth";
 import { auth } from "@/lib/firebaseClient";
 import Image from "next/image";
+import { registerUser } from "@/actions";
 
 export default function RegisterPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [dni, setDni] = useState("");
+  const [dniTramite, setDniTramite] = useState("");
   const [error, setError] = useState(null);
   const [message, setMessage] = useState("");
 
@@ -31,6 +35,11 @@ export default function RegisterPage() {
     setError(null);
     setMessage("");
 
+    if (password !== confirmPassword) {
+      setError("Las contraseñas no coinciden.");
+      return;
+    }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -43,6 +52,13 @@ export default function RegisterPage() {
       setMessage(
         "Registro exitoso. Revisa tu correo para verificar tu cuenta."
       );
+
+      await registerUser({
+        uid: user.uid,
+        email: user.email,
+        dni,
+        dniTramite,
+      });
     } catch (err) {
       setError(err.message);
     }
@@ -50,7 +66,6 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
-      {/* Lado izquierdo: Imagen (oculta en móviles) */}
       <div className="hidden md:flex md:w-1/2 bg-green-600 items-center justify-center">
         <Image
           src="/background2.jpg"
@@ -90,6 +105,45 @@ export default function RegisterPage() {
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Repetir contraseña
+              </label>
+              <input
+                type="password"
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Número de DNI
+              </label>
+              <input
+                type="text"
+                placeholder="12345678"
+                value={dni}
+                onChange={(e) => setDni(e.target.value)}
+                required
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Número de trámite de DNI
+              </label>
+              <input
+                type="text"
+                placeholder="123456789"
+                value={dniTramite}
+                onChange={(e) => setDniTramite(e.target.value)}
                 required
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />

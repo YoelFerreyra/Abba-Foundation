@@ -72,7 +72,6 @@ export default function MedicalCalendar() {
             <div>{eventInfo.event.title}</div>
           </div>
         )}
-        
         height="auto"
         themeSystem='standard'
         slotMinTime="08:00:00"

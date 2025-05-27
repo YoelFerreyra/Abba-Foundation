@@ -24,7 +24,7 @@ export default function TurnosPage() {
               <CardDescription>Visualiza y gestiona tus citas en el calendario</CardDescription>
             </CardHeader>
             <CardContent>
-              <MedicalCalendar />
+              <MedCalendar />
             </CardContent>
           </Card>
         </TabsContent>
@@ -43,8 +43,6 @@ export default function TurnosPage() {
           </Card>
         </TabsContent>
       </Tabs>
-
-      <MedCalendar />
     </div>
   )
 }
