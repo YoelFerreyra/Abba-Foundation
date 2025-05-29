@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { redirect, usePathname } from "next/navigation"
-import { CalendarDays, FileText, Home, User, CreditCard, ClipboardList, Menu, X, LogOut, Settings, User2 } from "lucide-react"
+import { CalendarDays, FileText, Home, User, CreditCard, ClipboardList, Menu, X, LogOut, Settings, User2, ChartColumn } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -41,7 +41,7 @@ export function DashboardSidebar() {
     },
     {
       label: "Finanzas",
-      icon: CreditCard,
+      icon: ChartColumn,
       href: "/dashboard/finanzas",
       active: pathname === "/dashboard/finanzas",
     },

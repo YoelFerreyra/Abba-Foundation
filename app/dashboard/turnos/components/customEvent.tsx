@@ -1,20 +1,18 @@
-import { useState } from "react";
-import { User, CalendarDays, Clock } from "lucide-react";
+"use client";
+import { User } from "lucide-react";
 import { format } from "date-fns";
 import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
+  Sheet,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { EventDescription } from "./event-description";
 
 interface CalendarEvent {
   title: string;
   start: Date;
   end: Date;
   [key: string]: any;
+  description: string;
 }
 
 export function CustomEvent({ event }: { event: CalendarEvent }) {
@@ -22,32 +20,18 @@ export function CustomEvent({ event }: { event: CalendarEvent }) {
   const endTime = format(event.end, "HH:mm");
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <div className="cursor-pointer bg-teal-100 rounded px-2 py-1 text-sm text-teal-800 flex items-center gap-2 hover:bg-teal-200 transition">
-          <User className="w-4 h-4" />
+    <Sheet>
+      <SheetTrigger asChild>
+        <div className="cursor-pointer bg-teal-100 px-2 py-1 text-sm text-teal-800 flex items-center gap-2 hover:bg-teal-200 transition">
           <div>
             <strong>{startTime}</strong>
             <div>{event.title}</div>
+            <p>{event.description}</p>
           </div>
         </div>
-      </DialogTrigger>
+      </SheetTrigger>
 
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <CalendarDays className="w-5 h-5 text-blue-600" />
-            Detalles del Turno
-          </DialogTitle>
-          <DialogDescription className="space-y-2 pt-4">
-            <div className="flex items-center gap-2 text-sm">
-              <Clock className="w-4 h-4 text-muted-foreground" />
-              <span>{startTime} - {endTime}</span>
-            </div>
-            <div className="text-base font-semibold">{event.title}</div>
-          </DialogDescription>
-        </DialogHeader>
-      </DialogContent>
-    </Dialog>
+      <EventDescription event={event} />
+    </Sheet>
   );
 }

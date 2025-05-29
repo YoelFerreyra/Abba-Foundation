@@ -24,12 +24,14 @@ const events = [
   {
     id: 0,
     title: 'Consulta Dr. Pérez',
+    description: "Consulta del nuevo tratamiento",
     start: new Date(2025, 4, 21, 10, 30),
     end: new Date(2025, 4, 21, 11, 0),
   },
   {
     id: 1,
     title: 'Control Cardiológico',
+    description: "Hacer nuevos estudios para el tratamiento",
     start: new Date(2025, 4, 22, 13, 0),
     end: new Date(2025, 4, 22, 13, 30),
   },
@@ -46,8 +48,8 @@ export default function MedCalendar() {
         startAccessor="start"
         endAccessor="end"
         culture="es"
-        defaultView="week"
-        views={["month",'week', 'day', 'agenda']}
+        defaultView="month"
+        views={["month", 'week', 'day']}
         step={15}
         timeslots={2}
         components={{

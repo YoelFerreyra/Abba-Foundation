@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
@@ -11,7 +10,8 @@ import { auth } from "@/lib/firebaseClient";
 import { Mail, Lock } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { registerUser } from "@/actions";
+import { getAuth, signInWithCustomToken } from "firebase/auth";
+import { getClientToken } from "@/lib/clientToken";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -23,12 +23,38 @@ export default function LoginPage() {
     e.preventDefault();
     setError(null);
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      router.push("/dashboard");
+      const res = await fetch("/api/generate-token", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          uid: "user_test_001",
+          claims: {
+            role: "tester",
+            accessLevel: 1,
+          },
+        }),
+      });
+  
+      if (!res.ok) throw new Error("No se pudo generar el token");
+  
+      const data = await res.json();
+      console.log("Custom token:", data.token);
+  
+      const auth = getAuth();
+
+      try {
+        const userCredential = await signInWithCustomToken(auth, data.token);
+        console.log("Usuario logueado:", userCredential.user);
+        await getClientToken()
+      } catch (error) {
+        console.error("Error al iniciar sesión con custom token:", error);
+      }
+
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Error desconocido");
     }
   };
+  
   const signInWithGoogle = async () => {
     try {
       const provider = new GoogleAuthProvider();
