@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
 import UserForm from "./components/user-form"
+import { getAllUsersAction } from "@/actions/users"
 
 type User = {
   id: number
@@ -21,17 +22,16 @@ type FormData = {
     phone: string
   }
 
-const mockUsers: User[] = [
-  { id: 1, name: "Juan Pérez", email: "juan@example.com", phone: "123456789" },
-  { id: 2, name: "Ana López", email: "ana@example.com", phone: "987654321" },
-  { id: 3, name: "Carlos Gómez", email: "carlos@example.com", phone: "1122334455" }
-]
-
 export default function UsersPage() {
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
-  const [users, setUsers] = useState<FormData[]>(mockUsers)
+  const [users, setUsers] = useState([])
   const [isOpen, setIsOpen] = useState(false)
   const [editingUser, setEditingUser] = useState<FormData | null>(null)
+
+  const fetchAllUser = async () => {
+    const users = await getAllUsersAction()
+    setUsers(users)
+  }
 
   const handleCreate = () => {
     setEditingUser(null)
@@ -60,16 +60,8 @@ export default function UsersPage() {
   })
 
   useEffect(() => {
-    if (selectedUser) {
-      setFormData({
-        name: selectedUser.name,
-        email: selectedUser.email,
-        phone: selectedUser.phone
-      })
-    } else {
-      setFormData({ name: "", email: "", phone: "" })
-    }
-  }, [selectedUser])
+    fetchAllUser()
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
@@ -97,11 +89,11 @@ export default function UsersPage() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map(user => (
-            <TableRow key={user.name} onClick={() => handleEdit(user)} className="cursor-pointer hover:bg-muted/50">
-              <TableCell>{user.name}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.phone}</TableCell>
+          {users?.map(user => (
+            <TableRow key={user?.name} onClick={() => handleEdit(user)} className="cursor-pointer hover:bg-muted/50">
+              <TableCell>{user?.name}</TableCell>
+              <TableCell>{user?.email}</TableCell>
+              <TableCell>{user?.phone}</TableCell>
               <TableCell className="text-right">
                 <Button variant="outline" size="sm">Editar</Button>
               </TableCell>
