@@ -1,74 +1,57 @@
 "use client";
 
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import {
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
-import { auth } from "@/lib/firebaseClient";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { Mail, Lock } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { getAuth, signInWithCustomToken } from "firebase/auth";
-import { getClientToken } from "@/lib/clientToken";
+import { authClient } from "@/lib/firebase/firebase-client";
+import { signInWithFirebase } from "@/actions/auth/singin";
+
+type LoginFormInputs = {
+  email: string;
+  password: string;
+};
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm<LoginFormInputs>();
 
-  const login = async (e) => {
-    e.preventDefault();
-    setError(null);
+  const onSubmit = async (data: LoginFormInputs) => {
     try {
-      const res = await fetch("/api/generate-token", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          uid: "user_test_001",
-          claims: {
-            role: "tester",
-            accessLevel: 1,
-          },
-        }),
-      });
-  
-      if (!res.ok) throw new Error("No se pudo generar el token");
-  
-      const data = await res.json();
-      console.log("Custom token:", data.token);
-  
-      const auth = getAuth();
+      const userCredential = await signInWithEmailAndPassword(
+        authClient,
+        data.email,
+        data.password
+      );
 
-      try {
-        const userCredential = await signInWithCustomToken(auth, data.token);
-        console.log("Usuario logueado:", userCredential.user);
-        await getClientToken()
-      } catch (error) {
-        console.error("Error al iniciar sesión con custom token:", error);
+      const user = userCredential.user;
+
+      if (!user?.uid) {
+        throw new Error("User UID not found");
       }
 
-    } catch (err) {
-      setError(err.message || "Error desconocido");
-    }
-  };
-  
-  const signInWithGoogle = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
+      const response = await signInWithFirebase(user.uid);
 
-      //await registerUser(user);
-  
+      if (response?.error) {
+        throw new Error(response.error);
+      }
+
+      await user.getIdToken(true);
+      await user.getIdTokenResult();
+
       router.push("/dashboard");
-    } catch (err) {
-      setError(err.message);
+    } catch (err: any) {
+      console.error("Login failed:", err);
+      setError("root", { message: err.message || "Error de inicio de sesión" });
     }
   };
-  
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -86,7 +69,7 @@ export default function LoginPage() {
           <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
             Iniciar sesión
           </h1>
-          <form onSubmit={login} className="space-y-5">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Correo electrónico
@@ -96,12 +79,13 @@ export default function LoginPage() {
                 <input
                   type="email"
                   placeholder="nombre@correo.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
+                  {...register("email", { required: "Correo requerido" })}
                   className="w-full focus:outline-none"
                 />
               </div>
+              {errors.email && (
+                <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
+              )}
             </div>
 
             <div>
@@ -113,15 +97,18 @@ export default function LoginPage() {
                 <input
                   type="password"
                   placeholder="••••••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
+                  {...register("password", { required: "Contraseña requerida" })}
                   className="w-full focus:outline-none"
                 />
               </div>
+              {errors.password && (
+                <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
+              )}
             </div>
 
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+            {errors.root && (
+              <p className="text-sm text-red-500">{errors.root.message}</p>
+            )}
 
             <button
               type="submit"
@@ -132,7 +119,7 @@ export default function LoginPage() {
 
             <button
               type="button"
-              onClick={signInWithGoogle}
+              //onClick={signInWithGoogle}
               className="w-full flex items-center justify-center bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 rounded-lg transition duration-200"
             >
               <Image

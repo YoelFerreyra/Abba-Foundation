@@ -1,20 +1,22 @@
-import type { Metadata } from 'next'
-import './globals.css'
+import type { Metadata } from "next";
+import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
-  title: 'Fundacion Abba',
-  description: 'Fundación Abba - Centro de Salud',
-  generator: 'Next.js',
-}
+  title: "Fundacion Abba",
+  description: "Fundación Abba - Centro de Salud",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
-      <body>{children}</body>
-    </html>
-  )
+    <AuthProvider>
+      <html lang="es">
+        <body>{children}</body>
+      </html>
+    </AuthProvider>
+  );
 }

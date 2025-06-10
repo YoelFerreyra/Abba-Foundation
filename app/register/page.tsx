@@ -1,28 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { registerUserAction } from "@/actions/auth/signup";
 import { useRouter } from "next/navigation";
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  sendEmailVerification,
-} from "firebase/auth";
-import { auth } from "@/lib/firebaseClient";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
 import Image from "next/image";
-import { registerUser } from "@/actions";
+import { RegisterFormInputs, registerSchema } from "../login/schemas/login-schema";
+import { authClient } from "@/lib/firebase/firebase-client";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [dni, setDni] = useState("");
-  const [dniTramite, setDniTramite] = useState("");
-  const [error, setError] = useState(null);
   const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<RegisterFormInputs>({
+    resolver: zodResolver(registerSchema),
+  });
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(authClient, (user) => {
       if (user && user.emailVerified) {
         router.push("/dashboard");
       }
@@ -30,39 +32,24 @@ export default function RegisterPage() {
     return () => unsubscribe();
   }, [router]);
 
-  const register = async (e) => {
-    e.preventDefault();
-    setError(null);
+  const onSubmit = async (data: RegisterFormInputs) => {
+    setIsLoading(true);
     setMessage("");
-
-    if (password !== confirmPassword) {
-      setError("Las contraseñas no coinciden.");
-      return;
-    }
-
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const user = userCredential.user;
-
-      await sendEmailVerification(user);
-      setMessage(
-        "Registro exitoso. Revisa tu correo para verificar tu cuenta."
-      );
-
-      await registerUser({
-        uid: user.uid,
-        email: user.email,
-        dni,
-        dniTramite,
+      await registerUserAction({
+        email: data.email,
+        password: data.password,
       });
-    } catch (err) {
-      setError(err.message);
+      setMessage("Registro exitoso. Redirigiendo al login...");
+      router.push("/login");
+    } catch (err: any) {
+      console.error("Error en registro:", err);
+      setMessage(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -75,14 +62,13 @@ export default function RegisterPage() {
           height={800}
         />
       </div>
-
-      {/* Lado derecho: Formulario */}
+  
       <div className="flex items-center justify-center w-full md:w-1/2 p-6 bg-gray-50">
         <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
           <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
             Crear cuenta
           </h1>
-          <form onSubmit={register} className="space-y-5">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Correo electrónico
@@ -90,11 +76,12 @@ export default function RegisterPage() {
               <input
                 type="email"
                 placeholder="nombre@correo.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
+                {...register("email")}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -103,11 +90,12 @@ export default function RegisterPage() {
               <input
                 type="password"
                 placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
+                {...register("password")}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
+              {errors.password && (
+                <p className="text-red-500 text-sm">{errors.password.message}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -116,11 +104,14 @@ export default function RegisterPage() {
               <input
                 type="password"
                 placeholder="••••••••"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
+                {...register("confirmPassword")}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -129,11 +120,12 @@ export default function RegisterPage() {
               <input
                 type="text"
                 placeholder="12345678"
-                value={dni}
-                onChange={(e) => setDni(e.target.value)}
-                required
+                {...register("dni")}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
+              {errors.dni && (
+                <p className="text-red-500 text-sm">{errors.dni.message}</p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -142,16 +134,17 @@ export default function RegisterPage() {
               <input
                 type="text"
                 placeholder="123456789"
-                value={dniTramite}
-                onChange={(e) => setDniTramite(e.target.value)}
-                required
+                {...register("dniTramite")}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
+              {errors.dniTramite && (
+                <p className="text-red-500 text-sm">{errors.dniTramite.message}</p>
+              )}
             </div>
-
-            {error && <p className="text-red-500 text-sm">{error}</p>}
+  
+            {errors && <p className="text-red-500 text-sm">{errors}</p>}
             {message && <p className="text-green-600 text-sm">{message}</p>}
-
+  
             <button
               type="submit"
               className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
@@ -163,4 +156,5 @@ export default function RegisterPage() {
       </div>
     </div>
   );
+  
 }

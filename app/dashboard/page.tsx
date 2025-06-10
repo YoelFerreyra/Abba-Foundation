@@ -1,9 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { onAuthStateChanged } from 'firebase/auth'
-import { auth } from '@/lib/firebaseClient'
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { CalendarDays, FileText, CreditCard } from "lucide-react"
@@ -14,45 +12,6 @@ import { AppointmentList } from "@/components/appointment-list"
 export default function DashboardPage() {
   const router = useRouter()
   const [user, setUser] = useState(null)
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (!currentUser) {
-        router.push('/login')
-        return
-      }
-
-      setUser(currentUser)
-
-      try {
-        const res = await fetch(`/api/users?id=${currentUser.uid}`)
-        if (!res.ok) throw new Error('Error verificando existencia del usuario')
-
-        const data = await res.json()
-        const userExists = !!data?.user
-
-        if (!userExists) {
-          await fetch('/api/users', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              firebase_id: currentUser.uid,
-              email: currentUser.email,
-              display_name: currentUser.displayName ?? '',
-              photo_url: currentUser.photoURL ?? '',
-              phone_number: currentUser.phoneNumber ?? ''
-            })
-          })
-        }
-      } catch (err) {
-        console.error('Error al verificar o crear el usuario:', err)
-      }
-    })
-
-    return () => unsubscribe()
-  }, [router])
-
-  if (!user) return null
 
   return (
     <div className="flex flex-col gap-5">
