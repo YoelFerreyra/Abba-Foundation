@@ -8,7 +8,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useState } from "react"
 import { signOut } from 'firebase/auth'
-import { auth } from "@/lib/firebaseClient"
 
 export function DashboardSidebar() {
   const pathname = usePathname()
@@ -65,7 +64,7 @@ export function DashboardSidebar() {
     },
   ]
   const logout = async () => {
-    await signOut(auth)
+    //await signOut(auth)
     redirect("/login")
   }
 
