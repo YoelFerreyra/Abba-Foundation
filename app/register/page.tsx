@@ -7,7 +7,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import Image from "next/image";
-import { RegisterFormInputs, registerSchema } from "../login/schemas/login-schema";
+import {
+  RegisterFormInputs,
+  registerSchema,
+} from "./schemas/register-schema";
 import { authClient } from "@/lib/firebase/firebase-client";
 
 export default function RegisterPage() {
@@ -39,9 +42,12 @@ export default function RegisterPage() {
       await registerUserAction({
         email: data.email,
         password: data.password,
+        confirmPassword: data.confirmPassword,
+        dni: data.dni,
+        dniTramite: data.dniTramite
       });
       setMessage("Registro exitoso. Redirigiendo al login...");
-      router.push("/login");
+      //router.push("/login");
     } catch (err: any) {
       console.error("Error en registro:", err);
       setMessage(err.message);
@@ -49,7 +55,6 @@ export default function RegisterPage() {
       setIsLoading(false);
     }
   };
-
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row">
@@ -62,7 +67,7 @@ export default function RegisterPage() {
           height={800}
         />
       </div>
-  
+
       <div className="flex items-center justify-center w-full md:w-1/2 p-6 bg-gray-50">
         <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-8">
           <h1 className="text-3xl font-bold text-center mb-6 text-gray-800">
@@ -94,7 +99,9 @@ export default function RegisterPage() {
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
               {errors.password && (
-                <p className="text-red-500 text-sm">{errors.password.message}</p>
+                <p className="text-red-500 text-sm">
+                  {errors.password.message}
+                </p>
               )}
             </div>
             <div>
@@ -138,13 +145,18 @@ export default function RegisterPage() {
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
               {errors.dniTramite && (
-                <p className="text-red-500 text-sm">{errors.dniTramite.message}</p>
+                <p className="text-red-500 text-sm">
+                  {errors.dniTramite.message}
+                </p>
               )}
             </div>
-  
-            {errors && <p className="text-red-500 text-sm">{errors}</p>}
+
+            {errors.email && (
+              <p className="text-red-500 text-sm">{errors.email.message}</p>
+            )}
+
             {message && <p className="text-green-600 text-sm">{message}</p>}
-  
+
             <button
               type="submit"
               className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
@@ -156,5 +168,4 @@ export default function RegisterPage() {
       </div>
     </div>
   );
-  
 }

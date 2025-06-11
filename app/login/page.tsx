@@ -1,18 +1,16 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { Mail, Lock } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+
 import { authClient } from "@/lib/firebase/firebase-client";
 import { signInWithFirebase } from "@/actions/auth/singin";
-
-type LoginFormInputs = {
-  email: string;
-  password: string;
-};
+import { LoginFormInputs, loginSchema } from "./schemas/login-schema";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -21,7 +19,9 @@ export default function LoginPage() {
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<LoginFormInputs>();
+  } = useForm<LoginFormInputs>({
+    resolver: zodResolver(loginSchema),
+  });
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
@@ -79,7 +79,7 @@ export default function LoginPage() {
                 <input
                   type="email"
                   placeholder="nombre@correo.com"
-                  {...register("email", { required: "Correo requerido" })}
+                  {...register("email")}
                   className="w-full focus:outline-none"
                 />
               </div>
@@ -97,7 +97,7 @@ export default function LoginPage() {
                 <input
                   type="password"
                   placeholder="••••••••"
-                  {...register("password", { required: "Contraseña requerida" })}
+                  {...register("password")}
                   className="w-full focus:outline-none"
                 />
               </div>
@@ -115,21 +115,6 @@ export default function LoginPage() {
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200"
             >
               Iniciar sesión
-            </button>
-
-            <button
-              type="button"
-              //onClick={signInWithGoogle}
-              className="w-full flex items-center justify-center bg-white border border-gray-300 hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 rounded-lg transition duration-200"
-            >
-              <Image
-                src="/google-brands.svg"
-                alt="Google"
-                className="w-5 h-5 mr-2"
-                width={20}
-                height={20}
-              />
-              Iniciar con Google
             </button>
 
             <div className="flex justify-between text-sm mt-4 text-blue-600">

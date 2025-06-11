@@ -1,5 +1,5 @@
 'use server'
-import admin from "@/lib/firebase/firebase-server";
+import admin, { authServer } from "@/lib/firebase/firebase-server";
 import { prisma } from "@/lib/prisma";
 import { ERROR_CODES } from "@/lib/responses/errors";
 import { CODES_SUCCESS } from "@/lib/responses/success";
@@ -10,17 +10,21 @@ export async function signInWithFirebase(uid: string) {
       where: {
         firebaseUid: uid,
       },
-      select: {
-        name: true,
-        role: true,
-      },
     });
-    
 
     const customClaims = {
-      name: user?.name,
       role: user?.role,
     };
+
+    if (user?.email) return
+
+    const currentUser = await authServer.getUserByEmail(user?.email || "");
+
+    /*
+    if (!currentUser.emailVerified) {
+      throw new Error("Correo no verificado");
+    }
+    */
 
     await admin.auth().setCustomUserClaims(uid, customClaims);
 
