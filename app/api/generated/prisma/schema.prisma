@@ -1,0 +1,247 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/api/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  firebaseUid String
+  role        UserRoles @default(CLIENT)
+  email       String    @unique
+  isActive    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  image       String?
+
+  patient          Patient?
+  legalGuardian    LegalGuardian?
+  professional     Professional?
+  createdEvents    Event[]        @relation("EventCreator")
+  createdProcesses Process[]      @relation("ProcessCreator")
+}
+
+model Patient {
+  id                      Int            @id @default(autoincrement())
+  firstName               String
+  lastName                String
+  address                 String
+  dni                     String
+  cuil                    String
+  dniProcessingNumber     String
+  birthday                DateTime
+  phone                   String
+  affiliateNumber         String
+  professionalActivity    String?
+  healthInsuranceProvider String?
+  patientType             PatientType?
+  patientStatus           PatientStatus?
+  isActive                Boolean        @default(false)
+  createdAt               DateTime       @default(now())
+
+  userId Int?  @unique
+  user   User? @relation(fields: [userId], references: [id])
+
+  legalGuardianId Int?
+  legalGuardian   LegalGuardian? @relation(fields: [legalGuardianId], references: [id])
+
+  events    Event[]
+  admission Admission?
+}
+
+model HealthInsuranceProvider {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String
+  cuit        String
+  address     String
+  email       String
+  phone       String
+  contact     String
+}
+
+model LegalGuardian {
+  id                      Int                  @id @default(autoincrement())
+  firstName               String
+  lastName                String
+  address                 String
+  dni                     String
+  cuil                    String
+  dniProcessingNumber     String
+  birthday                DateTime
+  phone                   String
+  professionalActivity    String
+  healthInsuranceProvider String?
+  legalGuardianType       LegalGuardianType?
+  legalGuardianStatus     LegalGuardianStatus?
+  isActive                Boolean              @default(false)
+  createdAt               DateTime             @default(now())
+
+  userId Int?  @unique
+  user   User? @relation(fields: [userId], references: [id])
+
+  patients Patient[]
+}
+
+model Professional {
+  id                      Int      @id @default(autoincrement())
+  firstName               String
+  lastName                String
+  address                 String
+  dni                     String
+  birthday                DateTime
+  phone                   String
+  professionalActivity    String
+  healthInsuranceProvider String?
+  isActive                Boolean  @default(false)
+  profecionalType         String
+
+  userId Int?  @unique
+  user   User? @relation(fields: [userId], references: [id])
+
+  events    Event[]
+  schedules Schedule[]
+}
+
+model Admission {
+  id              Int              @id @default(autoincrement())
+  admissionStatus AdmissionStatus?
+
+  patientId Int     @unique
+  patient   Patient @relation(fields: [patientId], references: [id])
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  attendance  DateTime
+  eventType   String
+  createdAt   DateTime @default(now())
+
+  createdById Int
+  createdBy   User @relation("EventCreator", fields: [createdById], references: [id])
+
+  professionalId Int
+  professional   Professional @relation(fields: [professionalId], references: [id])
+
+  patientId Int
+  patient   Patient @relation(fields: [patientId], references: [id])
+}
+
+model Process {
+  id            Int           @id @default(autoincrement())
+  title         String
+  description   String?
+  processType   ProcessType
+  processStatus ProcessStatus
+  createdAt     DateTime      @default(now())
+
+  createdById Int
+  createdBy   User @relation("ProcessCreator", fields: [createdById], references: [id])
+}
+
+model Budget {
+  id           Int           @id @default(autoincrement())
+  budgetStatus BudgetStatus?
+}
+
+model Payment {
+  id          Int         @id @default(autoincrement())
+  paymentType PaymentType
+  description String?
+  createdAt   DateTime    @default(now())
+}
+
+model Schedule {
+  id             Int          @id @default(autoincrement())
+  professional   Professional @relation(fields: [professionalId], references: [id])
+  professionalId Int
+  dayOfWeek      WeekDay
+  startTime      String // format: "08:00"
+  endTime        String // format: "12:00"
+  repeatsWeekly  Boolean      @default(true)
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+}
+
+enum UserRoles {
+  ROOT
+  ADMIN
+  CLIENT
+  PROFESSIONAL
+  ACCOUNTANT
+}
+
+enum PatientType {
+  CHILD
+  ADULT
+  SENIOR
+}
+
+enum PatientStatus {
+  ACTIVE
+  INACTIVE
+  DISCHARGED
+  PENDING
+}
+
+enum LegalGuardianType {
+  PARENT
+  SIBLING
+  OTHER
+}
+
+enum LegalGuardianStatus {
+  ACTIVE
+  INACTIVE
+  VERIFIED
+  UNVERIFIED
+}
+
+enum AdmissionStatus {
+  PENDING_DOCUMENTATION
+  DOCUMENTS_COMPLETED
+  ADMITTED
+  REJECTED
+}
+
+enum ProcessType {
+  INITIAL
+  FOLLOW_UP
+  FINAL
+}
+
+enum ProcessStatus {
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum BudgetStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum PaymentType {
+  CASH
+  CREDIT_CARD
+  DEBIT_CARD
+  TRANSFER
+  OTHER
+}
+
+enum WeekDay {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}

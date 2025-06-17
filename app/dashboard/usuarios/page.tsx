@@ -23,7 +23,7 @@ type FormData = {
   }
 
 export default function UsersPage() {
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [selectedUser, setSelectedUser] = useState<any | null>(null)
   const [users, setUsers] = useState([])
   const [isOpen, setIsOpen] = useState(false)
   const [editingUser, setEditingUser] = useState<FormData | null>(null)

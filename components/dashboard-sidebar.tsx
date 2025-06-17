@@ -62,6 +62,12 @@ export function DashboardSidebar() {
       href: "/dashboard/pacientes",
       active: pathname === "/dashboard/pacientes",
     },
+    {
+      label: "Profesionales",
+      icon: Smile,
+      href: "/dashboard/profesionales",
+      active: pathname === "/dashboard/profesionales",
+    },
   ]
   const logout = async () => {
     //await signOut(auth)

@@ -1,11 +1,12 @@
+"use server"
 import { prisma } from "@/lib/prisma";
 
-export const getAllUsersAction = () => {
+export const getAllUsersAction = async() => {
   try {
-    const users = prisma.user.findMany();
+    const users = await prisma.user.findMany();
+    console.log(users);
     return users
   } catch (error) {
     console.log(error);
-    
   }
 };

@@ -6,89 +6,47 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import UserForm from "./components/user-form"
-import { getAllPatientsAction } from "@/actions/patients"
-
-type Patient = {
-  id: number
-  firstName: string
-  lastName: string
-  phone: string
-  address: string
-  birthday: string
-}
-
-type FormData = {
-  firstName: string
-  lastName: string
-  address: string
-  dni: string
-  cuil: string
-  dniProcessingNumber: string
-  birthday: string
-  phone: string
-  affiliateNumber: string
-}
-
+import PatientForm from "./components/user-form"
+import { createPatientAction, getAllPatientsAction } from "@/actions/patients"
+import { PatientFormData } from "./schemas/patient-schema"
 
 export default function PatientsPage() {
-  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null)
-  const [patients, setPatients] = useState<FormData[]>([])
+  const [patients, setPatients] = useState<PatientFormData[]>([])
+  const [editingPatient, setEditingPatient] = useState<PatientFormData | null>(null)
   const [isOpen, setIsOpen] = useState(false)
-  const [editingPatient, setEditingPatient] = useState<FormData | null>(null)
 
-  const fetchPacients = async () => {
-    const data = await getAllPatientsAction();
-    setPatients(data)
+  const fetchPatients = async () => {
+    const data = await getAllPatientsAction()
+
+    // Convertir fechas si vienen como string
+    const parsed = data.map((p: any) => ({
+      ...p,
+      birthday: new Date(p.birthday),
+    }))
+    setPatients(parsed)
   }
+
+  useEffect(() => {
+    fetchPatients()
+  }, [])
 
   const handleCreate = () => {
     setEditingPatient(null)
     setIsOpen(true)
   }
 
-  const handleEdit = (patient: FormData) => {
-    setEditingPatient(patient)
+  const handleEdit = (patient: PatientFormData) => {
+    setEditingPatient({
+      ...patient,
+      birthday: new Date(patient.birthday),
+    })
     setIsOpen(true)
   }
 
-  const handleSubmit = (data: FormData) => {
-    if (editingPatient) {
-      setPatients(prev =>
-        prev.map(p =>
-          p.firstName === editingPatient.firstName &&
-          p.lastName === editingPatient.lastName
-            ? { ...p, ...data }
-            : p
-        )
-      )
-    } else {
-      setPatients(prev => [...prev, data])
-    }
-  }
-
-  const [formData, setFormData] = useState<FormData>({
-    firstName: "",
-    lastName: "",
-    address: "",
-    dni: "",
-    cuil: "",
-    dniProcessingNumber: "",
-    birthday: "", // ISO string format (ej. "2000-01-01")
-    phone: "",
-    affiliateNumber: ""
-  })
-
-
-  
-
-  useEffect(() => {
-    fetchPacients()
-  }, [])
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target
-    setFormData(prev => ({ ...prev, [id]: value }))
+  const handleSubmit = async (data: PatientFormData) => {
+    const result = await createPatientAction(data)
+    await fetchPatients()
+    setIsOpen(false)
   }
 
   return (
@@ -115,22 +73,22 @@ export default function PatientsPage() {
         <TableBody>
           {patients.map((p, i) => (
             <TableRow
-              key={`${p.firstName}-${p.lastName}-${i}`}
-              onClick={() => handleEdit(p)}
+              key={`${p.dni}-${i}`}
               className="cursor-pointer hover:bg-muted/50"
             >
-              <TableCell>{`${p?.firstName} ${p?.lastName}`}</TableCell>
-              <TableCell>{p?.phone}</TableCell>
-              <TableCell>{p?.address}</TableCell>
+              <TableCell>{`${p.firstName} ${p.lastName}`}</TableCell>
+              <TableCell>{p.phone}</TableCell>
+              <TableCell>{p.address}</TableCell>
+              <TableCell>{new Date(p.birthday).toLocaleDateString()}</TableCell>
               <TableCell className="text-right">
-                <Button variant="outline" size="sm">Editar</Button>
+                <Button variant="outline" size="sm" onClick={() => handleEdit(p)}>Editar</Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
 
-      <UserForm
+      <PatientForm
         defaultValues={editingPatient || undefined}
         onSubmit={handleSubmit}
         isOpen={isOpen}
