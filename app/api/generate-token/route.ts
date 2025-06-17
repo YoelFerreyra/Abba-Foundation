@@ -1,17 +1,6 @@
 import { NextResponse } from "next/server";
 import admin from "firebase-admin";
-import path from "path";
-import { readFileSync } from "fs";
 import { prisma } from "@/lib/prisma";
-
-if (!admin.apps.length) {
-  const serviceAccount = JSON.parse(
-    readFileSync(path.resolve("abba.json"), "utf8")
-  );
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-  });
-}
 
 export async function POST(request: Request) {
   try {

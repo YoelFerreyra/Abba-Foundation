@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '@/lib/firebaseClient';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { MailIcon } from 'lucide-react';
+import { authClient } from '@/lib/firebase/firebase-client';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -19,7 +19,7 @@ export default function ForgotPasswordPage() {
     setMessage('');
 
     try {
-      await sendPasswordResetEmail(auth, email);
+      await sendPasswordResetEmail(authClient, email);
       setMessage('Se envió un correo para restablecer la contraseña.');
     } catch (err: any) {
       setError(err.message);
