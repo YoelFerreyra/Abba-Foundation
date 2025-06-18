@@ -9,10 +9,11 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user?.claims.role) {
+    console.log("ProtectedRoute effect triggered:", { loading, user });
+    if (!loading && !user?.uid) {
       router.push("/login");
     }
-  }, [loading, user?.claims]);
+  }, [loading, user]);
 
   if (loading || !user) {
     return <div className="p-4">Loading...</div>;
