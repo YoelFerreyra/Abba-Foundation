@@ -14,12 +14,10 @@ type Claims = {
   role: string;
   companyId: string;
   companyName: string;
-  plan: string;
 };
 
-type User = FirebaseUser & {
+export type User = FirebaseUser & {
   token: string;
-  claims: Claims;
 };
 
 type AuthContextType = {
@@ -41,7 +39,7 @@ async function fetchTokenResultWithPolling(
   for (let i = 0; i < MAX_POLLING_ATTEMPTS; i++) {
     const tokenResult = await getIdTokenResult(user, true);
 
-    if (tokenResult.claims?.role) {
+    if (tokenResult) {
       return tokenResult;
     }
 
@@ -57,12 +55,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(authClient, async (firebaseUser) => {
+      console.log("Auth state changed:", firebaseUser);
       if (firebaseUser) {
         const tokenResult = await fetchTokenResultWithPolling(firebaseUser);
         if (tokenResult) {
           const enrichedUser = Object.assign(firebaseUser, {
-            token: tokenResult.token,
-            claims: tokenResult.claims as Claims,
+            token: tokenResult.token
           });
           setUser(enrichedUser);
         } else {

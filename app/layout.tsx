@@ -13,10 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <AuthProvider>
-      <html lang="es">
+    <html lang="es">
+      <AuthProvider>
         <body>{children}</body>
-      </html>
-    </AuthProvider>
+      </AuthProvider>
+    </html>
   );
 }

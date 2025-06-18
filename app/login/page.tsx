@@ -24,6 +24,8 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: LoginFormInputs) => {
+
+    
     try {
       const userCredential = await signInWithEmailAndPassword(
         authClient,

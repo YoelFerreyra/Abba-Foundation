@@ -39,15 +39,20 @@ export default function RegisterPage() {
     setIsLoading(true);
     setMessage("");
     try {
-      await registerUserAction({
+      const response = await registerUserAction({
         email: data.email,
         password: data.password,
         confirmPassword: data.confirmPassword,
         dni: data.dni,
         dniTramite: data.dniTramite
       });
+
+      if (response?.error) {
+        throw new Error(response.error);
+      }
+      
       setMessage("Registro exitoso. Redirigiendo al login...");
-      //router.push("/login");
+      router.push("/login");
     } catch (err: any) {
       console.error("Error en registro:", err);
       setMessage(err.message);
