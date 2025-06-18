@@ -19,7 +19,7 @@ export async function registerUserAction(data: RegisterUserData) {
       where: {
         dni: data.dni,
         isActive: true,
-        //patientStatus: "ACTIVE",
+        patientStatus: "ACTIVE",
         dniProcessingNumber: data.dniTramite,
       },
     });
