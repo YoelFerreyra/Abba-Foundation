@@ -29,8 +29,8 @@ model Patient {
   firstName               String
   lastName                String
   address                 String
-  dni                     String
-  cuil                    String
+  dni                     String         @unique
+  cuil                    String         @unique
   dniProcessingNumber     String
   birthday                DateTime
   phone                   String
@@ -91,7 +91,8 @@ model Professional {
   firstName               String
   lastName                String
   address                 String
-  dni                     String
+  dni                     String   @unique
+  cuil                    String   @unique
   birthday                DateTime
   phone                   String
   professionalActivity    String

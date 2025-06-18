@@ -7059,6 +7059,7 @@ export namespace Prisma {
     lastName: string | null
     address: string | null
     dni: string | null
+    cuil: string | null
     birthday: Date | null
     phone: string | null
     professionalActivity: string | null
@@ -7074,6 +7075,7 @@ export namespace Prisma {
     lastName: string | null
     address: string | null
     dni: string | null
+    cuil: string | null
     birthday: Date | null
     phone: string | null
     professionalActivity: string | null
@@ -7089,6 +7091,7 @@ export namespace Prisma {
     lastName: number
     address: number
     dni: number
+    cuil: number
     birthday: number
     phone: number
     professionalActivity: number
@@ -7116,6 +7119,7 @@ export namespace Prisma {
     lastName?: true
     address?: true
     dni?: true
+    cuil?: true
     birthday?: true
     phone?: true
     professionalActivity?: true
@@ -7131,6 +7135,7 @@ export namespace Prisma {
     lastName?: true
     address?: true
     dni?: true
+    cuil?: true
     birthday?: true
     phone?: true
     professionalActivity?: true
@@ -7146,6 +7151,7 @@ export namespace Prisma {
     lastName?: true
     address?: true
     dni?: true
+    cuil?: true
     birthday?: true
     phone?: true
     professionalActivity?: true
@@ -7248,6 +7254,7 @@ export namespace Prisma {
     lastName: string
     address: string
     dni: string
+    cuil: string
     birthday: Date
     phone: string
     professionalActivity: string
@@ -7282,6 +7289,7 @@ export namespace Prisma {
     lastName?: boolean
     address?: boolean
     dni?: boolean
+    cuil?: boolean
     birthday?: boolean
     phone?: boolean
     professionalActivity?: boolean
@@ -7301,6 +7309,7 @@ export namespace Prisma {
     lastName?: boolean
     address?: boolean
     dni?: boolean
+    cuil?: boolean
     birthday?: boolean
     phone?: boolean
     professionalActivity?: boolean
@@ -7317,6 +7326,7 @@ export namespace Prisma {
     lastName?: boolean
     address?: boolean
     dni?: boolean
+    cuil?: boolean
     birthday?: boolean
     phone?: boolean
     professionalActivity?: boolean
@@ -7333,6 +7343,7 @@ export namespace Prisma {
     lastName?: boolean
     address?: boolean
     dni?: boolean
+    cuil?: boolean
     birthday?: boolean
     phone?: boolean
     professionalActivity?: boolean
@@ -7342,7 +7353,7 @@ export namespace Prisma {
     userId?: boolean
   }
 
-  export type ProfessionalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "address" | "dni" | "birthday" | "phone" | "professionalActivity" | "healthInsuranceProvider" | "isActive" | "profecionalType" | "userId", ExtArgs["result"]["professional"]>
+  export type ProfessionalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "address" | "dni" | "cuil" | "birthday" | "phone" | "professionalActivity" | "healthInsuranceProvider" | "isActive" | "profecionalType" | "userId", ExtArgs["result"]["professional"]>
   export type ProfessionalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Professional$userArgs<ExtArgs>
     events?: boolean | Professional$eventsArgs<ExtArgs>
@@ -7369,6 +7380,7 @@ export namespace Prisma {
       lastName: string
       address: string
       dni: string
+      cuil: string
       birthday: Date
       phone: string
       professionalActivity: string
@@ -7807,6 +7819,7 @@ export namespace Prisma {
     readonly lastName: FieldRef<"Professional", 'String'>
     readonly address: FieldRef<"Professional", 'String'>
     readonly dni: FieldRef<"Professional", 'String'>
+    readonly cuil: FieldRef<"Professional", 'String'>
     readonly birthday: FieldRef<"Professional", 'DateTime'>
     readonly phone: FieldRef<"Professional", 'String'>
     readonly professionalActivity: FieldRef<"Professional", 'String'>
@@ -14893,6 +14906,7 @@ export namespace Prisma {
     lastName: 'lastName',
     address: 'address',
     dni: 'dni',
+    cuil: 'cuil',
     birthday: 'birthday',
     phone: 'phone',
     professionalActivity: 'professionalActivity',
@@ -15357,6 +15371,8 @@ export namespace Prisma {
 
   export type PatientWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    dni?: string
+    cuil?: string
     userId?: number
     AND?: PatientWhereInput | PatientWhereInput[]
     OR?: PatientWhereInput[]
@@ -15364,8 +15380,6 @@ export namespace Prisma {
     firstName?: StringFilter<"Patient"> | string
     lastName?: StringFilter<"Patient"> | string
     address?: StringFilter<"Patient"> | string
-    dni?: StringFilter<"Patient"> | string
-    cuil?: StringFilter<"Patient"> | string
     dniProcessingNumber?: StringFilter<"Patient"> | string
     birthday?: DateTimeFilter<"Patient"> | Date | string
     phone?: StringFilter<"Patient"> | string
@@ -15381,7 +15395,7 @@ export namespace Prisma {
     legalGuardian?: XOR<LegalGuardianNullableScalarRelationFilter, LegalGuardianWhereInput> | null
     events?: EventListRelationFilter
     admission?: XOR<AdmissionNullableScalarRelationFilter, AdmissionWhereInput> | null
-  }, "id" | "userId">
+  }, "id" | "dni" | "cuil" | "userId">
 
   export type PatientOrderByWithAggregationInput = {
     id?: SortOrder
@@ -15626,6 +15640,7 @@ export namespace Prisma {
     lastName?: StringFilter<"Professional"> | string
     address?: StringFilter<"Professional"> | string
     dni?: StringFilter<"Professional"> | string
+    cuil?: StringFilter<"Professional"> | string
     birthday?: DateTimeFilter<"Professional"> | Date | string
     phone?: StringFilter<"Professional"> | string
     professionalActivity?: StringFilter<"Professional"> | string
@@ -15644,6 +15659,7 @@ export namespace Prisma {
     lastName?: SortOrder
     address?: SortOrder
     dni?: SortOrder
+    cuil?: SortOrder
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
@@ -15658,6 +15674,8 @@ export namespace Prisma {
 
   export type ProfessionalWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    dni?: string
+    cuil?: string
     userId?: number
     AND?: ProfessionalWhereInput | ProfessionalWhereInput[]
     OR?: ProfessionalWhereInput[]
@@ -15665,7 +15683,6 @@ export namespace Prisma {
     firstName?: StringFilter<"Professional"> | string
     lastName?: StringFilter<"Professional"> | string
     address?: StringFilter<"Professional"> | string
-    dni?: StringFilter<"Professional"> | string
     birthday?: DateTimeFilter<"Professional"> | Date | string
     phone?: StringFilter<"Professional"> | string
     professionalActivity?: StringFilter<"Professional"> | string
@@ -15675,7 +15692,7 @@ export namespace Prisma {
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     events?: EventListRelationFilter
     schedules?: ScheduleListRelationFilter
-  }, "id" | "userId">
+  }, "id" | "dni" | "cuil" | "userId">
 
   export type ProfessionalOrderByWithAggregationInput = {
     id?: SortOrder
@@ -15683,6 +15700,7 @@ export namespace Prisma {
     lastName?: SortOrder
     address?: SortOrder
     dni?: SortOrder
+    cuil?: SortOrder
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
@@ -15706,6 +15724,7 @@ export namespace Prisma {
     lastName?: StringWithAggregatesFilter<"Professional"> | string
     address?: StringWithAggregatesFilter<"Professional"> | string
     dni?: StringWithAggregatesFilter<"Professional"> | string
+    cuil?: StringWithAggregatesFilter<"Professional"> | string
     birthday?: DateTimeWithAggregatesFilter<"Professional"> | Date | string
     phone?: StringWithAggregatesFilter<"Professional"> | string
     professionalActivity?: StringWithAggregatesFilter<"Professional"> | string
@@ -16521,6 +16540,7 @@ export namespace Prisma {
     lastName: string
     address: string
     dni: string
+    cuil: string
     birthday: Date | string
     phone: string
     professionalActivity: string
@@ -16538,6 +16558,7 @@ export namespace Prisma {
     lastName: string
     address: string
     dni: string
+    cuil: string
     birthday: Date | string
     phone: string
     professionalActivity: string
@@ -16554,6 +16575,7 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
@@ -16571,6 +16593,7 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
@@ -16588,6 +16611,7 @@ export namespace Prisma {
     lastName: string
     address: string
     dni: string
+    cuil: string
     birthday: Date | string
     phone: string
     professionalActivity: string
@@ -16602,6 +16626,7 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
@@ -16616,6 +16641,7 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
@@ -17498,6 +17524,7 @@ export namespace Prisma {
     lastName?: SortOrder
     address?: SortOrder
     dni?: SortOrder
+    cuil?: SortOrder
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
@@ -17518,6 +17545,7 @@ export namespace Prisma {
     lastName?: SortOrder
     address?: SortOrder
     dni?: SortOrder
+    cuil?: SortOrder
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
@@ -17533,6 +17561,7 @@ export namespace Prisma {
     lastName?: SortOrder
     address?: SortOrder
     dni?: SortOrder
+    cuil?: SortOrder
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
@@ -18939,6 +18968,7 @@ export namespace Prisma {
     lastName: string
     address: string
     dni: string
+    cuil: string
     birthday: Date | string
     phone: string
     professionalActivity: string
@@ -18955,6 +18985,7 @@ export namespace Prisma {
     lastName: string
     address: string
     dni: string
+    cuil: string
     birthday: Date | string
     phone: string
     professionalActivity: string
@@ -19146,6 +19177,7 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
@@ -19162,6 +19194,7 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
@@ -19951,6 +19984,7 @@ export namespace Prisma {
     lastName: string
     address: string
     dni: string
+    cuil: string
     birthday: Date | string
     phone: string
     professionalActivity: string
@@ -19967,6 +20001,7 @@ export namespace Prisma {
     lastName: string
     address: string
     dni: string
+    cuil: string
     birthday: Date | string
     phone: string
     professionalActivity: string
@@ -20084,6 +20119,7 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
@@ -20100,6 +20136,7 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
@@ -20239,6 +20276,7 @@ export namespace Prisma {
     lastName: string
     address: string
     dni: string
+    cuil: string
     birthday: Date | string
     phone: string
     professionalActivity: string
@@ -20255,6 +20293,7 @@ export namespace Prisma {
     lastName: string
     address: string
     dni: string
+    cuil: string
     birthday: Date | string
     phone: string
     professionalActivity: string
@@ -20286,6 +20325,7 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
@@ -20302,6 +20342,7 @@ export namespace Prisma {
     lastName?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string

@@ -187,6 +187,7 @@ exports.Prisma.ProfessionalScalarFieldEnum = {
   lastName: 'lastName',
   address: 'address',
   dni: 'dni',
+  cuil: 'cuil',
   birthday: 'birthday',
   phone: 'phone',
   professionalActivity: 'professionalActivity',

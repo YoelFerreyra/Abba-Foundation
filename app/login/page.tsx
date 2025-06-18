@@ -39,11 +39,11 @@ export default function LoginPage() {
         throw new Error("User UID not found");
       }
 
-      //const response = await signInWithFirebase(user.uid);
+      const response = await signInWithFirebase(user.uid);
 
-      //if (response?.error) {
-      //  throw new Error(response.error);
-      //}
+      if (response?.error) {
+        throw new Error(response.error);
+      }
 
       await user.getIdToken(true);
       await user.getIdTokenResult();

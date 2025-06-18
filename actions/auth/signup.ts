@@ -19,12 +19,14 @@ export async function registerUserAction(data: RegisterUserData) {
       where: {
         dni: data.dni,
         isActive: true,
-        patientStatus: "ACTIVE",
+        //patientStatus: "ACTIVE",
         dniProcessingNumber: data.dniTramite,
       },
     });
 
     if (!patient) throw new Error("Patient not found");
+
+    console.log("Creating Firebase user for:", data.email);
 
     const firebaseUser = await authServer.createUser({
       email: data.email,
