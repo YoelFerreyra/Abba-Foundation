@@ -55,7 +55,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(authClient, async (firebaseUser) => {
-      console.log("Auth state changed:", firebaseUser);
       if (firebaseUser) {
         const tokenResult = await fetchTokenResultWithPolling(firebaseUser);
         if (tokenResult) {

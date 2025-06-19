@@ -11,6 +11,10 @@ export async function signInWithFirebase(uid: string) {
         firebaseUid: uid,
       },
     });
+    
+    if (!user) {
+      throw new Error("User not found");
+    }
 
     const customClaims = {
       role: user?.role,

@@ -9,7 +9,6 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("ProtectedRoute effect triggered:", { loading, user });
     if (!loading && !user?.uid) {
       router.push("/login");
     }
