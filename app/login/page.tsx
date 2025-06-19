@@ -24,15 +24,13 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (data: LoginFormInputs) => {
-
-    
     try {
       const userCredential = await signInWithEmailAndPassword(
         authClient,
         data.email,
         data.password
       );
-
+      
       const user = userCredential.user;
 
       if (!user?.uid) {
