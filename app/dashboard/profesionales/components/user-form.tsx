@@ -51,8 +51,6 @@ export default function ProfessionalForm({
     },
   })
 
-  console.log("Errores de validación:", errors)
-
   const submitHandler = (data: ProfessionalFormData) => {
     console.log(data);
     

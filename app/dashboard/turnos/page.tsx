@@ -2,8 +2,7 @@
 import { DashboardHeader } from "@/components/dashboard-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import MedicalCalendar from "./components/MedicalCalendar"
-import MedCalendar from "./components/bigCalendar"
+import MedicalCalendar from "./components/medCalendar"
 import AppointmentList from "./components/turnos-list";
 
 export default function TurnosPage() {
@@ -24,7 +23,7 @@ export default function TurnosPage() {
               <CardDescription>Visualiza y gestiona tus citas en el calendario</CardDescription>
             </CardHeader>
             <CardContent>
-              <MedCalendar />
+              <MedicalCalendar />
             </CardContent>
           </Card>
         </TabsContent>

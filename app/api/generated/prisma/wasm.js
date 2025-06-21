@@ -207,9 +207,11 @@ exports.Prisma.EventScalarFieldEnum = {
   id: 'id',
   title: 'title',
   description: 'description',
-  attendance: 'attendance',
+  startEvent: 'startEvent',
+  endEvent: 'endEvent',
   eventType: 'eventType',
   createdAt: 'createdAt',
+  status: 'status',
   createdById: 'createdById',
   professionalId: 'professionalId',
   patientId: 'patientId'
@@ -301,6 +303,12 @@ exports.AdmissionStatus = exports.$Enums.AdmissionStatus = {
   DOCUMENTS_COMPLETED: 'DOCUMENTS_COMPLETED',
   ADMITTED: 'ADMITTED',
   REJECTED: 'REJECTED'
+};
+
+exports.EventStatus = exports.$Enums.EventStatus = {
+  SCHEDULED: 'SCHEDULED',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED'
 };
 
 exports.ProcessType = exports.$Enums.ProcessType = {

@@ -183,6 +183,15 @@ export const WeekDay: {
 
 export type WeekDay = (typeof WeekDay)[keyof typeof WeekDay]
 
+
+export const EventStatus: {
+  SCHEDULED: 'SCHEDULED',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED'
+};
+
+export type EventStatus = (typeof EventStatus)[keyof typeof EventStatus]
+
 }
 
 export type UserRoles = $Enums.UserRoles
@@ -228,6 +237,10 @@ export const PaymentType: typeof $Enums.PaymentType
 export type WeekDay = $Enums.WeekDay
 
 export const WeekDay: typeof $Enums.WeekDay
+
+export type EventStatus = $Enums.EventStatus
+
+export const EventStatus: typeof $Enums.EventStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -9408,9 +9421,11 @@ export namespace Prisma {
     id: number | null
     title: string | null
     description: string | null
-    attendance: Date | null
+    startEvent: Date | null
+    endEvent: Date | null
     eventType: string | null
     createdAt: Date | null
+    status: $Enums.EventStatus | null
     createdById: number | null
     professionalId: number | null
     patientId: number | null
@@ -9420,9 +9435,11 @@ export namespace Prisma {
     id: number | null
     title: string | null
     description: string | null
-    attendance: Date | null
+    startEvent: Date | null
+    endEvent: Date | null
     eventType: string | null
     createdAt: Date | null
+    status: $Enums.EventStatus | null
     createdById: number | null
     professionalId: number | null
     patientId: number | null
@@ -9432,9 +9449,11 @@ export namespace Prisma {
     id: number
     title: number
     description: number
-    attendance: number
+    startEvent: number
+    endEvent: number
     eventType: number
     createdAt: number
+    status: number
     createdById: number
     professionalId: number
     patientId: number
@@ -9460,9 +9479,11 @@ export namespace Prisma {
     id?: true
     title?: true
     description?: true
-    attendance?: true
+    startEvent?: true
+    endEvent?: true
     eventType?: true
     createdAt?: true
+    status?: true
     createdById?: true
     professionalId?: true
     patientId?: true
@@ -9472,9 +9493,11 @@ export namespace Prisma {
     id?: true
     title?: true
     description?: true
-    attendance?: true
+    startEvent?: true
+    endEvent?: true
     eventType?: true
     createdAt?: true
+    status?: true
     createdById?: true
     professionalId?: true
     patientId?: true
@@ -9484,9 +9507,11 @@ export namespace Prisma {
     id?: true
     title?: true
     description?: true
-    attendance?: true
+    startEvent?: true
+    endEvent?: true
     eventType?: true
     createdAt?: true
+    status?: true
     createdById?: true
     professionalId?: true
     patientId?: true
@@ -9583,9 +9608,11 @@ export namespace Prisma {
     id: number
     title: string
     description: string | null
-    attendance: Date
+    startEvent: Date
+    endEvent: Date
     eventType: string
     createdAt: Date
+    status: $Enums.EventStatus
     createdById: number
     professionalId: number
     patientId: number
@@ -9614,9 +9641,11 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
-    attendance?: boolean
+    startEvent?: boolean
+    endEvent?: boolean
     eventType?: boolean
     createdAt?: boolean
+    status?: boolean
     createdById?: boolean
     professionalId?: boolean
     patientId?: boolean
@@ -9629,9 +9658,11 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
-    attendance?: boolean
+    startEvent?: boolean
+    endEvent?: boolean
     eventType?: boolean
     createdAt?: boolean
+    status?: boolean
     createdById?: boolean
     professionalId?: boolean
     patientId?: boolean
@@ -9644,9 +9675,11 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
-    attendance?: boolean
+    startEvent?: boolean
+    endEvent?: boolean
     eventType?: boolean
     createdAt?: boolean
+    status?: boolean
     createdById?: boolean
     professionalId?: boolean
     patientId?: boolean
@@ -9659,15 +9692,17 @@ export namespace Prisma {
     id?: boolean
     title?: boolean
     description?: boolean
-    attendance?: boolean
+    startEvent?: boolean
+    endEvent?: boolean
     eventType?: boolean
     createdAt?: boolean
+    status?: boolean
     createdById?: boolean
     professionalId?: boolean
     patientId?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "attendance" | "eventType" | "createdAt" | "createdById" | "professionalId" | "patientId", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "startEvent" | "endEvent" | "eventType" | "createdAt" | "status" | "createdById" | "professionalId" | "patientId", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     professional?: boolean | ProfessionalDefaultArgs<ExtArgs>
@@ -9695,9 +9730,11 @@ export namespace Prisma {
       id: number
       title: string
       description: string | null
-      attendance: Date
+      startEvent: Date
+      endEvent: Date
       eventType: string
       createdAt: Date
+      status: $Enums.EventStatus
       createdById: number
       professionalId: number
       patientId: number
@@ -10130,9 +10167,11 @@ export namespace Prisma {
     readonly id: FieldRef<"Event", 'Int'>
     readonly title: FieldRef<"Event", 'String'>
     readonly description: FieldRef<"Event", 'String'>
-    readonly attendance: FieldRef<"Event", 'DateTime'>
+    readonly startEvent: FieldRef<"Event", 'DateTime'>
+    readonly endEvent: FieldRef<"Event", 'DateTime'>
     readonly eventType: FieldRef<"Event", 'String'>
     readonly createdAt: FieldRef<"Event", 'DateTime'>
+    readonly status: FieldRef<"Event", 'EventStatus'>
     readonly createdById: FieldRef<"Event", 'Int'>
     readonly professionalId: FieldRef<"Event", 'Int'>
     readonly patientId: FieldRef<"Event", 'Int'>
@@ -14932,9 +14971,11 @@ export namespace Prisma {
     id: 'id',
     title: 'title',
     description: 'description',
-    attendance: 'attendance',
+    startEvent: 'startEvent',
+    endEvent: 'endEvent',
     eventType: 'eventType',
     createdAt: 'createdAt',
+    status: 'status',
     createdById: 'createdById',
     professionalId: 'professionalId',
     patientId: 'patientId'
@@ -15147,6 +15188,20 @@ export namespace Prisma {
    * Reference to a field of type 'AdmissionStatus[]'
    */
   export type ListEnumAdmissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AdmissionStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'EventStatus'
+   */
+  export type EnumEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'EventStatus[]'
+   */
+  export type ListEnumEventStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventStatus[]'>
     
 
 
@@ -15788,9 +15843,11 @@ export namespace Prisma {
     id?: IntFilter<"Event"> | number
     title?: StringFilter<"Event"> | string
     description?: StringNullableFilter<"Event"> | string | null
-    attendance?: DateTimeFilter<"Event"> | Date | string
+    startEvent?: DateTimeFilter<"Event"> | Date | string
+    endEvent?: DateTimeFilter<"Event"> | Date | string
     eventType?: StringFilter<"Event"> | string
     createdAt?: DateTimeFilter<"Event"> | Date | string
+    status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     createdById?: IntFilter<"Event"> | number
     professionalId?: IntFilter<"Event"> | number
     patientId?: IntFilter<"Event"> | number
@@ -15803,9 +15860,11 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
-    attendance?: SortOrder
+    startEvent?: SortOrder
+    endEvent?: SortOrder
     eventType?: SortOrder
     createdAt?: SortOrder
+    status?: SortOrder
     createdById?: SortOrder
     professionalId?: SortOrder
     patientId?: SortOrder
@@ -15821,9 +15880,11 @@ export namespace Prisma {
     NOT?: EventWhereInput | EventWhereInput[]
     title?: StringFilter<"Event"> | string
     description?: StringNullableFilter<"Event"> | string | null
-    attendance?: DateTimeFilter<"Event"> | Date | string
+    startEvent?: DateTimeFilter<"Event"> | Date | string
+    endEvent?: DateTimeFilter<"Event"> | Date | string
     eventType?: StringFilter<"Event"> | string
     createdAt?: DateTimeFilter<"Event"> | Date | string
+    status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     createdById?: IntFilter<"Event"> | number
     professionalId?: IntFilter<"Event"> | number
     patientId?: IntFilter<"Event"> | number
@@ -15836,9 +15897,11 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
-    attendance?: SortOrder
+    startEvent?: SortOrder
+    endEvent?: SortOrder
     eventType?: SortOrder
     createdAt?: SortOrder
+    status?: SortOrder
     createdById?: SortOrder
     professionalId?: SortOrder
     patientId?: SortOrder
@@ -15856,9 +15919,11 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Event"> | number
     title?: StringWithAggregatesFilter<"Event"> | string
     description?: StringNullableWithAggregatesFilter<"Event"> | string | null
-    attendance?: DateTimeWithAggregatesFilter<"Event"> | Date | string
+    startEvent?: DateTimeWithAggregatesFilter<"Event"> | Date | string
+    endEvent?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     eventType?: StringWithAggregatesFilter<"Event"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
+    status?: EnumEventStatusWithAggregatesFilter<"Event"> | $Enums.EventStatus
     createdById?: IntWithAggregatesFilter<"Event"> | number
     professionalId?: IntWithAggregatesFilter<"Event"> | number
     patientId?: IntWithAggregatesFilter<"Event"> | number
@@ -16692,9 +16757,11 @@ export namespace Prisma {
   export type EventCreateInput = {
     title: string
     description?: string | null
-    attendance: Date | string
+    startEvent: Date | string
+    endEvent: Date | string
     eventType: string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     createdBy: UserCreateNestedOneWithoutCreatedEventsInput
     professional: ProfessionalCreateNestedOneWithoutEventsInput
     patient: PatientCreateNestedOneWithoutEventsInput
@@ -16704,9 +16771,11 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    attendance: Date | string
+    startEvent: Date | string
+    endEvent: Date | string
     eventType: string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     createdById: number
     professionalId: number
     patientId: number
@@ -16715,9 +16784,11 @@ export namespace Prisma {
   export type EventUpdateInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    attendance?: DateTimeFieldUpdateOperationsInput | Date | string
+    startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
+    endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdBy?: UserUpdateOneRequiredWithoutCreatedEventsNestedInput
     professional?: ProfessionalUpdateOneRequiredWithoutEventsNestedInput
     patient?: PatientUpdateOneRequiredWithoutEventsNestedInput
@@ -16727,9 +16798,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    attendance?: DateTimeFieldUpdateOperationsInput | Date | string
+    startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
+    endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdById?: IntFieldUpdateOperationsInput | number
     professionalId?: IntFieldUpdateOperationsInput | number
     patientId?: IntFieldUpdateOperationsInput | number
@@ -16739,9 +16812,11 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    attendance: Date | string
+    startEvent: Date | string
+    endEvent: Date | string
     eventType: string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     createdById: number
     professionalId: number
     patientId: number
@@ -16750,18 +16825,22 @@ export namespace Prisma {
   export type EventUpdateManyMutationInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    attendance?: DateTimeFieldUpdateOperationsInput | Date | string
+    startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
+    endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   }
 
   export type EventUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    attendance?: DateTimeFieldUpdateOperationsInput | Date | string
+    startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
+    endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdById?: IntFieldUpdateOperationsInput | number
     professionalId?: IntFieldUpdateOperationsInput | number
     patientId?: IntFieldUpdateOperationsInput | number
@@ -17626,6 +17705,13 @@ export namespace Prisma {
     _max?: NestedEnumAdmissionStatusNullableFilter<$PrismaModel>
   }
 
+  export type EnumEventStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventStatusFilter<$PrismaModel> | $Enums.EventStatus
+  }
+
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
@@ -17640,9 +17726,11 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    attendance?: SortOrder
+    startEvent?: SortOrder
+    endEvent?: SortOrder
     eventType?: SortOrder
     createdAt?: SortOrder
+    status?: SortOrder
     createdById?: SortOrder
     professionalId?: SortOrder
     patientId?: SortOrder
@@ -17659,9 +17747,11 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    attendance?: SortOrder
+    startEvent?: SortOrder
+    endEvent?: SortOrder
     eventType?: SortOrder
     createdAt?: SortOrder
+    status?: SortOrder
     createdById?: SortOrder
     professionalId?: SortOrder
     patientId?: SortOrder
@@ -17671,9 +17761,11 @@ export namespace Prisma {
     id?: SortOrder
     title?: SortOrder
     description?: SortOrder
-    attendance?: SortOrder
+    startEvent?: SortOrder
+    endEvent?: SortOrder
     eventType?: SortOrder
     createdAt?: SortOrder
+    status?: SortOrder
     createdById?: SortOrder
     professionalId?: SortOrder
     patientId?: SortOrder
@@ -17684,6 +17776,16 @@ export namespace Prisma {
     createdById?: SortOrder
     professionalId?: SortOrder
     patientId?: SortOrder
+  }
+
+  export type EnumEventStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventStatusWithAggregatesFilter<$PrismaModel> | $Enums.EventStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEventStatusFilter<$PrismaModel>
+    _max?: NestedEnumEventStatusFilter<$PrismaModel>
   }
 
   export type EnumProcessTypeFilter<$PrismaModel = never> = {
@@ -18438,6 +18540,10 @@ export namespace Prisma {
     connect?: PatientWhereUniqueInput
   }
 
+  export type EnumEventStatusFieldUpdateOperationsInput = {
+    set?: $Enums.EventStatus
+  }
+
   export type UserUpdateOneRequiredWithoutCreatedEventsNestedInput = {
     create?: XOR<UserCreateWithoutCreatedEventsInput, UserUncheckedCreateWithoutCreatedEventsInput>
     connectOrCreate?: UserCreateOrConnectWithoutCreatedEventsInput
@@ -18788,6 +18894,23 @@ export namespace Prisma {
     _max?: NestedEnumAdmissionStatusNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumEventStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventStatusFilter<$PrismaModel> | $Enums.EventStatus
+  }
+
+  export type NestedEnumEventStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventStatusWithAggregatesFilter<$PrismaModel> | $Enums.EventStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEventStatusFilter<$PrismaModel>
+    _max?: NestedEnumEventStatusFilter<$PrismaModel>
+  }
+
   export type NestedEnumProcessTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.ProcessType | EnumProcessTypeFieldRefInput<$PrismaModel>
     in?: $Enums.ProcessType[] | ListEnumProcessTypeFieldRefInput<$PrismaModel>
@@ -19004,9 +19127,11 @@ export namespace Prisma {
   export type EventCreateWithoutCreatedByInput = {
     title: string
     description?: string | null
-    attendance: Date | string
+    startEvent: Date | string
+    endEvent: Date | string
     eventType: string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     professional: ProfessionalCreateNestedOneWithoutEventsInput
     patient: PatientCreateNestedOneWithoutEventsInput
   }
@@ -19015,9 +19140,11 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    attendance: Date | string
+    startEvent: Date | string
+    endEvent: Date | string
     eventType: string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     professionalId: number
     patientId: number
   }
@@ -19228,9 +19355,11 @@ export namespace Prisma {
     id?: IntFilter<"Event"> | number
     title?: StringFilter<"Event"> | string
     description?: StringNullableFilter<"Event"> | string | null
-    attendance?: DateTimeFilter<"Event"> | Date | string
+    startEvent?: DateTimeFilter<"Event"> | Date | string
+    endEvent?: DateTimeFilter<"Event"> | Date | string
     eventType?: StringFilter<"Event"> | string
     createdAt?: DateTimeFilter<"Event"> | Date | string
+    status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     createdById?: IntFilter<"Event"> | number
     professionalId?: IntFilter<"Event"> | number
     patientId?: IntFilter<"Event"> | number
@@ -19342,9 +19471,11 @@ export namespace Prisma {
   export type EventCreateWithoutPatientInput = {
     title: string
     description?: string | null
-    attendance: Date | string
+    startEvent: Date | string
+    endEvent: Date | string
     eventType: string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     createdBy: UserCreateNestedOneWithoutCreatedEventsInput
     professional: ProfessionalCreateNestedOneWithoutEventsInput
   }
@@ -19353,9 +19484,11 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    attendance: Date | string
+    startEvent: Date | string
+    endEvent: Date | string
     eventType: string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     createdById: number
     professionalId: number
   }
@@ -19704,9 +19837,11 @@ export namespace Prisma {
   export type EventCreateWithoutProfessionalInput = {
     title: string
     description?: string | null
-    attendance: Date | string
+    startEvent: Date | string
+    endEvent: Date | string
     eventType: string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     createdBy: UserCreateNestedOneWithoutCreatedEventsInput
     patient: PatientCreateNestedOneWithoutEventsInput
   }
@@ -19715,9 +19850,11 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    attendance: Date | string
+    startEvent: Date | string
+    endEvent: Date | string
     eventType: string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     createdById: number
     patientId: number
   }
@@ -20357,9 +20494,11 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    attendance: Date | string
+    startEvent: Date | string
+    endEvent: Date | string
     eventType: string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     professionalId: number
     patientId: number
   }
@@ -20376,9 +20515,11 @@ export namespace Prisma {
   export type EventUpdateWithoutCreatedByInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    attendance?: DateTimeFieldUpdateOperationsInput | Date | string
+    startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
+    endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     professional?: ProfessionalUpdateOneRequiredWithoutEventsNestedInput
     patient?: PatientUpdateOneRequiredWithoutEventsNestedInput
   }
@@ -20387,9 +20528,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    attendance?: DateTimeFieldUpdateOperationsInput | Date | string
+    startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
+    endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     professionalId?: IntFieldUpdateOperationsInput | number
     patientId?: IntFieldUpdateOperationsInput | number
   }
@@ -20398,9 +20541,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    attendance?: DateTimeFieldUpdateOperationsInput | Date | string
+    startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
+    endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     professionalId?: IntFieldUpdateOperationsInput | number
     patientId?: IntFieldUpdateOperationsInput | number
   }
@@ -20435,9 +20580,11 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    attendance: Date | string
+    startEvent: Date | string
+    endEvent: Date | string
     eventType: string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     createdById: number
     professionalId: number
   }
@@ -20445,9 +20592,11 @@ export namespace Prisma {
   export type EventUpdateWithoutPatientInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    attendance?: DateTimeFieldUpdateOperationsInput | Date | string
+    startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
+    endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdBy?: UserUpdateOneRequiredWithoutCreatedEventsNestedInput
     professional?: ProfessionalUpdateOneRequiredWithoutEventsNestedInput
   }
@@ -20456,9 +20605,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    attendance?: DateTimeFieldUpdateOperationsInput | Date | string
+    startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
+    endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdById?: IntFieldUpdateOperationsInput | number
     professionalId?: IntFieldUpdateOperationsInput | number
   }
@@ -20467,9 +20618,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    attendance?: DateTimeFieldUpdateOperationsInput | Date | string
+    startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
+    endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdById?: IntFieldUpdateOperationsInput | number
     professionalId?: IntFieldUpdateOperationsInput | number
   }
@@ -20561,9 +20714,11 @@ export namespace Prisma {
     id?: number
     title: string
     description?: string | null
-    attendance: Date | string
+    startEvent: Date | string
+    endEvent: Date | string
     eventType: string
     createdAt?: Date | string
+    status?: $Enums.EventStatus
     createdById: number
     patientId: number
   }
@@ -20581,9 +20736,11 @@ export namespace Prisma {
   export type EventUpdateWithoutProfessionalInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    attendance?: DateTimeFieldUpdateOperationsInput | Date | string
+    startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
+    endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdBy?: UserUpdateOneRequiredWithoutCreatedEventsNestedInput
     patient?: PatientUpdateOneRequiredWithoutEventsNestedInput
   }
@@ -20592,9 +20749,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    attendance?: DateTimeFieldUpdateOperationsInput | Date | string
+    startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
+    endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdById?: IntFieldUpdateOperationsInput | number
     patientId?: IntFieldUpdateOperationsInput | number
   }
@@ -20603,9 +20762,11 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    attendance?: DateTimeFieldUpdateOperationsInput | Date | string
+    startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
+    endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     eventType?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdById?: IntFieldUpdateOperationsInput | number
     patientId?: IntFieldUpdateOperationsInput | number
   }

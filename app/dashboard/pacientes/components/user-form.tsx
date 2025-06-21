@@ -16,6 +16,7 @@ import {
   SheetClose,
 } from "@/components/ui/sheet"
 import { PatientFormData, patientFormSchema } from "../schemas/patient-schema"
+import { useEffect } from "react"
 
 export default function PatientForm({
   defaultValues,
@@ -49,7 +50,14 @@ export default function PatientForm({
       affiliateNumber: "",
       isActive: false,
     },
-  })
+  });
+  
+  useEffect(() => {
+    if (defaultValues) {
+      reset(defaultValues);
+    }
+  }, [defaultValues, reset]);
+  
 
   const submitHandler = (data: PatientFormData) => {
     onSubmit(data)

@@ -10,6 +10,15 @@ export async function signInWithFirebase(uid: string) {
       where: {
         firebaseUid: uid,
       },
+      include: {
+        patient: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        }
+      },
     });
     
     if (!user) {
@@ -18,9 +27,9 @@ export async function signInWithFirebase(uid: string) {
 
     const customClaims = {
       role: user?.role,
+      name: `${user?.patient?.firstName} ${user?.patient?.lastName}`,
+      patientId: user?.patient?.id,
     };
-
-    if (user?.email) return
 
     const currentUser = await authServer.getUserByEmail(user?.email || "");
 
@@ -29,7 +38,7 @@ export async function signInWithFirebase(uid: string) {
       throw new Error("Correo no verificado");
     }
     */
-
+    
     await admin.auth().setCustomUserClaims(uid, customClaims);
 
     return CODES_SUCCESS.QUERY_OK;

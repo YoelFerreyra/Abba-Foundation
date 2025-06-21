@@ -12,12 +12,12 @@ import { authClient } from "@/lib/firebase/firebase-client";
 type Claims = {
   name: string;
   role: string;
-  companyId: string;
-  companyName: string;
+  patientId: number;
 };
 
 export type User = FirebaseUser & {
   token: string;
+  claims?: Claims;
 };
 
 type AuthContextType = {
@@ -39,7 +39,7 @@ async function fetchTokenResultWithPolling(
   for (let i = 0; i < MAX_POLLING_ATTEMPTS; i++) {
     const tokenResult = await getIdTokenResult(user, true);
 
-    if (tokenResult) {
+    if (tokenResult.claims?.role) {
       return tokenResult;
     }
 
@@ -59,7 +59,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const tokenResult = await fetchTokenResultWithPolling(firebaseUser);
         if (tokenResult) {
           const enrichedUser = Object.assign(firebaseUser, {
-            token: tokenResult.token
+            token: tokenResult.token,
+            claims: tokenResult.claims as Claims,
           });
           setUser(enrichedUser);
         } else {
