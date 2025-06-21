@@ -38,7 +38,7 @@ export default function LoginPage() {
       }
 
       const response = await signInWithFirebase(user.uid);
-
+      
       if (response?.error) {
         throw new Error(response.error);
       }

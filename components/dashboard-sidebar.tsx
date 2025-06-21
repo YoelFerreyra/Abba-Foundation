@@ -120,7 +120,7 @@ export function DashboardSidebar() {
       </div>
 
       {/* Mobile Sidebar */}
-      <div className="flex h-14 items-center border-b md:hidden px-4">
+      <div className="flex h-14 items-center border-b md:hidden px-4 fixed top-0 left-0 w-full bg-white z-40">
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon" className="mr-2">

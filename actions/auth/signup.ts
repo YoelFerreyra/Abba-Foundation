@@ -26,8 +26,6 @@ export async function registerUserAction(data: RegisterUserData) {
 
     if (!patient) throw new Error("Patient not found");
 
-    console.log("Creating Firebase user for:", data.email);
-
     const firebaseUser = await authServer.createUser({
       email: data.email,
       password: data.password,

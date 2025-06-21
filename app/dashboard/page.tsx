@@ -1,10 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { CalendarDays, FileText, CreditCard } from "lucide-react"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from "@/components/ui/card"
+import {
+  CalendarDays,
+  FileText,
+  CreditCard
+} from "lucide-react"
+
 import { DashboardHeader } from "@/components/dashboard-header"
 import { DashboardStats } from "@/components/dashboard-stats"
 import { AppointmentList } from "@/components/appointment-list"
@@ -12,6 +23,36 @@ import { AppointmentList } from "@/components/appointment-list"
 export default function DashboardPage() {
   const router = useRouter()
   const [user, setUser] = useState(null)
+  const dialogRef = useRef<HTMLDialogElement>(null)
+
+  async function toggleDialog(open: boolean, triggerElement?: HTMLElement) {
+    const dialog = dialogRef.current
+    if (!dialog) return
+
+    const viewTransitionClass = 'vt-element-animation'
+
+    if (!open) {
+      dialog.close()
+      return
+    }
+
+    /*
+    if (document.startViewTransition && triggerElement) {
+      dialog.style.viewTransitionName = "vt-shared"
+      triggerElement.style.viewTransitionName = "vt-shared"
+
+      await document.startViewTransition(() => {
+        triggerElement.style.viewTransitionName = ""
+        dialog.showModal()
+      }).finished
+
+      dialog.style.viewTransitionName = ""
+    } else {
+      dialog.showModal()
+    }
+      */
+     dialog.showModal()
+  }
 
   return (
     <div className="flex flex-col gap-5">
@@ -30,6 +71,25 @@ export default function DashboardPage() {
           </CardHeader>
           <CardContent>
             <AppointmentList />
+
+            {/* Dialog */}
+            <dialog ref={dialogRef} className="vt-element-animation rounded-md p-4 shadow-xl h-40 w-40">
+              <button
+                onClick={() => toggleDialog(false)}
+                className="text-sm text-red-500 absolute top-2 right-3"
+              >
+                X
+              </button>
+              <p>Hola mundo</p>
+            </dialog>
+
+            {/* Trigger button */}
+            <button
+              onClick={(e) => toggleDialog(true, e.currentTarget)}
+              className="mt-4 px-4 py-2 bg-teal-600 text-white rounded-md hover:bg-teal-700 transition"
+            >
+              Abrir diálogo
+            </button>
           </CardContent>
         </Card>
 

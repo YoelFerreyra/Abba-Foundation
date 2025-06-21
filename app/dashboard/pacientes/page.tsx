@@ -44,6 +44,14 @@ export default function PatientsPage() {
   }
 
   const handleSubmit = async (data: PatientFormData) => {
+    if (editingPatient) {
+      const updatedData = {
+        ...editingPatient,
+        ...data,
+        birthday: data.birthday.toISOString(),
+      }
+      const result = await createPatientAction(updatedData)
+    }
     const result = await createPatientAction(data)
     await fetchPatients()
     setIsOpen(false)
