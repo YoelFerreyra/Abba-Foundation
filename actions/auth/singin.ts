@@ -1,4 +1,4 @@
-'use server'
+"use server";
 import admin, { authServer } from "@/lib/firebase/firebase-server";
 import { prisma } from "@/lib/prisma";
 import { ERROR_CODES } from "@/lib/responses/errors";
@@ -17,10 +17,10 @@ export async function signInWithFirebase(uid: string) {
             firstName: true,
             lastName: true,
           },
-        }
+        },
       },
     });
-    
+
     if (!user) {
       throw new Error("User not found");
     }
@@ -38,11 +38,66 @@ export async function signInWithFirebase(uid: string) {
       throw new Error("Correo no verificado");
     }
     */
-    
+
     await admin.auth().setCustomUserClaims(uid, customClaims);
 
-    return CODES_SUCCESS.QUERY_OK;
+    return { ...CODES_SUCCESS.QUERY_OK, success: true };
   } catch (error: any) {
-    return { error: error.message, ...ERROR_CODES.BAD_REQUEST };
+    return { error: error.message, ...ERROR_CODES.BAD_REQUEST, success: false };
+  }
+}
+
+type LoginDNIParams = {
+  dniOrCuil: string;
+  password: string;
+};
+
+export async function loginWithDniOrCuil({ dniOrCuil, password }: LoginDNIParams) {
+  if (!dniOrCuil || !password) {
+    return { error: "DNI, CUIL y contraseña son requeridos" };
+  }
+
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { patient: { dni: dniOrCuil } },
+          { patient: { cuil: dniOrCuil } },
+        ],
+      },
+      select: { email: true, firebaseUid: true },
+    });
+
+    if (!user?.email) {
+      return { error: "Usuario no encontrado" };
+    }
+
+    const firebaseResp = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${process.env.FIREBASE_API_KEY}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: user.email,
+          password,
+          returnSecureToken: true,
+        }),
+      }
+    );
+
+    const firebaseData = await firebaseResp.json();
+
+    if (!firebaseResp.ok) {
+      return {
+        error: firebaseData.error?.message || "Credenciales incorrectas",
+      };
+    }
+
+    const customToken = await admin.auth().createCustomToken(user.firebaseUid);
+
+    return { token: customToken, seccess: true };
+  } catch (err: any) {
+    console.error("Login error:", err);
+    return { error: "Error interno al iniciar sesión" };
   }
 }
