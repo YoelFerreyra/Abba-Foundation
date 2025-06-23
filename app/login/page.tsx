@@ -3,53 +3,72 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { Mail, Lock } from "lucide-react";
+import { useState } from "react";
+import {
+  signInWithEmailAndPassword,
+  signInWithCustomToken,
+} from "firebase/auth";
+import { authClient } from "@/lib/firebase/firebase-client";
+import { loginWithDniOrCuil, signInWithFirebase } from "@/actions/auth/singin";
+import { loginSchema, LoginFormInputs } from "./schemas/login-schema";
 import Link from "next/link";
 import Image from "next/image";
-
-import { authClient } from "@/lib/firebase/firebase-client";
-import { signInWithFirebase } from "@/actions/auth/singin";
-import { LoginFormInputs, loginSchema } from "./schemas/login-schema";
+import { Mail, Lock } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
+    setError: setFormError,
   } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginSchema),
   });
 
   const onSubmit = async (data: LoginFormInputs) => {
+    setError(null);
+
+    const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email);
+
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        authClient,
-        data.email,
-        data.password
-      );
-      
-      const user = userCredential.user;
+      if (isEmail) {
+        const userCredential = await signInWithEmailAndPassword(
+          authClient,
+          data.email,
+          data.password
+        );
+        const user = userCredential.user;
 
-      if (!user?.uid) {
-        throw new Error("User UID not found");
+        if (!user?.uid) throw new Error("User UID not found");
+
+        const response = await signInWithFirebase(user.uid);
+        if (!response?.success) throw new Error("Error al iniciar sesión");
+
+        await user.getIdToken(true);
+        await user.getIdTokenResult();
+
+        router.push("/dashboard");
+      } else {
+        const result = await loginWithDniOrCuil({
+          dniOrCuil: data.email,
+          password: data.password,
+        });
+
+        if (result?.error) throw new Error(result.error);
+        if (!result?.token) throw new Error("Token personalizado no recibido");
+
+        await signInWithCustomToken(authClient, result.token);
+        router.push("/dashboard");
       }
-
-      const response = await signInWithFirebase(user.uid);
-
-      if (response?.error) {
-        throw new Error(response.error);
-      }
-
-      await user.getIdToken(true);
-      await user.getIdTokenResult();
-
-      router.push("/dashboard");
     } catch (err: any) {
-      console.error("Login failed:", err);
-      setError("root", { message: err.message || "Error de inicio de sesión" });
+      console.error("Login error:", err);
+      setError(err.message || "Error de inicio de sesión");
+      setFormError("root", {
+        message: err.message || "Error de inicio de sesión",
+      });
     }
   };
 
@@ -72,19 +91,21 @@ export default function LoginPage() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Correo electrónico
+                Correo electrónico o DNI
               </label>
               <div className="flex items-center border border-gray-300 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-blue-500">
                 <Mail className="h-5 w-5 text-gray-400 mr-2" />
                 <input
-                  type="email"
-                  placeholder="nombre@correo.com"
+                  type="text"
+                  placeholder="correo@dominio.com o 12345678"
                   {...register("email")}
                   className="w-full focus:outline-none"
                 />
               </div>
               {errors.email && (
-                <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
@@ -102,13 +123,13 @@ export default function LoginPage() {
                 />
               </div>
               {errors.password && (
-                <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
+                <p className="text-sm text-red-500 mt-1">
+                  {errors.password.message}
+                </p>
               )}
             </div>
 
-            {errors.root && (
-              <p className="text-sm text-red-500">{errors.root.message}</p>
-            )}
+            {error && <p className="text-sm text-red-500">{error}</p>}
 
             <button
               type="submit"

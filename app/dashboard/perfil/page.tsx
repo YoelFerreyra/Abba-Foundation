@@ -1,3 +1,4 @@
+"use client"
 import { DashboardHeader } from "@/components/dashboard-header"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -7,8 +8,28 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { useAuth } from "@/context/AuthContext"
+import { getPatientById } from "@/actions/patients"
+import React from "react"
 
 export default function PerfilPage() {
+  const {user, loading} = useAuth()
+  const [data, setData] = React.useState(null);
+
+  const fetchPatientData = async () => {
+    
+    if (!user?.claims?.patientId) {
+      throw new Error("Patient ID is not available in user claims");
+    }
+    const patient = await getPatientById(user.claims.patientId);
+    
+    setData(patient)
+  }
+
+  React.useEffect(() => {
+    fetchPatientData()
+  }, [user]);
+  
   return (
     <div className="flex flex-col gap-5">
       <DashboardHeader title="Mi Perfil" description="Gestiona tu información personal y preferencias" />
@@ -23,9 +44,9 @@ export default function PerfilPage() {
               <AvatarImage src="/placeholder-user.jpg" alt="Foto de perfil" />
               <AvatarFallback>MP</AvatarFallback>
             </Avatar>
-            <h3 className="text-lg font-medium">María Pérez</h3>
-            <p className="text-sm text-muted-foreground">DNI: 28.456.789</p>
-            <p className="text-sm text-muted-foreground">Paciente desde: 10/01/2022</p>
+            <h3 className="text-lg font-medium">{user?.claims?.name}</h3>
+            <p className="text-sm text-muted-foreground">DNI: {data?.dni}</p>
+            <p className="text-sm text-muted-foreground">Paciente desde: {data?.createdAt?.toLocaleDateString()}</p>
             <Button variant="outline" size="sm" className="mt-4">
               Cambiar foto
             </Button>
@@ -50,22 +71,22 @@ export default function PerfilPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="nombre">Nombre</Label>
-                      <Input id="nombre" defaultValue="María" />
+                      <Input id="nombre" defaultValue={data?.firstName} />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="apellido">Apellido</Label>
-                      <Input id="apellido" defaultValue="Pérez" />
+                      <Input id="apellido" defaultValue={data?.lastName} />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" defaultValue="maria.perez@email.com" />
+                      <Input id="email" type="email" defaultValue={user?.email || ""} />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="telefono">Teléfono</Label>
-                      <Input id="telefono" defaultValue="+54 11 5555-5555" />
+                      <Input id="telefono" defaultValue={data?.phone} />
                     </div>
                   </div>
 
@@ -76,13 +97,13 @@ export default function PerfilPage() {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="dni">DNI</Label>
-                      <Input id="dni" defaultValue="28456789" />
+                      <Input id="dni" defaultValue={data?.dni} />
                     </div>
                   </div>
 
                   <div className="space-y-2">
                     <Label htmlFor="direccion">Dirección</Label>
-                    <Input id="direccion" defaultValue="Av. Rivadavia 1234, CABA" />
+                    <Input id="direccion" defaultValue={data?.address} />
                   </div>
                 </CardContent>
                 <CardFooter>

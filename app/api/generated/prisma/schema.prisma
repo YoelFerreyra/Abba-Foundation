@@ -1,6 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "../app/api/generated/prisma"
+  provider      = "prisma-client-js"
+  output        = "../app/api/generated/prisma"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "rhel-openssl-3.0.x"]
 }
 
 datasource db {
@@ -116,12 +117,14 @@ model Admission {
 }
 
 model Event {
-  id          Int      @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   title       String
   description String?
-  attendance  DateTime
+  startEvent  DateTime
+  endEvent    DateTime
   eventType   String
-  createdAt   DateTime @default(now())
+  createdAt   DateTime    @default(now())
+  status      EventStatus @default(SCHEDULED)
 
   createdById Int
   createdBy   User @relation("EventCreator", fields: [createdById], references: [id])
@@ -245,4 +248,10 @@ enum WeekDay {
   FRIDAY
   SATURDAY
   SUNDAY
+}
+
+enum EventStatus {
+  SCHEDULED
+  CANCELLED
+  COMPLETED
 }
