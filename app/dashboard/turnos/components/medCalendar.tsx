@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
-import React, { useEffect, useState } from 'react'
-import { Calendar, dateFnsLocalizer } from 'react-big-calendar'
-import 'react-big-calendar/lib/css/react-big-calendar.css'
-import { format, parse, getDay } from 'date-fns'
-import { es } from 'date-fns/locale/es'
-import { CustomEvent } from './customEvent'
+import React, { useCallback, useEffect, useState } from "react";
+import { Calendar, dateFnsLocalizer, View } from "react-big-calendar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import { format, parse, getDay, addDays, setHours, setMinutes, startOfWeek, addMinutes, eachWeekOfInterval, addWeeks } from "date-fns";
+import { es } from "date-fns/locale/es";
+import { CustomEvent } from "./customEvent";
 import {
   Dialog,
   DialogTrigger,
@@ -14,13 +14,17 @@ import {
   DialogTitle,
   DialogFooter,
   DialogClose,
-} from "@/components/ui/dialog"
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { createEvent, getAllEvents, getWeeklySchedule } from '@/actions/calendar/profesional-events'
-import { useAuth } from '@/context/AuthContext'
-import WeeklyScheduleModal from './WeeklyScheduleModal'
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  createEvent,
+  getAllEvents,
+  getWeeklySchedule,
+} from "@/actions/calendar/profesional-events";
+import { useAuth } from "@/context/AuthContext";
+import WeeklyScheduleModal from "./WeeklyScheduleModal";
 
 const localizer = dateFnsLocalizer({
   format,
@@ -28,8 +32,8 @@ const localizer = dateFnsLocalizer({
   startOfWeek,
   getDay,
   locales: { es },
-})
-import { addDays, setHours, setMinutes, startOfWeek, addMinutes } from 'date-fns'
+});
+
 const weekDaysMap: Record<string, number> = {
   sunday: 0,
   monday: 1,
@@ -38,140 +42,204 @@ const weekDaysMap: Record<string, number> = {
   thursday: 4,
   friday: 5,
   saturday: 6,
-}
+};
+
+export type CalendarEvent = {
+  id: string | number;
+  title: string;
+  start: Date;
+  end: Date;
+  allDay?: boolean;
+  description?: string;
+};
+
+type EventFormData = {
+  title: string;
+  description: string;
+  date: string;  // ejemplo: "2023-06-25"
+  time: string;  // ejemplo: "14:30"
+};
+
 
 export default function MedCalendar() {
-  const [allEvents, setAllEvents] = useState([])
-  const [scheduleEvents, setScheduleEvents] = useState([])
-  const [formData, setFormData] = useState({})
-  const { user } = useAuth()
+  const [allEvents, setAllEvents] = useState<CalendarEvent[]>([]);
+  const [scheduleEvents, setScheduleEvents] = useState<CalendarEvent[]>([]);
+  const [formData, setFormData] = useState<EventFormData>({
+    title: "",
+    description: "",
+    date: "",
+    time: "",
+  });
+  
+  const { user } = useAuth();
+  const [dateRange, setDateRange] = useState<{ start: Date; end: Date } | null>(null);
 
   const generateEventsFromSchedule = (
     schedule: Record<string, { enabled: boolean; timeRanges: TimeRange[] }>,
-    sessionTime: number = 30 // por defecto
-  ) => {
-    const startWeek = startOfWeek(new Date(), { weekStartsOn: 1 }) // lunes como inicio
-    const events = []
-  
-    for (const [dayKey, dayValue] of Object.entries(schedule)) {
-      if (!dayValue.enabled) continue
-  
-      const dayNumber = weekDaysMap[dayKey.toLowerCase()]
-      if (dayNumber === undefined) continue
-  
-      dayValue.timeRanges.forEach(({ startTime, endTime }) => {
-        if (!startTime || !endTime) return
-  
-        const baseDate = addDays(startWeek, dayNumber - 1)
-  
-        const [startHour, startMinute] = startTime.split(':').map(Number)
-        const [endHour, endMinute] = endTime.split(':').map(Number)
-  
-        const rangeStart = setMinutes(setHours(baseDate, startHour), startMinute)
-        const rangeEnd = setMinutes(setHours(baseDate, endHour), endMinute)
-  
-        // Dividir en bloques según sessionTime
-        let current = new Date(rangeStart)
-        while (current < rangeEnd) {
-          const next = addMinutes(current, sessionTime)
-  
-          // Solo agregamos si el siguiente bloque no se pasa del final
-          if (next <= rangeEnd) {
-            events.push({
-              id: `schedule-${dayKey}-${current.toISOString()}`,
-              title: 'Disponible (Horario semanal)',
-              start: current,
-              end: next,
-              allDay: false,
-            })
+    sessionTime: number = 30
+  ): CalendarEvent[] => {
+    const today = new Date();
+    const startDate = startOfWeek(today, { weekStartsOn: 1 });
+    const endDate = addWeeks(startDate, 8);
+    const weeks = eachWeekOfInterval({ start: startDate, end: endDate }, { weekStartsOn: 1 });
+    const events: CalendarEvent[] = [];
+
+    for (const weekStart of weeks) {
+      for (const [dayKey, dayValue] of Object.entries(schedule)) {
+        if (!dayValue.enabled) continue;
+
+        const dayNumber = weekDaysMap[dayKey.toLowerCase()];
+        if (dayNumber === undefined) continue;
+
+        dayValue.timeRanges.forEach(({ startTime, endTime }) => {
+          if (!startTime || !endTime) return;
+
+          const baseDate = addDays(weekStart, dayNumber - 1);
+
+          const [startHour, startMinute] = startTime.split(":" ).map(Number);
+          const [endHour, endMinute] = endTime.split(":" ).map(Number);
+
+          const rangeStart = setMinutes(setHours(baseDate, startHour), startMinute);
+          const rangeEnd = setMinutes(setHours(baseDate, endHour), endMinute);
+
+          let current = new Date(rangeStart);
+          while (current < rangeEnd) {
+            const next = addMinutes(current, sessionTime);
+            if (next <= rangeEnd) {
+              events.push({
+                id: `schedule-${dayKey}-${current.toISOString()}`,
+                title: "Disponible (Horario semanal)",
+                start: current,
+                end: next,
+                allDay: false,
+              });
+            }
+            current = next;
           }
-  
-          current = next
-        }
-      })
+        });
+      }
     }
-  
-    return events
-  }
+
+    return events;
+  };
 
   const loadEvents = async () => {
     try {
-      const events = await getAllEvents()
-      const formatted = events.map((event) => ({
+      const events = await getAllEvents();
+      const formatted: CalendarEvent[] = events.map((event) => ({
         id: event.id,
         title: event.title,
-        description: event.description,
         start: new Date(event.startEvent),
         end: new Date(event.endEvent),
-      }))
-      console.log('Eventos cargados:', formatted);
-      
-      setAllEvents(formatted)
+      }));
+      setAllEvents(formatted);
     } catch (err) {
-      console.error('Error loading events:', err)
+      console.error("Error loading events:", err);
     }
-  }
+  };
 
-  const loadSchedule = async () => {
+  const loadSchedule = async (profesionalId: number) => {
     try {
-      const scheduleArray = await getWeeklySchedule(1)
-  
+      const scheduleArray = await getWeeklySchedule(profesionalId || 1);
+
       if (scheduleArray) {
-        // Agrupar el schedule por día
         const grouped = scheduleArray.reduce((acc, item) => {
-          const dayKey = item.dayOfWeek.toLowerCase()
+          const dayKey = item.dayOfWeek.toLowerCase();
           if (!acc[dayKey]) {
-            acc[dayKey] = { enabled: true, timeRanges: [] }
+            acc[dayKey] = { enabled: true, timeRanges: [] };
           }
           acc[dayKey].timeRanges.push({
             startTime: item.startTime,
             endTime: item.endTime,
-          })
-          return acc
-        }, {} as Record<string, { enabled: boolean; timeRanges: TimeRange[] }>)
-  
-        const generatedEvents = generateEventsFromSchedule(grouped)        
-  
-        setScheduleEvents(generatedEvents) // ← esto es un array de eventos para el calendario
+          });
+          return acc;
+        }, {} as Record<string, { enabled: boolean; timeRanges: TimeRange[] }>);
+
+        const generatedEvents = generateEventsFromSchedule(grouped);
+        setScheduleEvents(generatedEvents);
       }
     } catch (err) {
-      console.error('Error loading weekly schedule:', err)
+      console.error("Error loading weekly schedule:", err);
     }
-  }
-  
+  };
 
   useEffect(() => {
-    loadEvents()
-    loadSchedule()
-  }, [])
+    loadEvents();
+    loadSchedule();
+  }, []);
 
   const handleAddEvent = async () => {
     try {
-      const start = new Date(`${formData.date}T${formData.time}`)
-      const end = new Date(start.getTime() + 30 * 60000)
+      const start = new Date(`${formData.date}T${formData.time}`);
+      const end = new Date(start.getTime() + 30 * 60000);
 
       await createEvent({
         title: formData.title,
         description: formData.description,
         startEvent: start,
         endEvent: end,
-        eventType: 'CONSULTATION',
+        eventType: "CONSULTATION",
         createdById: user?.id ?? 1,
         professionalId: user?.id ?? 1,
         patientId: 1,
-        status: 'SCHEDULED',
-      })
+        status: "SCHEDULED",
+      });
 
-      setFormData({ title: '', description: '', date: '', time: '' })
-      loadEvents()
-      loadSchedule()
+      setFormData({ title: "", description: "", date: "", time: "" });
+      loadEvents();
+      loadSchedule();
     } catch (err) {
-      console.error('Error al crear evento:', err)
+      console.error("Error al crear evento:", err);
     }
-  }
+  };
+
+ const [date, setDate] = useState(new Date())
+ const [view, setView] = useState<View>('month')
+
+ const onNavigate = useCallback((newDate: Date) => {
+   setDate(newDate)
+ }, [])
+
+ const onView = useCallback((newView: View) => {
+   setView(newView)
+ }, [])
 
   return (
-    <div style={{ margin: '50px' }}>
+    <div style={{ margin: "50px" }}>
+      <Calendar
+        localizer={localizer}
+        events={[...allEvents, ...scheduleEvents]}
+        startAccessor="start"
+        endAccessor="end"
+        culture="es"
+        step={15}
+        selectable= {true}
+        timeslots={2}
+        onRangeChange={(range) => {
+          console.log("Selected range:", range);
+          if (Array.isArray(range)) {
+            setDateRange({ start: range[0], end: range[range.length - 1] });
+          } else {
+            setDateRange(range);
+          }
+        }}
+        //components={{ event: CustomEvent }}
+        date={date}
+        onNavigate={onNavigate}
+        view={view}
+        onView={onView}
+        style={{
+          height: 600,
+          borderRadius: 8,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        }}
+        onSelectSlot={({ start }) => {
+          setDate(start);
+          setView("day");
+        }}
+      />
+
+      <WeeklyScheduleModal />
       <div className="mb-4">
         <Dialog>
           <DialogTrigger asChild>
@@ -184,23 +252,31 @@ export default function MedCalendar() {
             <div className="grid gap-4 py-4">
               <Input
                 placeholder="Título"
-                value={formData.title || ''}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                value={formData.title || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, title: e.target.value })
+                }
               />
               <Textarea
                 placeholder="Descripción"
-                value={formData.description || ''}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                value={formData.description || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
               />
               <Input
                 type="date"
-                value={formData.date || ''}
-                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                value={formData.date || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, date: e.target.value })
+                }
               />
               <Input
                 type="time"
-                value={formData.time || ''}
-                onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                value={formData.time || ""}
+                onChange={(e) =>
+                  setFormData({ ...formData, time: e.target.value })
+                }
               />
             </div>
             <DialogFooter>
@@ -211,22 +287,6 @@ export default function MedCalendar() {
           </DialogContent>
         </Dialog>
       </div>
-
-      <Calendar
-        localizer={localizer}
-        events={[...allEvents, ...scheduleEvents]} // combinamos eventos reales + schedule
-        startAccessor="start"
-        endAccessor="end"
-        culture="es"
-        defaultView="day"
-        views={['month', 'week', 'day']}
-        step={15}
-        timeslots={2}
-        components={{ event: CustomEvent }}
-        style={{ height: 600, borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}
-      />
-
-      <WeeklyScheduleModal />
     </div>
-  )
+  );
 }
