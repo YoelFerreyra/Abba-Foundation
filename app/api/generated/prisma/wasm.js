@@ -245,6 +245,7 @@ exports.Prisma.ScheduleScalarFieldEnum = {
   dayOfWeek: 'dayOfWeek',
   startTime: 'startTime',
   endTime: 'endTime',
+  sessionTime: 'sessionTime',
   repeatsWeekly: 'repeatsWeekly',
   isActive: 'isActive',
   createdAt: 'createdAt'
@@ -305,7 +306,14 @@ exports.AdmissionStatus = exports.$Enums.AdmissionStatus = {
   REJECTED: 'REJECTED'
 };
 
+exports.EventType = exports.$Enums.EventType = {
+  CONSULTATION: 'CONSULTATION',
+  STUDY: 'STUDY',
+  OTHER: 'OTHER'
+};
+
 exports.EventStatus = exports.$Enums.EventStatus = {
+  AVAILABLE: 'AVAILABLE',
   SCHEDULED: 'SCHEDULED',
   CANCELLED: 'CANCELLED',
   COMPLETED: 'COMPLETED'

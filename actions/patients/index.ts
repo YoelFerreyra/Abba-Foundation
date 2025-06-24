@@ -52,3 +52,42 @@ export async function editPatientAction(id: string, data: any) {
     console.log(error);
   }
 }
+
+export async function getScheduleProfesionalAction(id: string) { 
+  try {
+    const schedule = await prisma.schedule.findMany({
+      where: { 
+        professionalId: Number(id)
+      },
+      orderBy: { startTime: 'asc' },
+    });
+
+    const events = await prisma.event.findMany({
+      where: {
+        professionalId: Number(id),
+        startEvent: { gte: new Date() },
+      },
+      orderBy: { startEvent: 'asc' },
+    });
+
+    return { schedule, events };
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getFutureEventsByProfessional(professionalId: number | string) {
+  try {
+    const events = await prisma.event.findMany({
+      where: {
+        professionalId: Number(professionalId),
+        startEvent: { gte: new Date() },
+      },
+      orderBy: { startEvent: 'asc' },
+    });
+    return events;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}

@@ -122,9 +122,9 @@ model Event {
   description String?
   startEvent  DateTime
   endEvent    DateTime
-  eventType   String
+  eventType   EventType   @default(CONSULTATION)
   createdAt   DateTime    @default(now())
-  status      EventStatus @default(SCHEDULED)
+  status      EventStatus @default(AVAILABLE)
 
   createdById Int
   createdBy   User @relation("EventCreator", fields: [createdById], references: [id])
@@ -132,8 +132,8 @@ model Event {
   professionalId Int
   professional   Professional @relation(fields: [professionalId], references: [id])
 
-  patientId Int
-  patient   Patient @relation(fields: [patientId], references: [id])
+  patientId Int?
+  patient   Patient? @relation(fields: [patientId], references: [id])
 }
 
 model Process {
@@ -167,6 +167,7 @@ model Schedule {
   dayOfWeek      WeekDay
   startTime      String // format: "08:00"
   endTime        String // format: "12:00"
+  sessionTime    Int          @default(30)
   repeatsWeekly  Boolean      @default(true)
   isActive       Boolean      @default(true)
   createdAt      DateTime     @default(now())
@@ -251,7 +252,14 @@ enum WeekDay {
 }
 
 enum EventStatus {
+  AVAILABLE
   SCHEDULED
   CANCELLED
   COMPLETED
+}
+
+enum EventType {
+  CONSULTATION
+  STUDY
+  OTHER
 }

@@ -2,17 +2,19 @@
 
 import Link from "next/link"
 import { redirect, usePathname } from "next/navigation"
-import { CalendarDays, FileText, Home, User, CreditCard, ClipboardList, Menu, X, LogOut, Settings, User2, ChartColumn, Smile } from "lucide-react"
+import { CalendarDays, FileText, Home, User, ClipboardList, Menu, X, LogOut, Settings, User2, ChartColumn, Smile } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { useState } from "react"
 import { signOut } from 'firebase/auth'
 import { authClient } from "@/lib/firebase/firebase-client"
+import { useAuth } from "@/context/AuthContext"
 
 export function DashboardSidebar() {
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
+  const {user} = useAuth()
 
   const routes = [
     {
@@ -108,8 +110,8 @@ export function DashboardSidebar() {
               <AvatarFallback>MP</AvatarFallback>
             </Avatar>
             <div className="grid gap-0.5 text-xs">
-              <div className="font-medium">María Pérez</div>
-              <div className="text-muted-foreground">Paciente</div>
+              <div className="font-medium">{user?.displayName || user?.claims?.name}</div>
+              <div className="text-muted-foreground">{user?.claims?.role}</div>
             </div>
             <Button variant="ghost" size="icon" className="ml-auto h-8 w-8" onClick={() => logout()} >
               <LogOut className="h-4 w-4" />
@@ -162,10 +164,10 @@ export function DashboardSidebar() {
                   <AvatarFallback>MP</AvatarFallback>
                 </Avatar>
                 <div className="grid gap-0.5 text-xs">
-                  <div className="font-medium">María Pérez</div>
-                  <div className="text-muted-foreground">Paciente</div>
+                  <div className="font-medium">{user?.displayName || user?.claims?.name}</div>
+                  <div className="text-muted-foreground">{user?.claims?.role}</div>
                 </div>
-                <Button variant="ghost" size="icon" className="ml-auto h-8 w-8">
+                <Button variant="ghost" size="icon" className="ml-auto h-8 w-8" onClick={() => logout()}>
                   <LogOut className="h-4 w-4" />
                   <span className="sr-only">Cerrar sesión</span>
                 </Button>
