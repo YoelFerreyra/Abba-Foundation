@@ -6,7 +6,7 @@ import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import PatientForm from "./components/user-form"
+import ProfessionalForm from "./components/user-form"
 import { createProfessionalAction, getAllProfessionalsAction } from "@/actions/professional"
 import { ProfessionalFormData } from "./schemas/professional-schema"
 
@@ -88,7 +88,7 @@ export default function ProfessionalPage() {
         </TableBody>
       </Table>
 
-      <PatientForm
+      <ProfessionalForm
         defaultValues={editingPatient || undefined}
         onSubmit={handleSubmit}
         isOpen={isOpen}

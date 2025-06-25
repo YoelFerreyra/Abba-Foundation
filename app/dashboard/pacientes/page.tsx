@@ -1,47 +1,79 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { DashboardHeader } from "@/components/dashboard-header"
+import { useState, useEffect } from "react";
+import { DashboardHeader } from "@/components/dashboard-header";
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow
-} from "@/components/ui/table"
-import { Button } from "@/components/ui/button"
-import PatientForm from "./components/user-form"
-import { createPatientAction, getAllPatientsAction } from "@/actions/patients"
-import { PatientFormData } from "./schemas/patient-schema"
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import PatientForm from "./components/user-form";
+import HealthInsuranceProviderForm from "./components/HealthInsuranceProviderForm";
+import {
+  createHealthInsuranceProvider,
+  createPatientWithAdmission,
+  getAllPatientsAction,
+} from "@/actions/patients";
+import { PatientFormData } from "./schemas/patient-schema";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@radix-ui/react-dropdown-menu";
+import { Eye, MoreVertical, Pencil, Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { HealthInsuranceProviderFormValues } from "./schemas/healthInsuranceProviderSchema";
 
 export default function PatientsPage() {
-  const [patients, setPatients] = useState<PatientFormData[]>([])
-  const [editingPatient, setEditingPatient] = useState<PatientFormData | null>(null)
-  const [isOpen, setIsOpen] = useState(false)
+  const [patients, setPatients] = useState<PatientFormData[]>([]);
+  const [editingPatient, setEditingPatient] = useState<PatientFormData | null>(
+    null
+  );
+  const [isOpen, setIsOpen] = useState(false);
+  const [isProviderFormOpen, setIsProviderFormOpen] = useState(false);
+  const [isProviderDrawerOpen, setIsProviderDrawerOpen] = useState(false);
+  const router = useRouter();
 
   const fetchPatients = async () => {
-    const data = await getAllPatientsAction()
+    const data = await getAllPatientsAction();
 
     // Convertir fechas si vienen como string
-    const parsed = data.map((p: any) => ({
+    const parsed = data?.map((p: any) => ({
       ...p,
       birthday: new Date(p.birthday),
-    }))
-    setPatients(parsed)
-  }
+    }));
+    setPatients(parsed);
+  };
 
   useEffect(() => {
-    fetchPatients()
-  }, [])
+    fetchPatients();
+  }, []);
+
+  const handleSubmitProvider = async (
+    values: HealthInsuranceProviderFormValues
+  ) => {
+    await createHealthInsuranceProvider(values);
+    setIsProviderFormOpen(false);
+    // Podés hacer fetch de prestadores si los necesitás en un dropdown, etc.
+  };
 
   const handleCreate = () => {
-    setEditingPatient(null)
-    setIsOpen(true)
-  }
+    setEditingPatient(null);
+    setIsOpen(true);
+  };
 
   const handleEdit = (patient: PatientFormData) => {
     setEditingPatient({
       ...patient,
       birthday: new Date(patient.birthday),
-    })
-    setIsOpen(true)
-  }
+    });
+    setIsOpen(true);
+  };
 
   const handleSubmit = async (data: PatientFormData) => {
     if (editingPatient) {
@@ -49,13 +81,18 @@ export default function PatientsPage() {
         ...editingPatient,
         ...data,
         birthday: data.birthday.toISOString(),
-      }
-      const result = await createPatientAction(updatedData)
+      };
+      //const result = await createPatientAction(updatedData);
     }
-    const result = await createPatientAction(data)
-    await fetchPatients()
-    setIsOpen(false)
-  }
+    //const result = await createPatientAction(data);
+    console.log(data);
+    
+    const result = await createPatientWithAdmission({
+      ...data,
+    });
+    await fetchPatients();
+    setIsOpen(false);
+  };
 
   return (
     <div className="flex flex-col gap-5">
@@ -63,9 +100,11 @@ export default function PatientsPage() {
         title="Gestión de Pacientes"
         description="Administra los pacientes del consultorio"
       />
-
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-2">
         <Button onClick={handleCreate}>Agregar Paciente</Button>
+        <Button variant="outline" onClick={() => setIsProviderFormOpen(true)}>
+          Agregar Obra Social
+        </Button>
       </div>
 
       <Table>
@@ -89,7 +128,41 @@ export default function PatientsPage() {
               <TableCell>{p.address}</TableCell>
               <TableCell>{new Date(p.birthday).toLocaleDateString()}</TableCell>
               <TableCell className="text-right">
-                <Button variant="outline" size="sm" onClick={() => handleEdit(p)}>Editar</Button>
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                      <MoreVertical className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent
+                    align="end"
+                    className="border border-muted shadow-lg rounded-md min-w-[180px] p-1 bg-white"
+                  >
+                    <DropdownMenuItem
+                      onClick={() =>
+                        router.push(`/dashboard/pacientes/${p.id}`)
+                      }
+                      className="flex items-center gap-2"
+                    >
+                      <Eye className="w-4 h-4 text-muted-foreground" />
+                      Ver detalles
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => handleEdit(p)}
+                      className="flex items-center gap-2"
+                    >
+                      <Pencil className="w-4 h-4 text-muted-foreground" />
+                      Editar
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => alert(`Eliminar paciente ${p.firstName}`)}
+                      className="flex items-center gap-2 text-red-600 focus:text-red-600"
+                    >
+                      <Trash className="w-4 h-4" />
+                      Eliminar
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </TableCell>
             </TableRow>
           ))}
@@ -102,6 +175,12 @@ export default function PatientsPage() {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       />
+      <HealthInsuranceProviderForm
+        defaultValues={undefined} // o algún valor si estás editando
+        onSubmit={handleSubmitProvider}
+        isOpen={isProviderFormOpen}
+        setIsOpen={setIsProviderFormOpen}
+      />
     </div>
-  )
+  );
 }
