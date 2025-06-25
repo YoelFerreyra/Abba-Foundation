@@ -56,8 +56,9 @@ export default function LoginPage() {
           dniOrCuil: data.email,
           password: data.password,
         });
-
-        if (result?.error) throw new Error(result.error);
+        if (!result?.success) {
+          throw new Error(result.error || "Error al iniciar sesión con DNI/CUIL");
+        }
         if (!result?.token) throw new Error("Token personalizado no recibido");
 
         await signInWithCustomToken(authClient, result.token);

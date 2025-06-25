@@ -185,12 +185,22 @@ export type WeekDay = (typeof WeekDay)[keyof typeof WeekDay]
 
 
 export const EventStatus: {
+  AVAILABLE: 'AVAILABLE',
   SCHEDULED: 'SCHEDULED',
   CANCELLED: 'CANCELLED',
   COMPLETED: 'COMPLETED'
 };
 
 export type EventStatus = (typeof EventStatus)[keyof typeof EventStatus]
+
+
+export const EventType: {
+  CONSULTATION: 'CONSULTATION',
+  STUDY: 'STUDY',
+  OTHER: 'OTHER'
+};
+
+export type EventType = (typeof EventType)[keyof typeof EventType]
 
 }
 
@@ -241,6 +251,10 @@ export const WeekDay: typeof $Enums.WeekDay
 export type EventStatus = $Enums.EventStatus
 
 export const EventStatus: typeof $Enums.EventStatus
+
+export type EventType = $Enums.EventType
+
+export const EventType: typeof $Enums.EventType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -9423,7 +9437,7 @@ export namespace Prisma {
     description: string | null
     startEvent: Date | null
     endEvent: Date | null
-    eventType: string | null
+    eventType: $Enums.EventType | null
     createdAt: Date | null
     status: $Enums.EventStatus | null
     createdById: number | null
@@ -9437,7 +9451,7 @@ export namespace Prisma {
     description: string | null
     startEvent: Date | null
     endEvent: Date | null
-    eventType: string | null
+    eventType: $Enums.EventType | null
     createdAt: Date | null
     status: $Enums.EventStatus | null
     createdById: number | null
@@ -9610,12 +9624,12 @@ export namespace Prisma {
     description: string | null
     startEvent: Date
     endEvent: Date
-    eventType: string
+    eventType: $Enums.EventType
     createdAt: Date
     status: $Enums.EventStatus
     createdById: number
     professionalId: number
-    patientId: number
+    patientId: number | null
     _count: EventCountAggregateOutputType | null
     _avg: EventAvgAggregateOutputType | null
     _sum: EventSumAggregateOutputType | null
@@ -9651,7 +9665,7 @@ export namespace Prisma {
     patientId?: boolean
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     professional?: boolean | ProfessionalDefaultArgs<ExtArgs>
-    patient?: boolean | PatientDefaultArgs<ExtArgs>
+    patient?: boolean | Event$patientArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9668,7 +9682,7 @@ export namespace Prisma {
     patientId?: boolean
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     professional?: boolean | ProfessionalDefaultArgs<ExtArgs>
-    patient?: boolean | PatientDefaultArgs<ExtArgs>
+    patient?: boolean | Event$patientArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -9685,7 +9699,7 @@ export namespace Prisma {
     patientId?: boolean
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     professional?: boolean | ProfessionalDefaultArgs<ExtArgs>
-    patient?: boolean | PatientDefaultArgs<ExtArgs>
+    patient?: boolean | Event$patientArgs<ExtArgs>
   }, ExtArgs["result"]["event"]>
 
   export type EventSelectScalar = {
@@ -9706,17 +9720,17 @@ export namespace Prisma {
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     professional?: boolean | ProfessionalDefaultArgs<ExtArgs>
-    patient?: boolean | PatientDefaultArgs<ExtArgs>
+    patient?: boolean | Event$patientArgs<ExtArgs>
   }
   export type EventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     professional?: boolean | ProfessionalDefaultArgs<ExtArgs>
-    patient?: boolean | PatientDefaultArgs<ExtArgs>
+    patient?: boolean | Event$patientArgs<ExtArgs>
   }
   export type EventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | UserDefaultArgs<ExtArgs>
     professional?: boolean | ProfessionalDefaultArgs<ExtArgs>
-    patient?: boolean | PatientDefaultArgs<ExtArgs>
+    patient?: boolean | Event$patientArgs<ExtArgs>
   }
 
   export type $EventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9724,7 +9738,7 @@ export namespace Prisma {
     objects: {
       createdBy: Prisma.$UserPayload<ExtArgs>
       professional: Prisma.$ProfessionalPayload<ExtArgs>
-      patient: Prisma.$PatientPayload<ExtArgs>
+      patient: Prisma.$PatientPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -9732,12 +9746,12 @@ export namespace Prisma {
       description: string | null
       startEvent: Date
       endEvent: Date
-      eventType: string
+      eventType: $Enums.EventType
       createdAt: Date
       status: $Enums.EventStatus
       createdById: number
       professionalId: number
-      patientId: number
+      patientId: number | null
     }, ExtArgs["result"]["event"]>
     composites: {}
   }
@@ -10134,7 +10148,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     createdBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     professional<T extends ProfessionalDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalDefaultArgs<ExtArgs>>): Prisma__ProfessionalClient<$Result.GetResult<Prisma.$ProfessionalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    patient<T extends PatientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PatientDefaultArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    patient<T extends Event$patientArgs<ExtArgs> = {}>(args?: Subset<T, Event$patientArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10169,7 +10183,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Event", 'String'>
     readonly startEvent: FieldRef<"Event", 'DateTime'>
     readonly endEvent: FieldRef<"Event", 'DateTime'>
-    readonly eventType: FieldRef<"Event", 'String'>
+    readonly eventType: FieldRef<"Event", 'EventType'>
     readonly createdAt: FieldRef<"Event", 'DateTime'>
     readonly status: FieldRef<"Event", 'EventStatus'>
     readonly createdById: FieldRef<"Event", 'Int'>
@@ -10568,6 +10582,25 @@ export namespace Prisma {
      * Limit how many Events to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Event.patient
+   */
+  export type Event$patientArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Patient
+     */
+    select?: PatientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Patient
+     */
+    omit?: PatientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PatientInclude<ExtArgs> | null
+    where?: PatientWhereInput
   }
 
   /**
@@ -13732,11 +13765,13 @@ export namespace Prisma {
   export type ScheduleAvgAggregateOutputType = {
     id: number | null
     professionalId: number | null
+    sessionTime: number | null
   }
 
   export type ScheduleSumAggregateOutputType = {
     id: number | null
     professionalId: number | null
+    sessionTime: number | null
   }
 
   export type ScheduleMinAggregateOutputType = {
@@ -13745,6 +13780,7 @@ export namespace Prisma {
     dayOfWeek: $Enums.WeekDay | null
     startTime: string | null
     endTime: string | null
+    sessionTime: number | null
     repeatsWeekly: boolean | null
     isActive: boolean | null
     createdAt: Date | null
@@ -13756,6 +13792,7 @@ export namespace Prisma {
     dayOfWeek: $Enums.WeekDay | null
     startTime: string | null
     endTime: string | null
+    sessionTime: number | null
     repeatsWeekly: boolean | null
     isActive: boolean | null
     createdAt: Date | null
@@ -13767,6 +13804,7 @@ export namespace Prisma {
     dayOfWeek: number
     startTime: number
     endTime: number
+    sessionTime: number
     repeatsWeekly: number
     isActive: number
     createdAt: number
@@ -13777,11 +13815,13 @@ export namespace Prisma {
   export type ScheduleAvgAggregateInputType = {
     id?: true
     professionalId?: true
+    sessionTime?: true
   }
 
   export type ScheduleSumAggregateInputType = {
     id?: true
     professionalId?: true
+    sessionTime?: true
   }
 
   export type ScheduleMinAggregateInputType = {
@@ -13790,6 +13830,7 @@ export namespace Prisma {
     dayOfWeek?: true
     startTime?: true
     endTime?: true
+    sessionTime?: true
     repeatsWeekly?: true
     isActive?: true
     createdAt?: true
@@ -13801,6 +13842,7 @@ export namespace Prisma {
     dayOfWeek?: true
     startTime?: true
     endTime?: true
+    sessionTime?: true
     repeatsWeekly?: true
     isActive?: true
     createdAt?: true
@@ -13812,6 +13854,7 @@ export namespace Prisma {
     dayOfWeek?: true
     startTime?: true
     endTime?: true
+    sessionTime?: true
     repeatsWeekly?: true
     isActive?: true
     createdAt?: true
@@ -13910,6 +13953,7 @@ export namespace Prisma {
     dayOfWeek: $Enums.WeekDay
     startTime: string
     endTime: string
+    sessionTime: number
     repeatsWeekly: boolean
     isActive: boolean
     createdAt: Date
@@ -13940,6 +13984,7 @@ export namespace Prisma {
     dayOfWeek?: boolean
     startTime?: boolean
     endTime?: boolean
+    sessionTime?: boolean
     repeatsWeekly?: boolean
     isActive?: boolean
     createdAt?: boolean
@@ -13952,6 +13997,7 @@ export namespace Prisma {
     dayOfWeek?: boolean
     startTime?: boolean
     endTime?: boolean
+    sessionTime?: boolean
     repeatsWeekly?: boolean
     isActive?: boolean
     createdAt?: boolean
@@ -13964,6 +14010,7 @@ export namespace Prisma {
     dayOfWeek?: boolean
     startTime?: boolean
     endTime?: boolean
+    sessionTime?: boolean
     repeatsWeekly?: boolean
     isActive?: boolean
     createdAt?: boolean
@@ -13976,12 +14023,13 @@ export namespace Prisma {
     dayOfWeek?: boolean
     startTime?: boolean
     endTime?: boolean
+    sessionTime?: boolean
     repeatsWeekly?: boolean
     isActive?: boolean
     createdAt?: boolean
   }
 
-  export type ScheduleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "professionalId" | "dayOfWeek" | "startTime" | "endTime" | "repeatsWeekly" | "isActive" | "createdAt", ExtArgs["result"]["schedule"]>
+  export type ScheduleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "professionalId" | "dayOfWeek" | "startTime" | "endTime" | "sessionTime" | "repeatsWeekly" | "isActive" | "createdAt", ExtArgs["result"]["schedule"]>
   export type ScheduleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     professional?: boolean | ProfessionalDefaultArgs<ExtArgs>
   }
@@ -14003,6 +14051,7 @@ export namespace Prisma {
       dayOfWeek: $Enums.WeekDay
       startTime: string
       endTime: string
+      sessionTime: number
       repeatsWeekly: boolean
       isActive: boolean
       createdAt: Date
@@ -14435,6 +14484,7 @@ export namespace Prisma {
     readonly dayOfWeek: FieldRef<"Schedule", 'WeekDay'>
     readonly startTime: FieldRef<"Schedule", 'String'>
     readonly endTime: FieldRef<"Schedule", 'String'>
+    readonly sessionTime: FieldRef<"Schedule", 'Int'>
     readonly repeatsWeekly: FieldRef<"Schedule", 'Boolean'>
     readonly isActive: FieldRef<"Schedule", 'Boolean'>
     readonly createdAt: FieldRef<"Schedule", 'DateTime'>
@@ -15021,6 +15071,7 @@ export namespace Prisma {
     dayOfWeek: 'dayOfWeek',
     startTime: 'startTime',
     endTime: 'endTime',
+    sessionTime: 'sessionTime',
     repeatsWeekly: 'repeatsWeekly',
     isActive: 'isActive',
     createdAt: 'createdAt'
@@ -15188,6 +15239,20 @@ export namespace Prisma {
    * Reference to a field of type 'AdmissionStatus[]'
    */
   export type ListEnumAdmissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AdmissionStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'EventType'
+   */
+  export type EnumEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventType'>
+    
+
+
+  /**
+   * Reference to a field of type 'EventType[]'
+   */
+  export type ListEnumEventTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventType[]'>
     
 
 
@@ -15845,15 +15910,15 @@ export namespace Prisma {
     description?: StringNullableFilter<"Event"> | string | null
     startEvent?: DateTimeFilter<"Event"> | Date | string
     endEvent?: DateTimeFilter<"Event"> | Date | string
-    eventType?: StringFilter<"Event"> | string
+    eventType?: EnumEventTypeFilter<"Event"> | $Enums.EventType
     createdAt?: DateTimeFilter<"Event"> | Date | string
     status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     createdById?: IntFilter<"Event"> | number
     professionalId?: IntFilter<"Event"> | number
-    patientId?: IntFilter<"Event"> | number
+    patientId?: IntNullableFilter<"Event"> | number | null
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     professional?: XOR<ProfessionalScalarRelationFilter, ProfessionalWhereInput>
-    patient?: XOR<PatientScalarRelationFilter, PatientWhereInput>
+    patient?: XOR<PatientNullableScalarRelationFilter, PatientWhereInput> | null
   }
 
   export type EventOrderByWithRelationInput = {
@@ -15867,7 +15932,7 @@ export namespace Prisma {
     status?: SortOrder
     createdById?: SortOrder
     professionalId?: SortOrder
-    patientId?: SortOrder
+    patientId?: SortOrderInput | SortOrder
     createdBy?: UserOrderByWithRelationInput
     professional?: ProfessionalOrderByWithRelationInput
     patient?: PatientOrderByWithRelationInput
@@ -15882,15 +15947,15 @@ export namespace Prisma {
     description?: StringNullableFilter<"Event"> | string | null
     startEvent?: DateTimeFilter<"Event"> | Date | string
     endEvent?: DateTimeFilter<"Event"> | Date | string
-    eventType?: StringFilter<"Event"> | string
+    eventType?: EnumEventTypeFilter<"Event"> | $Enums.EventType
     createdAt?: DateTimeFilter<"Event"> | Date | string
     status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     createdById?: IntFilter<"Event"> | number
     professionalId?: IntFilter<"Event"> | number
-    patientId?: IntFilter<"Event"> | number
+    patientId?: IntNullableFilter<"Event"> | number | null
     createdBy?: XOR<UserScalarRelationFilter, UserWhereInput>
     professional?: XOR<ProfessionalScalarRelationFilter, ProfessionalWhereInput>
-    patient?: XOR<PatientScalarRelationFilter, PatientWhereInput>
+    patient?: XOR<PatientNullableScalarRelationFilter, PatientWhereInput> | null
   }, "id">
 
   export type EventOrderByWithAggregationInput = {
@@ -15904,7 +15969,7 @@ export namespace Prisma {
     status?: SortOrder
     createdById?: SortOrder
     professionalId?: SortOrder
-    patientId?: SortOrder
+    patientId?: SortOrderInput | SortOrder
     _count?: EventCountOrderByAggregateInput
     _avg?: EventAvgOrderByAggregateInput
     _max?: EventMaxOrderByAggregateInput
@@ -15921,12 +15986,12 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Event"> | string | null
     startEvent?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     endEvent?: DateTimeWithAggregatesFilter<"Event"> | Date | string
-    eventType?: StringWithAggregatesFilter<"Event"> | string
+    eventType?: EnumEventTypeWithAggregatesFilter<"Event"> | $Enums.EventType
     createdAt?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     status?: EnumEventStatusWithAggregatesFilter<"Event"> | $Enums.EventStatus
     createdById?: IntWithAggregatesFilter<"Event"> | number
     professionalId?: IntWithAggregatesFilter<"Event"> | number
-    patientId?: IntWithAggregatesFilter<"Event"> | number
+    patientId?: IntNullableWithAggregatesFilter<"Event"> | number | null
   }
 
   export type ProcessWhereInput = {
@@ -16093,6 +16158,7 @@ export namespace Prisma {
     dayOfWeek?: EnumWeekDayFilter<"Schedule"> | $Enums.WeekDay
     startTime?: StringFilter<"Schedule"> | string
     endTime?: StringFilter<"Schedule"> | string
+    sessionTime?: IntFilter<"Schedule"> | number
     repeatsWeekly?: BoolFilter<"Schedule"> | boolean
     isActive?: BoolFilter<"Schedule"> | boolean
     createdAt?: DateTimeFilter<"Schedule"> | Date | string
@@ -16105,6 +16171,7 @@ export namespace Prisma {
     dayOfWeek?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    sessionTime?: SortOrder
     repeatsWeekly?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
@@ -16120,6 +16187,7 @@ export namespace Prisma {
     dayOfWeek?: EnumWeekDayFilter<"Schedule"> | $Enums.WeekDay
     startTime?: StringFilter<"Schedule"> | string
     endTime?: StringFilter<"Schedule"> | string
+    sessionTime?: IntFilter<"Schedule"> | number
     repeatsWeekly?: BoolFilter<"Schedule"> | boolean
     isActive?: BoolFilter<"Schedule"> | boolean
     createdAt?: DateTimeFilter<"Schedule"> | Date | string
@@ -16132,6 +16200,7 @@ export namespace Prisma {
     dayOfWeek?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    sessionTime?: SortOrder
     repeatsWeekly?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
@@ -16151,6 +16220,7 @@ export namespace Prisma {
     dayOfWeek?: EnumWeekDayWithAggregatesFilter<"Schedule"> | $Enums.WeekDay
     startTime?: StringWithAggregatesFilter<"Schedule"> | string
     endTime?: StringWithAggregatesFilter<"Schedule"> | string
+    sessionTime?: IntWithAggregatesFilter<"Schedule"> | number
     repeatsWeekly?: BoolWithAggregatesFilter<"Schedule"> | boolean
     isActive?: BoolWithAggregatesFilter<"Schedule"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Schedule"> | Date | string
@@ -16759,12 +16829,12 @@ export namespace Prisma {
     description?: string | null
     startEvent: Date | string
     endEvent: Date | string
-    eventType: string
+    eventType?: $Enums.EventType
     createdAt?: Date | string
     status?: $Enums.EventStatus
     createdBy: UserCreateNestedOneWithoutCreatedEventsInput
     professional: ProfessionalCreateNestedOneWithoutEventsInput
-    patient: PatientCreateNestedOneWithoutEventsInput
+    patient?: PatientCreateNestedOneWithoutEventsInput
   }
 
   export type EventUncheckedCreateInput = {
@@ -16773,12 +16843,12 @@ export namespace Prisma {
     description?: string | null
     startEvent: Date | string
     endEvent: Date | string
-    eventType: string
+    eventType?: $Enums.EventType
     createdAt?: Date | string
     status?: $Enums.EventStatus
     createdById: number
     professionalId: number
-    patientId: number
+    patientId?: number | null
   }
 
   export type EventUpdateInput = {
@@ -16786,12 +16856,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdBy?: UserUpdateOneRequiredWithoutCreatedEventsNestedInput
     professional?: ProfessionalUpdateOneRequiredWithoutEventsNestedInput
-    patient?: PatientUpdateOneRequiredWithoutEventsNestedInput
+    patient?: PatientUpdateOneWithoutEventsNestedInput
   }
 
   export type EventUncheckedUpdateInput = {
@@ -16800,12 +16870,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdById?: IntFieldUpdateOperationsInput | number
     professionalId?: IntFieldUpdateOperationsInput | number
-    patientId?: IntFieldUpdateOperationsInput | number
+    patientId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type EventCreateManyInput = {
@@ -16814,12 +16884,12 @@ export namespace Prisma {
     description?: string | null
     startEvent: Date | string
     endEvent: Date | string
-    eventType: string
+    eventType?: $Enums.EventType
     createdAt?: Date | string
     status?: $Enums.EventStatus
     createdById: number
     professionalId: number
-    patientId: number
+    patientId?: number | null
   }
 
   export type EventUpdateManyMutationInput = {
@@ -16827,7 +16897,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
   }
@@ -16838,12 +16908,12 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdById?: IntFieldUpdateOperationsInput | number
     professionalId?: IntFieldUpdateOperationsInput | number
-    patientId?: IntFieldUpdateOperationsInput | number
+    patientId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ProcessCreateInput = {
@@ -16994,6 +17064,7 @@ export namespace Prisma {
     dayOfWeek: $Enums.WeekDay
     startTime: string
     endTime: string
+    sessionTime?: number
     repeatsWeekly?: boolean
     isActive?: boolean
     createdAt?: Date | string
@@ -17006,6 +17077,7 @@ export namespace Prisma {
     dayOfWeek: $Enums.WeekDay
     startTime: string
     endTime: string
+    sessionTime?: number
     repeatsWeekly?: boolean
     isActive?: boolean
     createdAt?: Date | string
@@ -17015,6 +17087,7 @@ export namespace Prisma {
     dayOfWeek?: EnumWeekDayFieldUpdateOperationsInput | $Enums.WeekDay
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
+    sessionTime?: IntFieldUpdateOperationsInput | number
     repeatsWeekly?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17027,6 +17100,7 @@ export namespace Prisma {
     dayOfWeek?: EnumWeekDayFieldUpdateOperationsInput | $Enums.WeekDay
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
+    sessionTime?: IntFieldUpdateOperationsInput | number
     repeatsWeekly?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17038,6 +17112,7 @@ export namespace Prisma {
     dayOfWeek: $Enums.WeekDay
     startTime: string
     endTime: string
+    sessionTime?: number
     repeatsWeekly?: boolean
     isActive?: boolean
     createdAt?: Date | string
@@ -17047,6 +17122,7 @@ export namespace Prisma {
     dayOfWeek?: EnumWeekDayFieldUpdateOperationsInput | $Enums.WeekDay
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
+    sessionTime?: IntFieldUpdateOperationsInput | number
     repeatsWeekly?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17058,6 +17134,7 @@ export namespace Prisma {
     dayOfWeek?: EnumWeekDayFieldUpdateOperationsInput | $Enums.WeekDay
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
+    sessionTime?: IntFieldUpdateOperationsInput | number
     repeatsWeekly?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17705,6 +17782,13 @@ export namespace Prisma {
     _max?: NestedEnumAdmissionStatusNullableFilter<$PrismaModel>
   }
 
+  export type EnumEventTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventType | EnumEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.EventType[] | ListEnumEventTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventType[] | ListEnumEventTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventTypeFilter<$PrismaModel> | $Enums.EventType
+  }
+
   export type EnumEventStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
     in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
@@ -17776,6 +17860,16 @@ export namespace Prisma {
     createdById?: SortOrder
     professionalId?: SortOrder
     patientId?: SortOrder
+  }
+
+  export type EnumEventTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventType | EnumEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.EventType[] | ListEnumEventTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventType[] | ListEnumEventTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.EventType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEventTypeFilter<$PrismaModel>
+    _max?: NestedEnumEventTypeFilter<$PrismaModel>
   }
 
   export type EnumEventStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -17961,6 +18055,7 @@ export namespace Prisma {
     dayOfWeek?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    sessionTime?: SortOrder
     repeatsWeekly?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
@@ -17969,6 +18064,7 @@ export namespace Prisma {
   export type ScheduleAvgOrderByAggregateInput = {
     id?: SortOrder
     professionalId?: SortOrder
+    sessionTime?: SortOrder
   }
 
   export type ScheduleMaxOrderByAggregateInput = {
@@ -17977,6 +18073,7 @@ export namespace Prisma {
     dayOfWeek?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    sessionTime?: SortOrder
     repeatsWeekly?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
@@ -17988,6 +18085,7 @@ export namespace Prisma {
     dayOfWeek?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    sessionTime?: SortOrder
     repeatsWeekly?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
@@ -17996,6 +18094,7 @@ export namespace Prisma {
   export type ScheduleSumOrderByAggregateInput = {
     id?: SortOrder
     professionalId?: SortOrder
+    sessionTime?: SortOrder
   }
 
   export type EnumWeekDayWithAggregatesFilter<$PrismaModel = never> = {
@@ -18540,6 +18639,10 @@ export namespace Prisma {
     connect?: PatientWhereUniqueInput
   }
 
+  export type EnumEventTypeFieldUpdateOperationsInput = {
+    set?: $Enums.EventType
+  }
+
   export type EnumEventStatusFieldUpdateOperationsInput = {
     set?: $Enums.EventStatus
   }
@@ -18560,10 +18663,12 @@ export namespace Prisma {
     update?: XOR<XOR<ProfessionalUpdateToOneWithWhereWithoutEventsInput, ProfessionalUpdateWithoutEventsInput>, ProfessionalUncheckedUpdateWithoutEventsInput>
   }
 
-  export type PatientUpdateOneRequiredWithoutEventsNestedInput = {
+  export type PatientUpdateOneWithoutEventsNestedInput = {
     create?: XOR<PatientCreateWithoutEventsInput, PatientUncheckedCreateWithoutEventsInput>
     connectOrCreate?: PatientCreateOrConnectWithoutEventsInput
     upsert?: PatientUpsertWithoutEventsInput
+    disconnect?: PatientWhereInput | boolean
+    delete?: PatientWhereInput | boolean
     connect?: PatientWhereUniqueInput
     update?: XOR<XOR<PatientUpdateToOneWithWhereWithoutEventsInput, PatientUpdateWithoutEventsInput>, PatientUncheckedUpdateWithoutEventsInput>
   }
@@ -18894,11 +18999,28 @@ export namespace Prisma {
     _max?: NestedEnumAdmissionStatusNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumEventTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventType | EnumEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.EventType[] | ListEnumEventTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventType[] | ListEnumEventTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventTypeFilter<$PrismaModel> | $Enums.EventType
+  }
+
   export type NestedEnumEventStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.EventStatus | EnumEventStatusFieldRefInput<$PrismaModel>
     in?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.EventStatus[] | ListEnumEventStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumEventStatusFilter<$PrismaModel> | $Enums.EventStatus
+  }
+
+  export type NestedEnumEventTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.EventType | EnumEventTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.EventType[] | ListEnumEventTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.EventType[] | ListEnumEventTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumEventTypeWithAggregatesFilter<$PrismaModel> | $Enums.EventType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumEventTypeFilter<$PrismaModel>
+    _max?: NestedEnumEventTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumEventStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -19129,11 +19251,11 @@ export namespace Prisma {
     description?: string | null
     startEvent: Date | string
     endEvent: Date | string
-    eventType: string
+    eventType?: $Enums.EventType
     createdAt?: Date | string
     status?: $Enums.EventStatus
     professional: ProfessionalCreateNestedOneWithoutEventsInput
-    patient: PatientCreateNestedOneWithoutEventsInput
+    patient?: PatientCreateNestedOneWithoutEventsInput
   }
 
   export type EventUncheckedCreateWithoutCreatedByInput = {
@@ -19142,11 +19264,11 @@ export namespace Prisma {
     description?: string | null
     startEvent: Date | string
     endEvent: Date | string
-    eventType: string
+    eventType?: $Enums.EventType
     createdAt?: Date | string
     status?: $Enums.EventStatus
     professionalId: number
-    patientId: number
+    patientId?: number | null
   }
 
   export type EventCreateOrConnectWithoutCreatedByInput = {
@@ -19357,12 +19479,12 @@ export namespace Prisma {
     description?: StringNullableFilter<"Event"> | string | null
     startEvent?: DateTimeFilter<"Event"> | Date | string
     endEvent?: DateTimeFilter<"Event"> | Date | string
-    eventType?: StringFilter<"Event"> | string
+    eventType?: EnumEventTypeFilter<"Event"> | $Enums.EventType
     createdAt?: DateTimeFilter<"Event"> | Date | string
     status?: EnumEventStatusFilter<"Event"> | $Enums.EventStatus
     createdById?: IntFilter<"Event"> | number
     professionalId?: IntFilter<"Event"> | number
-    patientId?: IntFilter<"Event"> | number
+    patientId?: IntNullableFilter<"Event"> | number | null
   }
 
   export type ProcessUpsertWithWhereUniqueWithoutCreatedByInput = {
@@ -19473,7 +19595,7 @@ export namespace Prisma {
     description?: string | null
     startEvent: Date | string
     endEvent: Date | string
-    eventType: string
+    eventType?: $Enums.EventType
     createdAt?: Date | string
     status?: $Enums.EventStatus
     createdBy: UserCreateNestedOneWithoutCreatedEventsInput
@@ -19486,7 +19608,7 @@ export namespace Prisma {
     description?: string | null
     startEvent: Date | string
     endEvent: Date | string
-    eventType: string
+    eventType?: $Enums.EventType
     createdAt?: Date | string
     status?: $Enums.EventStatus
     createdById: number
@@ -19839,11 +19961,11 @@ export namespace Prisma {
     description?: string | null
     startEvent: Date | string
     endEvent: Date | string
-    eventType: string
+    eventType?: $Enums.EventType
     createdAt?: Date | string
     status?: $Enums.EventStatus
     createdBy: UserCreateNestedOneWithoutCreatedEventsInput
-    patient: PatientCreateNestedOneWithoutEventsInput
+    patient?: PatientCreateNestedOneWithoutEventsInput
   }
 
   export type EventUncheckedCreateWithoutProfessionalInput = {
@@ -19852,11 +19974,11 @@ export namespace Prisma {
     description?: string | null
     startEvent: Date | string
     endEvent: Date | string
-    eventType: string
+    eventType?: $Enums.EventType
     createdAt?: Date | string
     status?: $Enums.EventStatus
     createdById: number
-    patientId: number
+    patientId?: number | null
   }
 
   export type EventCreateOrConnectWithoutProfessionalInput = {
@@ -19873,6 +19995,7 @@ export namespace Prisma {
     dayOfWeek: $Enums.WeekDay
     startTime: string
     endTime: string
+    sessionTime?: number
     repeatsWeekly?: boolean
     isActive?: boolean
     createdAt?: Date | string
@@ -19883,6 +20006,7 @@ export namespace Prisma {
     dayOfWeek: $Enums.WeekDay
     startTime: string
     endTime: string
+    sessionTime?: number
     repeatsWeekly?: boolean
     isActive?: boolean
     createdAt?: Date | string
@@ -19977,6 +20101,7 @@ export namespace Prisma {
     dayOfWeek?: EnumWeekDayFilter<"Schedule"> | $Enums.WeekDay
     startTime?: StringFilter<"Schedule"> | string
     endTime?: StringFilter<"Schedule"> | string
+    sessionTime?: IntFilter<"Schedule"> | number
     repeatsWeekly?: BoolFilter<"Schedule"> | boolean
     isActive?: BoolFilter<"Schedule"> | boolean
     createdAt?: DateTimeFilter<"Schedule"> | Date | string
@@ -20496,11 +20621,11 @@ export namespace Prisma {
     description?: string | null
     startEvent: Date | string
     endEvent: Date | string
-    eventType: string
+    eventType?: $Enums.EventType
     createdAt?: Date | string
     status?: $Enums.EventStatus
     professionalId: number
-    patientId: number
+    patientId?: number | null
   }
 
   export type ProcessCreateManyCreatedByInput = {
@@ -20517,11 +20642,11 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     professional?: ProfessionalUpdateOneRequiredWithoutEventsNestedInput
-    patient?: PatientUpdateOneRequiredWithoutEventsNestedInput
+    patient?: PatientUpdateOneWithoutEventsNestedInput
   }
 
   export type EventUncheckedUpdateWithoutCreatedByInput = {
@@ -20530,11 +20655,11 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     professionalId?: IntFieldUpdateOperationsInput | number
-    patientId?: IntFieldUpdateOperationsInput | number
+    patientId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type EventUncheckedUpdateManyWithoutCreatedByInput = {
@@ -20543,11 +20668,11 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     professionalId?: IntFieldUpdateOperationsInput | number
-    patientId?: IntFieldUpdateOperationsInput | number
+    patientId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ProcessUpdateWithoutCreatedByInput = {
@@ -20582,7 +20707,7 @@ export namespace Prisma {
     description?: string | null
     startEvent: Date | string
     endEvent: Date | string
-    eventType: string
+    eventType?: $Enums.EventType
     createdAt?: Date | string
     status?: $Enums.EventStatus
     createdById: number
@@ -20594,7 +20719,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdBy?: UserUpdateOneRequiredWithoutCreatedEventsNestedInput
@@ -20607,7 +20732,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdById?: IntFieldUpdateOperationsInput | number
@@ -20620,7 +20745,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdById?: IntFieldUpdateOperationsInput | number
@@ -20716,11 +20841,11 @@ export namespace Prisma {
     description?: string | null
     startEvent: Date | string
     endEvent: Date | string
-    eventType: string
+    eventType?: $Enums.EventType
     createdAt?: Date | string
     status?: $Enums.EventStatus
     createdById: number
-    patientId: number
+    patientId?: number | null
   }
 
   export type ScheduleCreateManyProfessionalInput = {
@@ -20728,6 +20853,7 @@ export namespace Prisma {
     dayOfWeek: $Enums.WeekDay
     startTime: string
     endTime: string
+    sessionTime?: number
     repeatsWeekly?: boolean
     isActive?: boolean
     createdAt?: Date | string
@@ -20738,11 +20864,11 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdBy?: UserUpdateOneRequiredWithoutCreatedEventsNestedInput
-    patient?: PatientUpdateOneRequiredWithoutEventsNestedInput
+    patient?: PatientUpdateOneWithoutEventsNestedInput
   }
 
   export type EventUncheckedUpdateWithoutProfessionalInput = {
@@ -20751,11 +20877,11 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdById?: IntFieldUpdateOperationsInput | number
-    patientId?: IntFieldUpdateOperationsInput | number
+    patientId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type EventUncheckedUpdateManyWithoutProfessionalInput = {
@@ -20764,17 +20890,18 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startEvent?: DateTimeFieldUpdateOperationsInput | Date | string
     endEvent?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventType?: StringFieldUpdateOperationsInput | string
+    eventType?: EnumEventTypeFieldUpdateOperationsInput | $Enums.EventType
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     status?: EnumEventStatusFieldUpdateOperationsInput | $Enums.EventStatus
     createdById?: IntFieldUpdateOperationsInput | number
-    patientId?: IntFieldUpdateOperationsInput | number
+    patientId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ScheduleUpdateWithoutProfessionalInput = {
     dayOfWeek?: EnumWeekDayFieldUpdateOperationsInput | $Enums.WeekDay
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
+    sessionTime?: IntFieldUpdateOperationsInput | number
     repeatsWeekly?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20785,6 +20912,7 @@ export namespace Prisma {
     dayOfWeek?: EnumWeekDayFieldUpdateOperationsInput | $Enums.WeekDay
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
+    sessionTime?: IntFieldUpdateOperationsInput | number
     repeatsWeekly?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20795,6 +20923,7 @@ export namespace Prisma {
     dayOfWeek?: EnumWeekDayFieldUpdateOperationsInput | $Enums.WeekDay
     startTime?: StringFieldUpdateOperationsInput | string
     endTime?: StringFieldUpdateOperationsInput | string
+    sessionTime?: IntFieldUpdateOperationsInput | number
     repeatsWeekly?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

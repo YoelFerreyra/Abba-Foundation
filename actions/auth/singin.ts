@@ -65,7 +65,7 @@ export async function loginWithDniOrCuil({ dniOrCuil, password }: LoginDNIParams
           { patient: { cuil: dniOrCuil } },
         ],
       },
-      select: { email: true, firebaseUid: true },
+      select: { email: true, firebaseUid: true, role: true, patient: { select: { id: true, firstName: true, lastName: true } } },
     });
 
     if (!user?.email) {
@@ -92,12 +92,17 @@ export async function loginWithDniOrCuil({ dniOrCuil, password }: LoginDNIParams
         error: firebaseData.error?.message || "Credenciales incorrectas",
       };
     }
+    const customClaims = {
+      role: user?.role,
+      name: `${user?.patient?.firstName} ${user?.patient?.lastName}`,
+      patientId: user?.patient?.id,
+    };
 
-    const customToken = await admin.auth().createCustomToken(user.firebaseUid);
+    const customToken = await admin.auth().createCustomToken(user.firebaseUid, customClaims);
 
-    return { token: customToken, seccess: true };
+    return { token: customToken, success: true };
   } catch (err: any) {
     console.error("Login error:", err);
-    return { error: "Error interno al iniciar sesión" };
+    return { error: "Error interno al iniciar sesión", success: false };
   }
 }
