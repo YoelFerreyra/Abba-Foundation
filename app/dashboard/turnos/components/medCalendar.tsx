@@ -3,7 +3,18 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Calendar, dateFnsLocalizer, View } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { format, parse, getDay, addDays, setHours, setMinutes, startOfWeek, addMinutes, eachWeekOfInterval, addWeeks } from "date-fns";
+import {
+  format,
+  parse,
+  getDay,
+  addDays,
+  setHours,
+  setMinutes,
+  startOfWeek,
+  addMinutes,
+  eachWeekOfInterval,
+  addWeeks,
+} from "date-fns";
 import { es } from "date-fns/locale/es";
 import { CustomEvent } from "./customEvent";
 import {
@@ -25,6 +36,14 @@ import {
 } from "@/actions/calendar/profesional-events";
 import { useAuth } from "@/context/AuthContext";
 import WeeklyScheduleModal from "./WeeklyScheduleModal";
+import { getAllProfessionalsAction } from "@/actions/professional";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const localizer = dateFnsLocalizer({
   format,
@@ -56,10 +75,15 @@ export type CalendarEvent = {
 type EventFormData = {
   title: string;
   description: string;
-  date: string;  // ejemplo: "2023-06-25"
-  time: string;  // ejemplo: "14:30"
+  date: string;
+  time: string;
 };
 
+type Professional = {
+  id: number;
+  firstName: string;
+  lastName: string;
+};
 
 export default function MedCalendar() {
   const [allEvents, setAllEvents] = useState<CalendarEvent[]>([]);
@@ -70,9 +94,11 @@ export default function MedCalendar() {
     date: "",
     time: "",
   });
-  
+
   const { user } = useAuth();
-  const [dateRange, setDateRange] = useState<{ start: Date; end: Date } | null>(null);
+  const [dateRange, setDateRange] = useState<{ start: Date; end: Date } | null>(
+    null
+  );
 
   const generateEventsFromSchedule = (
     schedule: Record<string, { enabled: boolean; timeRanges: TimeRange[] }>,
@@ -81,7 +107,10 @@ export default function MedCalendar() {
     const today = new Date();
     const startDate = startOfWeek(today, { weekStartsOn: 1 });
     const endDate = addWeeks(startDate, 8);
-    const weeks = eachWeekOfInterval({ start: startDate, end: endDate }, { weekStartsOn: 1 });
+    const weeks = eachWeekOfInterval(
+      { start: startDate, end: endDate },
+      { weekStartsOn: 1 }
+    );
     const events: CalendarEvent[] = [];
 
     for (const weekStart of weeks) {
@@ -96,10 +125,13 @@ export default function MedCalendar() {
 
           const baseDate = addDays(weekStart, dayNumber - 1);
 
-          const [startHour, startMinute] = startTime.split(":" ).map(Number);
-          const [endHour, endMinute] = endTime.split(":" ).map(Number);
+          const [startHour, startMinute] = startTime.split(":").map(Number);
+          const [endHour, endMinute] = endTime.split(":").map(Number);
 
-          const rangeStart = setMinutes(setHours(baseDate, startHour), startMinute);
+          const rangeStart = setMinutes(
+            setHours(baseDate, startHour),
+            startMinute
+          );
           const rangeEnd = setMinutes(setHours(baseDate, endHour), endMinute);
 
           let current = new Date(rangeStart);
@@ -123,6 +155,11 @@ export default function MedCalendar() {
     return events;
   };
 
+  const [professionals, setProfessionals] = useState<Professional[]>([]);
+  const [selectedProfessionalId, setSelectedProfessionalId] = useState<
+    number | null
+  >(null);
+
   const loadEvents = async () => {
     try {
       const events = await getAllEvents();
@@ -138,9 +175,11 @@ export default function MedCalendar() {
     }
   };
 
-  const loadSchedule = async (profesionalId: number) => {
+  const loadSchedule = async (professionalId: number) => {
     try {
-      const scheduleArray = await getWeeklySchedule(profesionalId || 1);
+      console.log("Loading schedule for professional ID:", professionalId);
+
+      const scheduleArray = await getWeeklySchedule(professionalId);
 
       if (scheduleArray) {
         const grouped = scheduleArray.reduce((acc, item) => {
@@ -156,6 +195,7 @@ export default function MedCalendar() {
         }, {} as Record<string, { enabled: boolean; timeRanges: TimeRange[] }>);
 
         const generatedEvents = generateEventsFromSchedule(grouped);
+        setScheduleEvents([]);
         setScheduleEvents(generatedEvents);
       }
     } catch (err) {
@@ -164,8 +204,16 @@ export default function MedCalendar() {
   };
 
   useEffect(() => {
-    loadEvents();
-    loadSchedule();
+    const fetchProfessionals = async () => {
+      try {
+        const data = await getAllProfessionalsAction();
+        setProfessionals(data);
+        if (data.length > 0) setSelectedProfessionalId(data[0].id);
+      } catch (error) {
+        console.error("Error fetching professionals:", error);
+      }
+    };
+    fetchProfessionals();
   }, []);
 
   const handleAddEvent = async () => {
@@ -179,33 +227,69 @@ export default function MedCalendar() {
         startEvent: start,
         endEvent: end,
         eventType: "CONSULTATION",
-        createdById: user?.id ?? 1,
-        professionalId: user?.id ?? 1,
+        createdById: user?.uid,
+        professionalId: selectedProfessionalId,
         patientId: 1,
         status: "SCHEDULED",
       });
 
       setFormData({ title: "", description: "", date: "", time: "" });
       loadEvents();
-      loadSchedule();
+
+      if (selectedProfessionalId !== null) {
+        await loadSchedule(selectedProfessionalId);
+      }
     } catch (err) {
       console.error("Error al crear evento:", err);
     }
   };
 
- const [date, setDate] = useState(new Date())
- const [view, setView] = useState<View>('month')
+  const [date, setDate] = useState(new Date());
+  const [view, setView] = useState<View>("month");
 
- const onNavigate = useCallback((newDate: Date) => {
-   setDate(newDate)
- }, [])
+  const onNavigate = useCallback((newDate: Date) => {
+    setDate(newDate);
+  }, []);
 
- const onView = useCallback((newView: View) => {
-   setView(newView)
- }, [])
+  const onView = useCallback((newView: View) => {
+    setView(newView);
+  }, []);
+  useEffect(() => {
+    loadEvents();
+  }, []);
+
+  useEffect(() => {
+    if (selectedProfessionalId !== null) {
+      loadSchedule(selectedProfessionalId);
+    }
+  }, [selectedProfessionalId]);
 
   return (
     <div style={{ margin: "50px" }}>
+      <div className="mb-4 max-w-sm">
+        <label className="block mb-1 font-medium">
+          Seleccionar profesional
+        </label>
+        <Select
+          value={selectedProfessionalId?.toString() ?? ""}
+          onValueChange={(value) => {
+            console.log("Selected professional ID:", value);
+            setSelectedProfessionalId(Number(value));
+          }}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Seleccionar profesional" />
+          </SelectTrigger>
+          <SelectContent>
+            {professionals.map((prof) => (
+              <SelectItem key={prof.id} value={prof.id.toString()}>
+                {prof.firstName} {prof.lastName}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
       <Calendar
         localizer={localizer}
         events={[...allEvents, ...scheduleEvents]}
@@ -213,7 +297,7 @@ export default function MedCalendar() {
         endAccessor="end"
         culture="es"
         step={15}
-        selectable= {true}
+        selectable={true}
         timeslots={2}
         onRangeChange={(range) => {
           console.log("Selected range:", range);
@@ -250,6 +334,24 @@ export default function MedCalendar() {
               <DialogTitle>Nueva cita</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4 py-4">
+              <Select
+                value={selectedProfessionalId?.toString() ?? ""}
+                onValueChange={(value) =>
+                  setSelectedProfessionalId(Number(value))
+                }
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Seleccionar profesional" />
+                </SelectTrigger>
+                <SelectContent>
+                  {professionals.map((prof) => (
+                    <SelectItem key={prof.id} value={prof.id.toString()}>
+                      {prof.firstName} {prof.lastName}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
               <Input
                 placeholder="Título"
                 value={formData.title || ""}

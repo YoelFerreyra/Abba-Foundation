@@ -57,11 +57,11 @@ export default function UserForm({
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetContent side="right" className="h-screen max-w-xl w-full overflow-y-auto">
         <SheetHeader>
-          <SheetTitle>{defaultValues ? "Editar Paciente" : "Crear Paciente"}</SheetTitle>
+          <SheetTitle>{defaultValues ? "Editar Usuario" : "Crear Usuario"}</SheetTitle>
           <SheetDescription>
             {defaultValues
-              ? "Modifica la información del paciente."
-              : "Ingresa la información para crear un nuevo paciente."}
+              ? "Modifica la información del usuario."
+              : "Ingresa la información para crear un nuevo usuario."}
           </SheetDescription>
         </SheetHeader>
 

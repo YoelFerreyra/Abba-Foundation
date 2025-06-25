@@ -11,7 +11,7 @@ datasource db {
 
 model User {
   id            Int         @id @default(autoincrement())
-  firebaseUid   String
+  firebaseUid   String      @unique
   role          UserRoles   @default(CLIENT)
   email         String      @unique
   isActive      Boolean     @default(false)
@@ -30,20 +30,19 @@ model Patient {
   firstName            String
   lastName             String
   address              String
-  dni                  String  @unique
-  cuil                 String  @unique
+  dni                  String       @unique
+  cuil                 String       @unique
   dniProcessingNumber  String
   birthday             DateTime
   phone                String
   affiliateNumber      String
   professionalActivity String?
-  healthInsuranceProvider String?
   patientType          PatientType?
   patientStatus        PatientStatus?
   isActive             Boolean      @default(false)
   createdAt            DateTime     @default(now())
 
-  userId               Int? @unique
+  userId               Int?         @unique
   user                 User?        @relation(fields: [userId], references: [id])
 
   legalGuardianId      Int?
@@ -51,17 +50,55 @@ model Patient {
 
   events               Event[]
   admission            Admission?
+
+  healthInsuranceProviderId Int?
+  healthInsuranceProvider   HealthInsuranceProvider? @relation(fields: [healthInsuranceProviderId], references: [id])
 }
 
 model HealthInsuranceProvider {
-  id              Int       @id @default(autoincrement())
+  id              Int                              @id @default(autoincrement())
   name            String
   description     String
+  contractor      String?
+  subcontractor   String?
   cuit            String
   address         String
   email           String
   phone           String
   contact         String
+
+  authorizations  HealthInsuranceAuthorization[]
+  patients Patient[]
+  legalGuardians LegalGuardian[]
+  professionals Professional[]
+}
+
+model HealthInsuranceAuthorization {
+  id                         Int                      @id @default(autoincrement())
+  healthInsuranceProviderId  Int
+  healthInsuranceProvider    HealthInsuranceProvider  @relation(fields: [healthInsuranceProviderId], references: [id])
+
+  admissionId                Int
+  admission                  Admission                @relation(fields: [admissionId], references: [id])
+
+  service                    CoverageService
+  periodFrom                 DateTime
+  periodTo                   DateTime
+  authorizedAt               DateTime
+}
+
+enum CoverageService {
+  PSYCHOLOGY
+  PSYCHOPEDAGOGY
+  SPEECH_THERAPY
+  SUPPORT_TEACHER_MODULE
+  OCCUPATIONAL_THERAPY
+  PSYCHOMOTOR_THERAPY
+  THERAPY_TRANSPORT
+  SCHOOL_TRANSPORT
+  INTENSIVE_INTEGRAL_MODULE
+  SIMPLE_INTEGRAL_MODULE
+  SCHOOL_INCLUSION_SUPPORT_MODULE
 }
 
 model LegalGuardian {
@@ -75,7 +112,6 @@ model LegalGuardian {
   birthday             DateTime
   phone                String
   professionalActivity String
-  healthInsuranceProvider String?
   legalGuardianType    LegalGuardianType?
   legalGuardianStatus  LegalGuardianStatus?
   isActive             Boolean   @default(false)
@@ -85,6 +121,9 @@ model LegalGuardian {
   user                 User?     @relation(fields: [userId], references: [id])
 
   patients             Patient[]
+  healthInsuranceProviderId Int?
+  healthInsuranceProvider   HealthInsuranceProvider? @relation(fields: [healthInsuranceProviderId], references: [id])
+  admissions Admission[]
 }
 
 model Professional {
@@ -97,7 +136,6 @@ model Professional {
   birthday                DateTime
   phone                   String
   professionalActivity    String
-  healthInsuranceProvider String?
   isActive                Boolean   @default(false)
   profecionalType         String
 
@@ -106,15 +144,35 @@ model Professional {
 
   events                  Event[]
   schedules               Schedule[]
+
+  healthInsuranceProviderId Int?
+  healthInsuranceProvider   HealthInsuranceProvider? @relation(fields: [healthInsuranceProviderId], references: [id])
 }
 
 model Admission {
-  id             Int      @id @default(autoincrement())
-  admissionStatus      AdmissionStatus?
+  id                    Int                @id @default(autoincrement()) // Nro. de ingreso
+  operationDate         DateTime          @default(now())               // Fecha operación
+  admissionDate         DateTime                                     // Fecha ingreso editable
+  admissionTypeId       Int
+  admissionType         AdmissionType      @relation(fields: [admissionTypeId], references: [id]) // Tipo de ingreso
+  isSchoolEnrolled      Boolean                                           // Escolarizado
+  schoolShift           SchoolShift?                                     // Turno colegio
 
-  patientId      Int      @unique
-  patient        Patient  @relation(fields: [patientId], references: [id])
+  // Datos del concurrente (vinculado a Patient)
+  patientId             Int               @unique
+  patient               Patient           @relation(fields: [patientId], references: [id])
+  cud                   String?                                           
+  cudExpirationDate     DateTime?                                         
+  status                AdmissionStatus?
+
+  // Datos del titular
+  legalGuardianId              Int?
+  legalGuardian                LegalGuardian?            @relation(fields: [legalGuardianId], references: [id])
+
+  createdAt             DateTime           @default(now())
+  healthInsuranceAuthorizations HealthInsuranceAuthorization[]
 }
+
 
 model Event {
   id             Int       @id @default(autoincrement())
@@ -122,9 +180,9 @@ model Event {
   description    String?
   startEvent     DateTime
   endEvent       DateTime
-  eventType      String
+  eventType      EventType @default(CONSULTATION)
   createdAt      DateTime  @default(now())
-  status         EventStatus @default(SCHEDULED)
+  status         EventStatus @default(AVAILABLE)
 
   createdById    Int
   createdBy      User      @relation("EventCreator", fields: [createdById], references: [id])
@@ -132,8 +190,8 @@ model Event {
   professionalId Int
   professional   Professional @relation(fields: [professionalId], references: [id])
 
-  patientId      Int
-  patient        Patient      @relation(fields: [patientId], references: [id])
+  patientId      Int?
+  patient        Patient?      @relation(fields: [patientId], references: [id])
 }
 
 model Process {
@@ -167,7 +225,8 @@ model Schedule {
   dayOfWeek       WeekDay
   startTime       String    // format: "08:00"
   endTime         String    // format: "12:00"
-  repeatsWeekly   Boolean     @default(true)
+  sessionTime     Int       @default(30)
+  repeatsWeekly   Boolean   @default(true)
   isActive        Boolean   @default(true)
   createdAt       DateTime  @default(now())
 }
@@ -251,7 +310,33 @@ enum WeekDay {
 }
 
 enum EventStatus {
+  AVAILABLE
   SCHEDULED
   CANCELLED
   COMPLETED
+}
+
+enum EventType {
+  CONSULTATION
+  STUDY
+  OTHER
+}
+
+model AdmissionType {
+  id    Int    @id @default(autoincrement())
+  name  String // Ej: "Obra Social", "Particular", "Familiar", "Empleado"
+
+  admissions Admission[]
+}
+
+enum SchoolShift {
+  MORNING
+  AFTERNOON
+  EVENING
+}
+
+enum LegalGuardianCondition {
+  RELACION_DEPENDENCIA
+  MONOTRIBUTISTA
+  OTROS
 }

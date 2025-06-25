@@ -76,7 +76,7 @@ export default function UsersPage() {
       />
 
       <div className="flex justify-end">
-        <Button onClick={handleCreate}>Crear Paciente</Button>
+        <Button onClick={handleCreate}>Crear Usuario</Button>
       </div>
 
       <Table>

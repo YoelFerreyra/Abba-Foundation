@@ -42,18 +42,17 @@ export default function ProfessionalForm({
       lastName: "",
       address: "",
       dni: "",
+      cuil: "",
       birthday: new Date(),
       phone: "",
       professionalActivity: "",
       profecionalType: "",
-      healthInsuranceProvider: "",
+      healthInsuranceProviderId: null,
       isActive: false,
     },
   })
 
   const submitHandler = (data: ProfessionalFormData) => {
-    console.log(data);
-    
     onSubmit(data)
     reset()
     setIsOpen(false)
@@ -99,6 +98,12 @@ export default function ProfessionalForm({
           </div>
 
           <div>
+            <Label htmlFor="cuil">CUIL</Label>
+            <Input id="cuil" {...register("cuil")} />
+            {errors.cuil && <p className="text-red-500 text-sm">{errors.cuil.message}</p>}
+          </div>
+
+          <div>
             <Label htmlFor="birthday">Fecha de nacimiento</Label>
             <Input id="birthday" type="date" {...register("birthday", { valueAsDate: true })} />
             {errors.birthday && <p className="text-red-500 text-sm">{errors.birthday.message}</p>}
@@ -127,10 +132,14 @@ export default function ProfessionalForm({
           </div>
 
           <div>
-            <Label htmlFor="healthInsuranceProvider">Obra social</Label>
-            <Input id="healthInsuranceProvider" {...register("healthInsuranceProvider")} />
-            {errors.healthInsuranceProvider && (
-              <p className="text-red-500 text-sm">{errors.healthInsuranceProvider.message}</p>
+            <Label htmlFor="healthInsuranceProviderId">ID de obra social</Label>
+            <Input
+              id="healthInsuranceProviderId"
+              type="number"
+              {...register("healthInsuranceProviderId", { valueAsNumber: true })}
+            />
+            {errors.healthInsuranceProviderId && (
+              <p className="text-red-500 text-sm">{errors.healthInsuranceProviderId.message}</p>
             )}
           </div>
 

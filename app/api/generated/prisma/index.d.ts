@@ -29,6 +29,11 @@ export type Patient = $Result.DefaultSelection<Prisma.$PatientPayload>
  */
 export type HealthInsuranceProvider = $Result.DefaultSelection<Prisma.$HealthInsuranceProviderPayload>
 /**
+ * Model HealthInsuranceAuthorization
+ * 
+ */
+export type HealthInsuranceAuthorization = $Result.DefaultSelection<Prisma.$HealthInsuranceAuthorizationPayload>
+/**
  * Model LegalGuardian
  * 
  */
@@ -68,12 +73,34 @@ export type Payment = $Result.DefaultSelection<Prisma.$PaymentPayload>
  * 
  */
 export type Schedule = $Result.DefaultSelection<Prisma.$SchedulePayload>
+/**
+ * Model AdmissionType
+ * 
+ */
+export type AdmissionType = $Result.DefaultSelection<Prisma.$AdmissionTypePayload>
 
 /**
  * Enums
  */
 export namespace $Enums {
-  export const UserRoles: {
+  export const CoverageService: {
+  PSYCHOLOGY: 'PSYCHOLOGY',
+  PSYCHOPEDAGOGY: 'PSYCHOPEDAGOGY',
+  SPEECH_THERAPY: 'SPEECH_THERAPY',
+  SUPPORT_TEACHER_MODULE: 'SUPPORT_TEACHER_MODULE',
+  OCCUPATIONAL_THERAPY: 'OCCUPATIONAL_THERAPY',
+  PSYCHOMOTOR_THERAPY: 'PSYCHOMOTOR_THERAPY',
+  THERAPY_TRANSPORT: 'THERAPY_TRANSPORT',
+  SCHOOL_TRANSPORT: 'SCHOOL_TRANSPORT',
+  INTENSIVE_INTEGRAL_MODULE: 'INTENSIVE_INTEGRAL_MODULE',
+  SIMPLE_INTEGRAL_MODULE: 'SIMPLE_INTEGRAL_MODULE',
+  SCHOOL_INCLUSION_SUPPORT_MODULE: 'SCHOOL_INCLUSION_SUPPORT_MODULE'
+};
+
+export type CoverageService = (typeof CoverageService)[keyof typeof CoverageService]
+
+
+export const UserRoles: {
   ROOT: 'ROOT',
   ADMIN: 'ADMIN',
   CLIENT: 'CLIENT',
@@ -202,7 +229,29 @@ export const EventType: {
 
 export type EventType = (typeof EventType)[keyof typeof EventType]
 
+
+export const SchoolShift: {
+  MORNING: 'MORNING',
+  AFTERNOON: 'AFTERNOON',
+  EVENING: 'EVENING'
+};
+
+export type SchoolShift = (typeof SchoolShift)[keyof typeof SchoolShift]
+
+
+export const LegalGuardianCondition: {
+  RELACION_DEPENDENCIA: 'RELACION_DEPENDENCIA',
+  MONOTRIBUTISTA: 'MONOTRIBUTISTA',
+  OTROS: 'OTROS'
+};
+
+export type LegalGuardianCondition = (typeof LegalGuardianCondition)[keyof typeof LegalGuardianCondition]
+
 }
+
+export type CoverageService = $Enums.CoverageService
+
+export const CoverageService: typeof $Enums.CoverageService
 
 export type UserRoles = $Enums.UserRoles
 
@@ -255,6 +304,14 @@ export const EventStatus: typeof $Enums.EventStatus
 export type EventType = $Enums.EventType
 
 export const EventType: typeof $Enums.EventType
+
+export type SchoolShift = $Enums.SchoolShift
+
+export const SchoolShift: typeof $Enums.SchoolShift
+
+export type LegalGuardianCondition = $Enums.LegalGuardianCondition
+
+export const LegalGuardianCondition: typeof $Enums.LegalGuardianCondition
 
 /**
  * ##  Prisma Client ʲˢ
@@ -412,6 +469,16 @@ export class PrismaClient<
   get healthInsuranceProvider(): Prisma.HealthInsuranceProviderDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.healthInsuranceAuthorization`: Exposes CRUD operations for the **HealthInsuranceAuthorization** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more HealthInsuranceAuthorizations
+    * const healthInsuranceAuthorizations = await prisma.healthInsuranceAuthorization.findMany()
+    * ```
+    */
+  get healthInsuranceAuthorization(): Prisma.HealthInsuranceAuthorizationDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.legalGuardian`: Exposes CRUD operations for the **LegalGuardian** model.
     * Example usage:
     * ```ts
@@ -490,6 +557,16 @@ export class PrismaClient<
     * ```
     */
   get schedule(): Prisma.ScheduleDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.admissionType`: Exposes CRUD operations for the **AdmissionType** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AdmissionTypes
+    * const admissionTypes = await prisma.admissionType.findMany()
+    * ```
+    */
+  get admissionType(): Prisma.AdmissionTypeDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -933,6 +1010,7 @@ export namespace Prisma {
     User: 'User',
     Patient: 'Patient',
     HealthInsuranceProvider: 'HealthInsuranceProvider',
+    HealthInsuranceAuthorization: 'HealthInsuranceAuthorization',
     LegalGuardian: 'LegalGuardian',
     Professional: 'Professional',
     Admission: 'Admission',
@@ -940,7 +1018,8 @@ export namespace Prisma {
     Process: 'Process',
     Budget: 'Budget',
     Payment: 'Payment',
-    Schedule: 'Schedule'
+    Schedule: 'Schedule',
+    AdmissionType: 'AdmissionType'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -959,7 +1038,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "patient" | "healthInsuranceProvider" | "legalGuardian" | "professional" | "admission" | "event" | "process" | "budget" | "payment" | "schedule"
+      modelProps: "user" | "patient" | "healthInsuranceProvider" | "healthInsuranceAuthorization" | "legalGuardian" | "professional" | "admission" | "event" | "process" | "budget" | "payment" | "schedule" | "admissionType"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1182,6 +1261,80 @@ export namespace Prisma {
           count: {
             args: Prisma.HealthInsuranceProviderCountArgs<ExtArgs>
             result: $Utils.Optional<HealthInsuranceProviderCountAggregateOutputType> | number
+          }
+        }
+      }
+      HealthInsuranceAuthorization: {
+        payload: Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>
+        fields: Prisma.HealthInsuranceAuthorizationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.HealthInsuranceAuthorizationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HealthInsuranceAuthorizationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.HealthInsuranceAuthorizationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HealthInsuranceAuthorizationPayload>
+          }
+          findFirst: {
+            args: Prisma.HealthInsuranceAuthorizationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HealthInsuranceAuthorizationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.HealthInsuranceAuthorizationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HealthInsuranceAuthorizationPayload>
+          }
+          findMany: {
+            args: Prisma.HealthInsuranceAuthorizationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HealthInsuranceAuthorizationPayload>[]
+          }
+          create: {
+            args: Prisma.HealthInsuranceAuthorizationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HealthInsuranceAuthorizationPayload>
+          }
+          createMany: {
+            args: Prisma.HealthInsuranceAuthorizationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.HealthInsuranceAuthorizationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HealthInsuranceAuthorizationPayload>[]
+          }
+          delete: {
+            args: Prisma.HealthInsuranceAuthorizationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HealthInsuranceAuthorizationPayload>
+          }
+          update: {
+            args: Prisma.HealthInsuranceAuthorizationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HealthInsuranceAuthorizationPayload>
+          }
+          deleteMany: {
+            args: Prisma.HealthInsuranceAuthorizationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.HealthInsuranceAuthorizationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.HealthInsuranceAuthorizationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HealthInsuranceAuthorizationPayload>[]
+          }
+          upsert: {
+            args: Prisma.HealthInsuranceAuthorizationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$HealthInsuranceAuthorizationPayload>
+          }
+          aggregate: {
+            args: Prisma.HealthInsuranceAuthorizationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateHealthInsuranceAuthorization>
+          }
+          groupBy: {
+            args: Prisma.HealthInsuranceAuthorizationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<HealthInsuranceAuthorizationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.HealthInsuranceAuthorizationCountArgs<ExtArgs>
+            result: $Utils.Optional<HealthInsuranceAuthorizationCountAggregateOutputType> | number
           }
         }
       }
@@ -1777,6 +1930,80 @@ export namespace Prisma {
           }
         }
       }
+      AdmissionType: {
+        payload: Prisma.$AdmissionTypePayload<ExtArgs>
+        fields: Prisma.AdmissionTypeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AdmissionTypeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdmissionTypePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AdmissionTypeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdmissionTypePayload>
+          }
+          findFirst: {
+            args: Prisma.AdmissionTypeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdmissionTypePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AdmissionTypeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdmissionTypePayload>
+          }
+          findMany: {
+            args: Prisma.AdmissionTypeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdmissionTypePayload>[]
+          }
+          create: {
+            args: Prisma.AdmissionTypeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdmissionTypePayload>
+          }
+          createMany: {
+            args: Prisma.AdmissionTypeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AdmissionTypeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdmissionTypePayload>[]
+          }
+          delete: {
+            args: Prisma.AdmissionTypeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdmissionTypePayload>
+          }
+          update: {
+            args: Prisma.AdmissionTypeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdmissionTypePayload>
+          }
+          deleteMany: {
+            args: Prisma.AdmissionTypeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AdmissionTypeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AdmissionTypeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdmissionTypePayload>[]
+          }
+          upsert: {
+            args: Prisma.AdmissionTypeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdmissionTypePayload>
+          }
+          aggregate: {
+            args: Prisma.AdmissionTypeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAdmissionType>
+          }
+          groupBy: {
+            args: Prisma.AdmissionTypeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AdmissionTypeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AdmissionTypeCountArgs<ExtArgs>
+            result: $Utils.Optional<AdmissionTypeCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1864,6 +2091,7 @@ export namespace Prisma {
     user?: UserOmit
     patient?: PatientOmit
     healthInsuranceProvider?: HealthInsuranceProviderOmit
+    healthInsuranceAuthorization?: HealthInsuranceAuthorizationOmit
     legalGuardian?: LegalGuardianOmit
     professional?: ProfessionalOmit
     admission?: AdmissionOmit
@@ -1872,6 +2100,7 @@ export namespace Prisma {
     budget?: BudgetOmit
     payment?: PaymentOmit
     schedule?: ScheduleOmit
+    admissionType?: AdmissionTypeOmit
   }
 
   /* Types for Logging */
@@ -2033,15 +2262,75 @@ export namespace Prisma {
 
 
   /**
+   * Count Type HealthInsuranceProviderCountOutputType
+   */
+
+  export type HealthInsuranceProviderCountOutputType = {
+    authorizations: number
+    patients: number
+    legalGuardians: number
+    professionals: number
+  }
+
+  export type HealthInsuranceProviderCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    authorizations?: boolean | HealthInsuranceProviderCountOutputTypeCountAuthorizationsArgs
+    patients?: boolean | HealthInsuranceProviderCountOutputTypeCountPatientsArgs
+    legalGuardians?: boolean | HealthInsuranceProviderCountOutputTypeCountLegalGuardiansArgs
+    professionals?: boolean | HealthInsuranceProviderCountOutputTypeCountProfessionalsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * HealthInsuranceProviderCountOutputType without action
+   */
+  export type HealthInsuranceProviderCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceProviderCountOutputType
+     */
+    select?: HealthInsuranceProviderCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * HealthInsuranceProviderCountOutputType without action
+   */
+  export type HealthInsuranceProviderCountOutputTypeCountAuthorizationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HealthInsuranceAuthorizationWhereInput
+  }
+
+  /**
+   * HealthInsuranceProviderCountOutputType without action
+   */
+  export type HealthInsuranceProviderCountOutputTypeCountPatientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PatientWhereInput
+  }
+
+  /**
+   * HealthInsuranceProviderCountOutputType without action
+   */
+  export type HealthInsuranceProviderCountOutputTypeCountLegalGuardiansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LegalGuardianWhereInput
+  }
+
+  /**
+   * HealthInsuranceProviderCountOutputType without action
+   */
+  export type HealthInsuranceProviderCountOutputTypeCountProfessionalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProfessionalWhereInput
+  }
+
+
+  /**
    * Count Type LegalGuardianCountOutputType
    */
 
   export type LegalGuardianCountOutputType = {
     patients: number
+    admissions: number
   }
 
   export type LegalGuardianCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     patients?: boolean | LegalGuardianCountOutputTypeCountPatientsArgs
+    admissions?: boolean | LegalGuardianCountOutputTypeCountAdmissionsArgs
   }
 
   // Custom InputTypes
@@ -2060,6 +2349,13 @@ export namespace Prisma {
    */
   export type LegalGuardianCountOutputTypeCountPatientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PatientWhereInput
+  }
+
+  /**
+   * LegalGuardianCountOutputType without action
+   */
+  export type LegalGuardianCountOutputTypeCountAdmissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdmissionWhereInput
   }
 
 
@@ -2100,6 +2396,68 @@ export namespace Prisma {
    */
   export type ProfessionalCountOutputTypeCountSchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ScheduleWhereInput
+  }
+
+
+  /**
+   * Count Type AdmissionCountOutputType
+   */
+
+  export type AdmissionCountOutputType = {
+    healthInsuranceAuthorizations: number
+  }
+
+  export type AdmissionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    healthInsuranceAuthorizations?: boolean | AdmissionCountOutputTypeCountHealthInsuranceAuthorizationsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AdmissionCountOutputType without action
+   */
+  export type AdmissionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdmissionCountOutputType
+     */
+    select?: AdmissionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AdmissionCountOutputType without action
+   */
+  export type AdmissionCountOutputTypeCountHealthInsuranceAuthorizationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HealthInsuranceAuthorizationWhereInput
+  }
+
+
+  /**
+   * Count Type AdmissionTypeCountOutputType
+   */
+
+  export type AdmissionTypeCountOutputType = {
+    admissions: number
+  }
+
+  export type AdmissionTypeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    admissions?: boolean | AdmissionTypeCountOutputTypeCountAdmissionsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AdmissionTypeCountOutputType without action
+   */
+  export type AdmissionTypeCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdmissionTypeCountOutputType
+     */
+    select?: AdmissionTypeCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AdmissionTypeCountOutputType without action
+   */
+  export type AdmissionTypeCountOutputTypeCountAdmissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdmissionWhereInput
   }
 
 
@@ -3350,12 +3708,14 @@ export namespace Prisma {
     id: number | null
     userId: number | null
     legalGuardianId: number | null
+    healthInsuranceProviderId: number | null
   }
 
   export type PatientSumAggregateOutputType = {
     id: number | null
     userId: number | null
     legalGuardianId: number | null
+    healthInsuranceProviderId: number | null
   }
 
   export type PatientMinAggregateOutputType = {
@@ -3370,13 +3730,13 @@ export namespace Prisma {
     phone: string | null
     affiliateNumber: string | null
     professionalActivity: string | null
-    healthInsuranceProvider: string | null
     patientType: $Enums.PatientType | null
     patientStatus: $Enums.PatientStatus | null
     isActive: boolean | null
     createdAt: Date | null
     userId: number | null
     legalGuardianId: number | null
+    healthInsuranceProviderId: number | null
   }
 
   export type PatientMaxAggregateOutputType = {
@@ -3391,13 +3751,13 @@ export namespace Prisma {
     phone: string | null
     affiliateNumber: string | null
     professionalActivity: string | null
-    healthInsuranceProvider: string | null
     patientType: $Enums.PatientType | null
     patientStatus: $Enums.PatientStatus | null
     isActive: boolean | null
     createdAt: Date | null
     userId: number | null
     legalGuardianId: number | null
+    healthInsuranceProviderId: number | null
   }
 
   export type PatientCountAggregateOutputType = {
@@ -3412,13 +3772,13 @@ export namespace Prisma {
     phone: number
     affiliateNumber: number
     professionalActivity: number
-    healthInsuranceProvider: number
     patientType: number
     patientStatus: number
     isActive: number
     createdAt: number
     userId: number
     legalGuardianId: number
+    healthInsuranceProviderId: number
     _all: number
   }
 
@@ -3427,12 +3787,14 @@ export namespace Prisma {
     id?: true
     userId?: true
     legalGuardianId?: true
+    healthInsuranceProviderId?: true
   }
 
   export type PatientSumAggregateInputType = {
     id?: true
     userId?: true
     legalGuardianId?: true
+    healthInsuranceProviderId?: true
   }
 
   export type PatientMinAggregateInputType = {
@@ -3447,13 +3809,13 @@ export namespace Prisma {
     phone?: true
     affiliateNumber?: true
     professionalActivity?: true
-    healthInsuranceProvider?: true
     patientType?: true
     patientStatus?: true
     isActive?: true
     createdAt?: true
     userId?: true
     legalGuardianId?: true
+    healthInsuranceProviderId?: true
   }
 
   export type PatientMaxAggregateInputType = {
@@ -3468,13 +3830,13 @@ export namespace Prisma {
     phone?: true
     affiliateNumber?: true
     professionalActivity?: true
-    healthInsuranceProvider?: true
     patientType?: true
     patientStatus?: true
     isActive?: true
     createdAt?: true
     userId?: true
     legalGuardianId?: true
+    healthInsuranceProviderId?: true
   }
 
   export type PatientCountAggregateInputType = {
@@ -3489,13 +3851,13 @@ export namespace Prisma {
     phone?: true
     affiliateNumber?: true
     professionalActivity?: true
-    healthInsuranceProvider?: true
     patientType?: true
     patientStatus?: true
     isActive?: true
     createdAt?: true
     userId?: true
     legalGuardianId?: true
+    healthInsuranceProviderId?: true
     _all?: true
   }
 
@@ -3597,13 +3959,13 @@ export namespace Prisma {
     phone: string
     affiliateNumber: string
     professionalActivity: string | null
-    healthInsuranceProvider: string | null
     patientType: $Enums.PatientType | null
     patientStatus: $Enums.PatientStatus | null
     isActive: boolean
     createdAt: Date
     userId: number | null
     legalGuardianId: number | null
+    healthInsuranceProviderId: number | null
     _count: PatientCountAggregateOutputType | null
     _avg: PatientAvgAggregateOutputType | null
     _sum: PatientSumAggregateOutputType | null
@@ -3637,17 +3999,18 @@ export namespace Prisma {
     phone?: boolean
     affiliateNumber?: boolean
     professionalActivity?: boolean
-    healthInsuranceProvider?: boolean
     patientType?: boolean
     patientStatus?: boolean
     isActive?: boolean
     createdAt?: boolean
     userId?: boolean
     legalGuardianId?: boolean
+    healthInsuranceProviderId?: boolean
     user?: boolean | Patient$userArgs<ExtArgs>
     legalGuardian?: boolean | Patient$legalGuardianArgs<ExtArgs>
     events?: boolean | Patient$eventsArgs<ExtArgs>
     admission?: boolean | Patient$admissionArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | Patient$healthInsuranceProviderArgs<ExtArgs>
     _count?: boolean | PatientCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["patient"]>
 
@@ -3663,15 +4026,16 @@ export namespace Prisma {
     phone?: boolean
     affiliateNumber?: boolean
     professionalActivity?: boolean
-    healthInsuranceProvider?: boolean
     patientType?: boolean
     patientStatus?: boolean
     isActive?: boolean
     createdAt?: boolean
     userId?: boolean
     legalGuardianId?: boolean
+    healthInsuranceProviderId?: boolean
     user?: boolean | Patient$userArgs<ExtArgs>
     legalGuardian?: boolean | Patient$legalGuardianArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | Patient$healthInsuranceProviderArgs<ExtArgs>
   }, ExtArgs["result"]["patient"]>
 
   export type PatientSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3686,15 +4050,16 @@ export namespace Prisma {
     phone?: boolean
     affiliateNumber?: boolean
     professionalActivity?: boolean
-    healthInsuranceProvider?: boolean
     patientType?: boolean
     patientStatus?: boolean
     isActive?: boolean
     createdAt?: boolean
     userId?: boolean
     legalGuardianId?: boolean
+    healthInsuranceProviderId?: boolean
     user?: boolean | Patient$userArgs<ExtArgs>
     legalGuardian?: boolean | Patient$legalGuardianArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | Patient$healthInsuranceProviderArgs<ExtArgs>
   }, ExtArgs["result"]["patient"]>
 
   export type PatientSelectScalar = {
@@ -3709,30 +4074,33 @@ export namespace Prisma {
     phone?: boolean
     affiliateNumber?: boolean
     professionalActivity?: boolean
-    healthInsuranceProvider?: boolean
     patientType?: boolean
     patientStatus?: boolean
     isActive?: boolean
     createdAt?: boolean
     userId?: boolean
     legalGuardianId?: boolean
+    healthInsuranceProviderId?: boolean
   }
 
-  export type PatientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "address" | "dni" | "cuil" | "dniProcessingNumber" | "birthday" | "phone" | "affiliateNumber" | "professionalActivity" | "healthInsuranceProvider" | "patientType" | "patientStatus" | "isActive" | "createdAt" | "userId" | "legalGuardianId", ExtArgs["result"]["patient"]>
+  export type PatientOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "address" | "dni" | "cuil" | "dniProcessingNumber" | "birthday" | "phone" | "affiliateNumber" | "professionalActivity" | "patientType" | "patientStatus" | "isActive" | "createdAt" | "userId" | "legalGuardianId" | "healthInsuranceProviderId", ExtArgs["result"]["patient"]>
   export type PatientInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Patient$userArgs<ExtArgs>
     legalGuardian?: boolean | Patient$legalGuardianArgs<ExtArgs>
     events?: boolean | Patient$eventsArgs<ExtArgs>
     admission?: boolean | Patient$admissionArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | Patient$healthInsuranceProviderArgs<ExtArgs>
     _count?: boolean | PatientCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PatientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Patient$userArgs<ExtArgs>
     legalGuardian?: boolean | Patient$legalGuardianArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | Patient$healthInsuranceProviderArgs<ExtArgs>
   }
   export type PatientIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Patient$userArgs<ExtArgs>
     legalGuardian?: boolean | Patient$legalGuardianArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | Patient$healthInsuranceProviderArgs<ExtArgs>
   }
 
   export type $PatientPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3742,6 +4110,7 @@ export namespace Prisma {
       legalGuardian: Prisma.$LegalGuardianPayload<ExtArgs> | null
       events: Prisma.$EventPayload<ExtArgs>[]
       admission: Prisma.$AdmissionPayload<ExtArgs> | null
+      healthInsuranceProvider: Prisma.$HealthInsuranceProviderPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -3755,13 +4124,13 @@ export namespace Prisma {
       phone: string
       affiliateNumber: string
       professionalActivity: string | null
-      healthInsuranceProvider: string | null
       patientType: $Enums.PatientType | null
       patientStatus: $Enums.PatientStatus | null
       isActive: boolean
       createdAt: Date
       userId: number | null
       legalGuardianId: number | null
+      healthInsuranceProviderId: number | null
     }, ExtArgs["result"]["patient"]>
     composites: {}
   }
@@ -4160,6 +4529,7 @@ export namespace Prisma {
     legalGuardian<T extends Patient$legalGuardianArgs<ExtArgs> = {}>(args?: Subset<T, Patient$legalGuardianArgs<ExtArgs>>): Prisma__LegalGuardianClient<$Result.GetResult<Prisma.$LegalGuardianPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     events<T extends Patient$eventsArgs<ExtArgs> = {}>(args?: Subset<T, Patient$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     admission<T extends Patient$admissionArgs<ExtArgs> = {}>(args?: Subset<T, Patient$admissionArgs<ExtArgs>>): Prisma__AdmissionClient<$Result.GetResult<Prisma.$AdmissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    healthInsuranceProvider<T extends Patient$healthInsuranceProviderArgs<ExtArgs> = {}>(args?: Subset<T, Patient$healthInsuranceProviderArgs<ExtArgs>>): Prisma__HealthInsuranceProviderClient<$Result.GetResult<Prisma.$HealthInsuranceProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4200,13 +4570,13 @@ export namespace Prisma {
     readonly phone: FieldRef<"Patient", 'String'>
     readonly affiliateNumber: FieldRef<"Patient", 'String'>
     readonly professionalActivity: FieldRef<"Patient", 'String'>
-    readonly healthInsuranceProvider: FieldRef<"Patient", 'String'>
     readonly patientType: FieldRef<"Patient", 'PatientType'>
     readonly patientStatus: FieldRef<"Patient", 'PatientStatus'>
     readonly isActive: FieldRef<"Patient", 'Boolean'>
     readonly createdAt: FieldRef<"Patient", 'DateTime'>
     readonly userId: FieldRef<"Patient", 'Int'>
     readonly legalGuardianId: FieldRef<"Patient", 'Int'>
+    readonly healthInsuranceProviderId: FieldRef<"Patient", 'Int'>
   }
     
 
@@ -4684,6 +5054,25 @@ export namespace Prisma {
   }
 
   /**
+   * Patient.healthInsuranceProvider
+   */
+  export type Patient$healthInsuranceProviderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceProvider
+     */
+    select?: HealthInsuranceProviderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceProvider
+     */
+    omit?: HealthInsuranceProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceProviderInclude<ExtArgs> | null
+    where?: HealthInsuranceProviderWhereInput
+  }
+
+  /**
    * Patient without action
    */
   export type PatientDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4726,6 +5115,8 @@ export namespace Prisma {
     id: number | null
     name: string | null
     description: string | null
+    contractor: string | null
+    subcontractor: string | null
     cuit: string | null
     address: string | null
     email: string | null
@@ -4737,6 +5128,8 @@ export namespace Prisma {
     id: number | null
     name: string | null
     description: string | null
+    contractor: string | null
+    subcontractor: string | null
     cuit: string | null
     address: string | null
     email: string | null
@@ -4748,6 +5141,8 @@ export namespace Prisma {
     id: number
     name: number
     description: number
+    contractor: number
+    subcontractor: number
     cuit: number
     address: number
     email: number
@@ -4769,6 +5164,8 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    contractor?: true
+    subcontractor?: true
     cuit?: true
     address?: true
     email?: true
@@ -4780,6 +5177,8 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    contractor?: true
+    subcontractor?: true
     cuit?: true
     address?: true
     email?: true
@@ -4791,6 +5190,8 @@ export namespace Prisma {
     id?: true
     name?: true
     description?: true
+    contractor?: true
+    subcontractor?: true
     cuit?: true
     address?: true
     email?: true
@@ -4889,6 +5290,8 @@ export namespace Prisma {
     id: number
     name: string
     description: string
+    contractor: string | null
+    subcontractor: string | null
     cuit: string
     address: string
     email: string
@@ -4919,17 +5322,26 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    contractor?: boolean
+    subcontractor?: boolean
     cuit?: boolean
     address?: boolean
     email?: boolean
     phone?: boolean
     contact?: boolean
+    authorizations?: boolean | HealthInsuranceProvider$authorizationsArgs<ExtArgs>
+    patients?: boolean | HealthInsuranceProvider$patientsArgs<ExtArgs>
+    legalGuardians?: boolean | HealthInsuranceProvider$legalGuardiansArgs<ExtArgs>
+    professionals?: boolean | HealthInsuranceProvider$professionalsArgs<ExtArgs>
+    _count?: boolean | HealthInsuranceProviderCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["healthInsuranceProvider"]>
 
   export type HealthInsuranceProviderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     name?: boolean
     description?: boolean
+    contractor?: boolean
+    subcontractor?: boolean
     cuit?: boolean
     address?: boolean
     email?: boolean
@@ -4941,6 +5353,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    contractor?: boolean
+    subcontractor?: boolean
     cuit?: boolean
     address?: boolean
     email?: boolean
@@ -4952,6 +5366,8 @@ export namespace Prisma {
     id?: boolean
     name?: boolean
     description?: boolean
+    contractor?: boolean
+    subcontractor?: boolean
     cuit?: boolean
     address?: boolean
     email?: boolean
@@ -4959,15 +5375,31 @@ export namespace Prisma {
     contact?: boolean
   }
 
-  export type HealthInsuranceProviderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "cuit" | "address" | "email" | "phone" | "contact", ExtArgs["result"]["healthInsuranceProvider"]>
+  export type HealthInsuranceProviderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "contractor" | "subcontractor" | "cuit" | "address" | "email" | "phone" | "contact", ExtArgs["result"]["healthInsuranceProvider"]>
+  export type HealthInsuranceProviderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    authorizations?: boolean | HealthInsuranceProvider$authorizationsArgs<ExtArgs>
+    patients?: boolean | HealthInsuranceProvider$patientsArgs<ExtArgs>
+    legalGuardians?: boolean | HealthInsuranceProvider$legalGuardiansArgs<ExtArgs>
+    professionals?: boolean | HealthInsuranceProvider$professionalsArgs<ExtArgs>
+    _count?: boolean | HealthInsuranceProviderCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type HealthInsuranceProviderIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type HealthInsuranceProviderIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $HealthInsuranceProviderPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "HealthInsuranceProvider"
-    objects: {}
+    objects: {
+      authorizations: Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>[]
+      patients: Prisma.$PatientPayload<ExtArgs>[]
+      legalGuardians: Prisma.$LegalGuardianPayload<ExtArgs>[]
+      professionals: Prisma.$ProfessionalPayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: number
       name: string
       description: string
+      contractor: string | null
+      subcontractor: string | null
       cuit: string
       address: string
       email: string
@@ -5367,6 +5799,10 @@ export namespace Prisma {
    */
   export interface Prisma__HealthInsuranceProviderClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    authorizations<T extends HealthInsuranceProvider$authorizationsArgs<ExtArgs> = {}>(args?: Subset<T, HealthInsuranceProvider$authorizationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    patients<T extends HealthInsuranceProvider$patientsArgs<ExtArgs> = {}>(args?: Subset<T, HealthInsuranceProvider$patientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    legalGuardians<T extends HealthInsuranceProvider$legalGuardiansArgs<ExtArgs> = {}>(args?: Subset<T, HealthInsuranceProvider$legalGuardiansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LegalGuardianPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    professionals<T extends HealthInsuranceProvider$professionalsArgs<ExtArgs> = {}>(args?: Subset<T, HealthInsuranceProvider$professionalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfessionalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5399,6 +5835,8 @@ export namespace Prisma {
     readonly id: FieldRef<"HealthInsuranceProvider", 'Int'>
     readonly name: FieldRef<"HealthInsuranceProvider", 'String'>
     readonly description: FieldRef<"HealthInsuranceProvider", 'String'>
+    readonly contractor: FieldRef<"HealthInsuranceProvider", 'String'>
+    readonly subcontractor: FieldRef<"HealthInsuranceProvider", 'String'>
     readonly cuit: FieldRef<"HealthInsuranceProvider", 'String'>
     readonly address: FieldRef<"HealthInsuranceProvider", 'String'>
     readonly email: FieldRef<"HealthInsuranceProvider", 'String'>
@@ -5421,6 +5859,10 @@ export namespace Prisma {
      */
     omit?: HealthInsuranceProviderOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceProviderInclude<ExtArgs> | null
+    /**
      * Filter, which HealthInsuranceProvider to fetch.
      */
     where: HealthInsuranceProviderWhereUniqueInput
@@ -5439,6 +5881,10 @@ export namespace Prisma {
      */
     omit?: HealthInsuranceProviderOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceProviderInclude<ExtArgs> | null
+    /**
      * Filter, which HealthInsuranceProvider to fetch.
      */
     where: HealthInsuranceProviderWhereUniqueInput
@@ -5456,6 +5902,10 @@ export namespace Prisma {
      * Omit specific fields from the HealthInsuranceProvider
      */
     omit?: HealthInsuranceProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceProviderInclude<ExtArgs> | null
     /**
      * Filter, which HealthInsuranceProvider to fetch.
      */
@@ -5505,6 +5955,10 @@ export namespace Prisma {
      */
     omit?: HealthInsuranceProviderOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceProviderInclude<ExtArgs> | null
+    /**
      * Filter, which HealthInsuranceProvider to fetch.
      */
     where?: HealthInsuranceProviderWhereInput
@@ -5553,6 +6007,10 @@ export namespace Prisma {
      */
     omit?: HealthInsuranceProviderOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceProviderInclude<ExtArgs> | null
+    /**
      * Filter, which HealthInsuranceProviders to fetch.
      */
     where?: HealthInsuranceProviderWhereInput
@@ -5595,6 +6053,10 @@ export namespace Prisma {
      * Omit specific fields from the HealthInsuranceProvider
      */
     omit?: HealthInsuranceProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceProviderInclude<ExtArgs> | null
     /**
      * The data needed to create a HealthInsuranceProvider.
      */
@@ -5643,6 +6105,10 @@ export namespace Prisma {
      * Omit specific fields from the HealthInsuranceProvider
      */
     omit?: HealthInsuranceProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceProviderInclude<ExtArgs> | null
     /**
      * The data needed to update a HealthInsuranceProvider.
      */
@@ -5710,6 +6176,10 @@ export namespace Prisma {
      */
     omit?: HealthInsuranceProviderOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceProviderInclude<ExtArgs> | null
+    /**
      * The filter to search for the HealthInsuranceProvider to update in case it exists.
      */
     where: HealthInsuranceProviderWhereUniqueInput
@@ -5736,6 +6206,10 @@ export namespace Prisma {
      */
     omit?: HealthInsuranceProviderOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceProviderInclude<ExtArgs> | null
+    /**
      * Filter which HealthInsuranceProvider to delete.
      */
     where: HealthInsuranceProviderWhereUniqueInput
@@ -5756,6 +6230,102 @@ export namespace Prisma {
   }
 
   /**
+   * HealthInsuranceProvider.authorizations
+   */
+  export type HealthInsuranceProvider$authorizationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceAuthorization
+     */
+    select?: HealthInsuranceAuthorizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceAuthorization
+     */
+    omit?: HealthInsuranceAuthorizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceAuthorizationInclude<ExtArgs> | null
+    where?: HealthInsuranceAuthorizationWhereInput
+    orderBy?: HealthInsuranceAuthorizationOrderByWithRelationInput | HealthInsuranceAuthorizationOrderByWithRelationInput[]
+    cursor?: HealthInsuranceAuthorizationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: HealthInsuranceAuthorizationScalarFieldEnum | HealthInsuranceAuthorizationScalarFieldEnum[]
+  }
+
+  /**
+   * HealthInsuranceProvider.patients
+   */
+  export type HealthInsuranceProvider$patientsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Patient
+     */
+    select?: PatientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Patient
+     */
+    omit?: PatientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PatientInclude<ExtArgs> | null
+    where?: PatientWhereInput
+    orderBy?: PatientOrderByWithRelationInput | PatientOrderByWithRelationInput[]
+    cursor?: PatientWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PatientScalarFieldEnum | PatientScalarFieldEnum[]
+  }
+
+  /**
+   * HealthInsuranceProvider.legalGuardians
+   */
+  export type HealthInsuranceProvider$legalGuardiansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalGuardian
+     */
+    select?: LegalGuardianSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalGuardian
+     */
+    omit?: LegalGuardianOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalGuardianInclude<ExtArgs> | null
+    where?: LegalGuardianWhereInput
+    orderBy?: LegalGuardianOrderByWithRelationInput | LegalGuardianOrderByWithRelationInput[]
+    cursor?: LegalGuardianWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LegalGuardianScalarFieldEnum | LegalGuardianScalarFieldEnum[]
+  }
+
+  /**
+   * HealthInsuranceProvider.professionals
+   */
+  export type HealthInsuranceProvider$professionalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Professional
+     */
+    select?: ProfessionalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Professional
+     */
+    omit?: ProfessionalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalInclude<ExtArgs> | null
+    where?: ProfessionalWhereInput
+    orderBy?: ProfessionalOrderByWithRelationInput | ProfessionalOrderByWithRelationInput[]
+    cursor?: ProfessionalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProfessionalScalarFieldEnum | ProfessionalScalarFieldEnum[]
+  }
+
+  /**
    * HealthInsuranceProvider without action
    */
   export type HealthInsuranceProviderDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5767,6 +6337,1144 @@ export namespace Prisma {
      * Omit specific fields from the HealthInsuranceProvider
      */
     omit?: HealthInsuranceProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceProviderInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model HealthInsuranceAuthorization
+   */
+
+  export type AggregateHealthInsuranceAuthorization = {
+    _count: HealthInsuranceAuthorizationCountAggregateOutputType | null
+    _avg: HealthInsuranceAuthorizationAvgAggregateOutputType | null
+    _sum: HealthInsuranceAuthorizationSumAggregateOutputType | null
+    _min: HealthInsuranceAuthorizationMinAggregateOutputType | null
+    _max: HealthInsuranceAuthorizationMaxAggregateOutputType | null
+  }
+
+  export type HealthInsuranceAuthorizationAvgAggregateOutputType = {
+    id: number | null
+    healthInsuranceProviderId: number | null
+    admissionId: number | null
+  }
+
+  export type HealthInsuranceAuthorizationSumAggregateOutputType = {
+    id: number | null
+    healthInsuranceProviderId: number | null
+    admissionId: number | null
+  }
+
+  export type HealthInsuranceAuthorizationMinAggregateOutputType = {
+    id: number | null
+    healthInsuranceProviderId: number | null
+    admissionId: number | null
+    service: $Enums.CoverageService | null
+    periodFrom: Date | null
+    periodTo: Date | null
+    authorizedAt: Date | null
+  }
+
+  export type HealthInsuranceAuthorizationMaxAggregateOutputType = {
+    id: number | null
+    healthInsuranceProviderId: number | null
+    admissionId: number | null
+    service: $Enums.CoverageService | null
+    periodFrom: Date | null
+    periodTo: Date | null
+    authorizedAt: Date | null
+  }
+
+  export type HealthInsuranceAuthorizationCountAggregateOutputType = {
+    id: number
+    healthInsuranceProviderId: number
+    admissionId: number
+    service: number
+    periodFrom: number
+    periodTo: number
+    authorizedAt: number
+    _all: number
+  }
+
+
+  export type HealthInsuranceAuthorizationAvgAggregateInputType = {
+    id?: true
+    healthInsuranceProviderId?: true
+    admissionId?: true
+  }
+
+  export type HealthInsuranceAuthorizationSumAggregateInputType = {
+    id?: true
+    healthInsuranceProviderId?: true
+    admissionId?: true
+  }
+
+  export type HealthInsuranceAuthorizationMinAggregateInputType = {
+    id?: true
+    healthInsuranceProviderId?: true
+    admissionId?: true
+    service?: true
+    periodFrom?: true
+    periodTo?: true
+    authorizedAt?: true
+  }
+
+  export type HealthInsuranceAuthorizationMaxAggregateInputType = {
+    id?: true
+    healthInsuranceProviderId?: true
+    admissionId?: true
+    service?: true
+    periodFrom?: true
+    periodTo?: true
+    authorizedAt?: true
+  }
+
+  export type HealthInsuranceAuthorizationCountAggregateInputType = {
+    id?: true
+    healthInsuranceProviderId?: true
+    admissionId?: true
+    service?: true
+    periodFrom?: true
+    periodTo?: true
+    authorizedAt?: true
+    _all?: true
+  }
+
+  export type HealthInsuranceAuthorizationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HealthInsuranceAuthorization to aggregate.
+     */
+    where?: HealthInsuranceAuthorizationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of HealthInsuranceAuthorizations to fetch.
+     */
+    orderBy?: HealthInsuranceAuthorizationOrderByWithRelationInput | HealthInsuranceAuthorizationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: HealthInsuranceAuthorizationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` HealthInsuranceAuthorizations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` HealthInsuranceAuthorizations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned HealthInsuranceAuthorizations
+    **/
+    _count?: true | HealthInsuranceAuthorizationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: HealthInsuranceAuthorizationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: HealthInsuranceAuthorizationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: HealthInsuranceAuthorizationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: HealthInsuranceAuthorizationMaxAggregateInputType
+  }
+
+  export type GetHealthInsuranceAuthorizationAggregateType<T extends HealthInsuranceAuthorizationAggregateArgs> = {
+        [P in keyof T & keyof AggregateHealthInsuranceAuthorization]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateHealthInsuranceAuthorization[P]>
+      : GetScalarType<T[P], AggregateHealthInsuranceAuthorization[P]>
+  }
+
+
+
+
+  export type HealthInsuranceAuthorizationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: HealthInsuranceAuthorizationWhereInput
+    orderBy?: HealthInsuranceAuthorizationOrderByWithAggregationInput | HealthInsuranceAuthorizationOrderByWithAggregationInput[]
+    by: HealthInsuranceAuthorizationScalarFieldEnum[] | HealthInsuranceAuthorizationScalarFieldEnum
+    having?: HealthInsuranceAuthorizationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: HealthInsuranceAuthorizationCountAggregateInputType | true
+    _avg?: HealthInsuranceAuthorizationAvgAggregateInputType
+    _sum?: HealthInsuranceAuthorizationSumAggregateInputType
+    _min?: HealthInsuranceAuthorizationMinAggregateInputType
+    _max?: HealthInsuranceAuthorizationMaxAggregateInputType
+  }
+
+  export type HealthInsuranceAuthorizationGroupByOutputType = {
+    id: number
+    healthInsuranceProviderId: number
+    admissionId: number
+    service: $Enums.CoverageService
+    periodFrom: Date
+    periodTo: Date
+    authorizedAt: Date
+    _count: HealthInsuranceAuthorizationCountAggregateOutputType | null
+    _avg: HealthInsuranceAuthorizationAvgAggregateOutputType | null
+    _sum: HealthInsuranceAuthorizationSumAggregateOutputType | null
+    _min: HealthInsuranceAuthorizationMinAggregateOutputType | null
+    _max: HealthInsuranceAuthorizationMaxAggregateOutputType | null
+  }
+
+  type GetHealthInsuranceAuthorizationGroupByPayload<T extends HealthInsuranceAuthorizationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<HealthInsuranceAuthorizationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof HealthInsuranceAuthorizationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], HealthInsuranceAuthorizationGroupByOutputType[P]>
+            : GetScalarType<T[P], HealthInsuranceAuthorizationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type HealthInsuranceAuthorizationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    healthInsuranceProviderId?: boolean
+    admissionId?: boolean
+    service?: boolean
+    periodFrom?: boolean
+    periodTo?: boolean
+    authorizedAt?: boolean
+    healthInsuranceProvider?: boolean | HealthInsuranceProviderDefaultArgs<ExtArgs>
+    admission?: boolean | AdmissionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["healthInsuranceAuthorization"]>
+
+  export type HealthInsuranceAuthorizationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    healthInsuranceProviderId?: boolean
+    admissionId?: boolean
+    service?: boolean
+    periodFrom?: boolean
+    periodTo?: boolean
+    authorizedAt?: boolean
+    healthInsuranceProvider?: boolean | HealthInsuranceProviderDefaultArgs<ExtArgs>
+    admission?: boolean | AdmissionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["healthInsuranceAuthorization"]>
+
+  export type HealthInsuranceAuthorizationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    healthInsuranceProviderId?: boolean
+    admissionId?: boolean
+    service?: boolean
+    periodFrom?: boolean
+    periodTo?: boolean
+    authorizedAt?: boolean
+    healthInsuranceProvider?: boolean | HealthInsuranceProviderDefaultArgs<ExtArgs>
+    admission?: boolean | AdmissionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["healthInsuranceAuthorization"]>
+
+  export type HealthInsuranceAuthorizationSelectScalar = {
+    id?: boolean
+    healthInsuranceProviderId?: boolean
+    admissionId?: boolean
+    service?: boolean
+    periodFrom?: boolean
+    periodTo?: boolean
+    authorizedAt?: boolean
+  }
+
+  export type HealthInsuranceAuthorizationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "healthInsuranceProviderId" | "admissionId" | "service" | "periodFrom" | "periodTo" | "authorizedAt", ExtArgs["result"]["healthInsuranceAuthorization"]>
+  export type HealthInsuranceAuthorizationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    healthInsuranceProvider?: boolean | HealthInsuranceProviderDefaultArgs<ExtArgs>
+    admission?: boolean | AdmissionDefaultArgs<ExtArgs>
+  }
+  export type HealthInsuranceAuthorizationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    healthInsuranceProvider?: boolean | HealthInsuranceProviderDefaultArgs<ExtArgs>
+    admission?: boolean | AdmissionDefaultArgs<ExtArgs>
+  }
+  export type HealthInsuranceAuthorizationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    healthInsuranceProvider?: boolean | HealthInsuranceProviderDefaultArgs<ExtArgs>
+    admission?: boolean | AdmissionDefaultArgs<ExtArgs>
+  }
+
+  export type $HealthInsuranceAuthorizationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "HealthInsuranceAuthorization"
+    objects: {
+      healthInsuranceProvider: Prisma.$HealthInsuranceProviderPayload<ExtArgs>
+      admission: Prisma.$AdmissionPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      healthInsuranceProviderId: number
+      admissionId: number
+      service: $Enums.CoverageService
+      periodFrom: Date
+      periodTo: Date
+      authorizedAt: Date
+    }, ExtArgs["result"]["healthInsuranceAuthorization"]>
+    composites: {}
+  }
+
+  type HealthInsuranceAuthorizationGetPayload<S extends boolean | null | undefined | HealthInsuranceAuthorizationDefaultArgs> = $Result.GetResult<Prisma.$HealthInsuranceAuthorizationPayload, S>
+
+  type HealthInsuranceAuthorizationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<HealthInsuranceAuthorizationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: HealthInsuranceAuthorizationCountAggregateInputType | true
+    }
+
+  export interface HealthInsuranceAuthorizationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['HealthInsuranceAuthorization'], meta: { name: 'HealthInsuranceAuthorization' } }
+    /**
+     * Find zero or one HealthInsuranceAuthorization that matches the filter.
+     * @param {HealthInsuranceAuthorizationFindUniqueArgs} args - Arguments to find a HealthInsuranceAuthorization
+     * @example
+     * // Get one HealthInsuranceAuthorization
+     * const healthInsuranceAuthorization = await prisma.healthInsuranceAuthorization.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends HealthInsuranceAuthorizationFindUniqueArgs>(args: SelectSubset<T, HealthInsuranceAuthorizationFindUniqueArgs<ExtArgs>>): Prisma__HealthInsuranceAuthorizationClient<$Result.GetResult<Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one HealthInsuranceAuthorization that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {HealthInsuranceAuthorizationFindUniqueOrThrowArgs} args - Arguments to find a HealthInsuranceAuthorization
+     * @example
+     * // Get one HealthInsuranceAuthorization
+     * const healthInsuranceAuthorization = await prisma.healthInsuranceAuthorization.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends HealthInsuranceAuthorizationFindUniqueOrThrowArgs>(args: SelectSubset<T, HealthInsuranceAuthorizationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__HealthInsuranceAuthorizationClient<$Result.GetResult<Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HealthInsuranceAuthorization that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HealthInsuranceAuthorizationFindFirstArgs} args - Arguments to find a HealthInsuranceAuthorization
+     * @example
+     * // Get one HealthInsuranceAuthorization
+     * const healthInsuranceAuthorization = await prisma.healthInsuranceAuthorization.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends HealthInsuranceAuthorizationFindFirstArgs>(args?: SelectSubset<T, HealthInsuranceAuthorizationFindFirstArgs<ExtArgs>>): Prisma__HealthInsuranceAuthorizationClient<$Result.GetResult<Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first HealthInsuranceAuthorization that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HealthInsuranceAuthorizationFindFirstOrThrowArgs} args - Arguments to find a HealthInsuranceAuthorization
+     * @example
+     * // Get one HealthInsuranceAuthorization
+     * const healthInsuranceAuthorization = await prisma.healthInsuranceAuthorization.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends HealthInsuranceAuthorizationFindFirstOrThrowArgs>(args?: SelectSubset<T, HealthInsuranceAuthorizationFindFirstOrThrowArgs<ExtArgs>>): Prisma__HealthInsuranceAuthorizationClient<$Result.GetResult<Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more HealthInsuranceAuthorizations that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HealthInsuranceAuthorizationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all HealthInsuranceAuthorizations
+     * const healthInsuranceAuthorizations = await prisma.healthInsuranceAuthorization.findMany()
+     * 
+     * // Get first 10 HealthInsuranceAuthorizations
+     * const healthInsuranceAuthorizations = await prisma.healthInsuranceAuthorization.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const healthInsuranceAuthorizationWithIdOnly = await prisma.healthInsuranceAuthorization.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends HealthInsuranceAuthorizationFindManyArgs>(args?: SelectSubset<T, HealthInsuranceAuthorizationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a HealthInsuranceAuthorization.
+     * @param {HealthInsuranceAuthorizationCreateArgs} args - Arguments to create a HealthInsuranceAuthorization.
+     * @example
+     * // Create one HealthInsuranceAuthorization
+     * const HealthInsuranceAuthorization = await prisma.healthInsuranceAuthorization.create({
+     *   data: {
+     *     // ... data to create a HealthInsuranceAuthorization
+     *   }
+     * })
+     * 
+     */
+    create<T extends HealthInsuranceAuthorizationCreateArgs>(args: SelectSubset<T, HealthInsuranceAuthorizationCreateArgs<ExtArgs>>): Prisma__HealthInsuranceAuthorizationClient<$Result.GetResult<Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many HealthInsuranceAuthorizations.
+     * @param {HealthInsuranceAuthorizationCreateManyArgs} args - Arguments to create many HealthInsuranceAuthorizations.
+     * @example
+     * // Create many HealthInsuranceAuthorizations
+     * const healthInsuranceAuthorization = await prisma.healthInsuranceAuthorization.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends HealthInsuranceAuthorizationCreateManyArgs>(args?: SelectSubset<T, HealthInsuranceAuthorizationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many HealthInsuranceAuthorizations and returns the data saved in the database.
+     * @param {HealthInsuranceAuthorizationCreateManyAndReturnArgs} args - Arguments to create many HealthInsuranceAuthorizations.
+     * @example
+     * // Create many HealthInsuranceAuthorizations
+     * const healthInsuranceAuthorization = await prisma.healthInsuranceAuthorization.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many HealthInsuranceAuthorizations and only return the `id`
+     * const healthInsuranceAuthorizationWithIdOnly = await prisma.healthInsuranceAuthorization.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends HealthInsuranceAuthorizationCreateManyAndReturnArgs>(args?: SelectSubset<T, HealthInsuranceAuthorizationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a HealthInsuranceAuthorization.
+     * @param {HealthInsuranceAuthorizationDeleteArgs} args - Arguments to delete one HealthInsuranceAuthorization.
+     * @example
+     * // Delete one HealthInsuranceAuthorization
+     * const HealthInsuranceAuthorization = await prisma.healthInsuranceAuthorization.delete({
+     *   where: {
+     *     // ... filter to delete one HealthInsuranceAuthorization
+     *   }
+     * })
+     * 
+     */
+    delete<T extends HealthInsuranceAuthorizationDeleteArgs>(args: SelectSubset<T, HealthInsuranceAuthorizationDeleteArgs<ExtArgs>>): Prisma__HealthInsuranceAuthorizationClient<$Result.GetResult<Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one HealthInsuranceAuthorization.
+     * @param {HealthInsuranceAuthorizationUpdateArgs} args - Arguments to update one HealthInsuranceAuthorization.
+     * @example
+     * // Update one HealthInsuranceAuthorization
+     * const healthInsuranceAuthorization = await prisma.healthInsuranceAuthorization.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends HealthInsuranceAuthorizationUpdateArgs>(args: SelectSubset<T, HealthInsuranceAuthorizationUpdateArgs<ExtArgs>>): Prisma__HealthInsuranceAuthorizationClient<$Result.GetResult<Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more HealthInsuranceAuthorizations.
+     * @param {HealthInsuranceAuthorizationDeleteManyArgs} args - Arguments to filter HealthInsuranceAuthorizations to delete.
+     * @example
+     * // Delete a few HealthInsuranceAuthorizations
+     * const { count } = await prisma.healthInsuranceAuthorization.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends HealthInsuranceAuthorizationDeleteManyArgs>(args?: SelectSubset<T, HealthInsuranceAuthorizationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more HealthInsuranceAuthorizations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HealthInsuranceAuthorizationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many HealthInsuranceAuthorizations
+     * const healthInsuranceAuthorization = await prisma.healthInsuranceAuthorization.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends HealthInsuranceAuthorizationUpdateManyArgs>(args: SelectSubset<T, HealthInsuranceAuthorizationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more HealthInsuranceAuthorizations and returns the data updated in the database.
+     * @param {HealthInsuranceAuthorizationUpdateManyAndReturnArgs} args - Arguments to update many HealthInsuranceAuthorizations.
+     * @example
+     * // Update many HealthInsuranceAuthorizations
+     * const healthInsuranceAuthorization = await prisma.healthInsuranceAuthorization.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more HealthInsuranceAuthorizations and only return the `id`
+     * const healthInsuranceAuthorizationWithIdOnly = await prisma.healthInsuranceAuthorization.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends HealthInsuranceAuthorizationUpdateManyAndReturnArgs>(args: SelectSubset<T, HealthInsuranceAuthorizationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one HealthInsuranceAuthorization.
+     * @param {HealthInsuranceAuthorizationUpsertArgs} args - Arguments to update or create a HealthInsuranceAuthorization.
+     * @example
+     * // Update or create a HealthInsuranceAuthorization
+     * const healthInsuranceAuthorization = await prisma.healthInsuranceAuthorization.upsert({
+     *   create: {
+     *     // ... data to create a HealthInsuranceAuthorization
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the HealthInsuranceAuthorization we want to update
+     *   }
+     * })
+     */
+    upsert<T extends HealthInsuranceAuthorizationUpsertArgs>(args: SelectSubset<T, HealthInsuranceAuthorizationUpsertArgs<ExtArgs>>): Prisma__HealthInsuranceAuthorizationClient<$Result.GetResult<Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of HealthInsuranceAuthorizations.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HealthInsuranceAuthorizationCountArgs} args - Arguments to filter HealthInsuranceAuthorizations to count.
+     * @example
+     * // Count the number of HealthInsuranceAuthorizations
+     * const count = await prisma.healthInsuranceAuthorization.count({
+     *   where: {
+     *     // ... the filter for the HealthInsuranceAuthorizations we want to count
+     *   }
+     * })
+    **/
+    count<T extends HealthInsuranceAuthorizationCountArgs>(
+      args?: Subset<T, HealthInsuranceAuthorizationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], HealthInsuranceAuthorizationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a HealthInsuranceAuthorization.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HealthInsuranceAuthorizationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends HealthInsuranceAuthorizationAggregateArgs>(args: Subset<T, HealthInsuranceAuthorizationAggregateArgs>): Prisma.PrismaPromise<GetHealthInsuranceAuthorizationAggregateType<T>>
+
+    /**
+     * Group by HealthInsuranceAuthorization.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {HealthInsuranceAuthorizationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends HealthInsuranceAuthorizationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: HealthInsuranceAuthorizationGroupByArgs['orderBy'] }
+        : { orderBy?: HealthInsuranceAuthorizationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, HealthInsuranceAuthorizationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetHealthInsuranceAuthorizationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the HealthInsuranceAuthorization model
+   */
+  readonly fields: HealthInsuranceAuthorizationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for HealthInsuranceAuthorization.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__HealthInsuranceAuthorizationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    healthInsuranceProvider<T extends HealthInsuranceProviderDefaultArgs<ExtArgs> = {}>(args?: Subset<T, HealthInsuranceProviderDefaultArgs<ExtArgs>>): Prisma__HealthInsuranceProviderClient<$Result.GetResult<Prisma.$HealthInsuranceProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    admission<T extends AdmissionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AdmissionDefaultArgs<ExtArgs>>): Prisma__AdmissionClient<$Result.GetResult<Prisma.$AdmissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the HealthInsuranceAuthorization model
+   */
+  interface HealthInsuranceAuthorizationFieldRefs {
+    readonly id: FieldRef<"HealthInsuranceAuthorization", 'Int'>
+    readonly healthInsuranceProviderId: FieldRef<"HealthInsuranceAuthorization", 'Int'>
+    readonly admissionId: FieldRef<"HealthInsuranceAuthorization", 'Int'>
+    readonly service: FieldRef<"HealthInsuranceAuthorization", 'CoverageService'>
+    readonly periodFrom: FieldRef<"HealthInsuranceAuthorization", 'DateTime'>
+    readonly periodTo: FieldRef<"HealthInsuranceAuthorization", 'DateTime'>
+    readonly authorizedAt: FieldRef<"HealthInsuranceAuthorization", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * HealthInsuranceAuthorization findUnique
+   */
+  export type HealthInsuranceAuthorizationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceAuthorization
+     */
+    select?: HealthInsuranceAuthorizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceAuthorization
+     */
+    omit?: HealthInsuranceAuthorizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceAuthorizationInclude<ExtArgs> | null
+    /**
+     * Filter, which HealthInsuranceAuthorization to fetch.
+     */
+    where: HealthInsuranceAuthorizationWhereUniqueInput
+  }
+
+  /**
+   * HealthInsuranceAuthorization findUniqueOrThrow
+   */
+  export type HealthInsuranceAuthorizationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceAuthorization
+     */
+    select?: HealthInsuranceAuthorizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceAuthorization
+     */
+    omit?: HealthInsuranceAuthorizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceAuthorizationInclude<ExtArgs> | null
+    /**
+     * Filter, which HealthInsuranceAuthorization to fetch.
+     */
+    where: HealthInsuranceAuthorizationWhereUniqueInput
+  }
+
+  /**
+   * HealthInsuranceAuthorization findFirst
+   */
+  export type HealthInsuranceAuthorizationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceAuthorization
+     */
+    select?: HealthInsuranceAuthorizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceAuthorization
+     */
+    omit?: HealthInsuranceAuthorizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceAuthorizationInclude<ExtArgs> | null
+    /**
+     * Filter, which HealthInsuranceAuthorization to fetch.
+     */
+    where?: HealthInsuranceAuthorizationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of HealthInsuranceAuthorizations to fetch.
+     */
+    orderBy?: HealthInsuranceAuthorizationOrderByWithRelationInput | HealthInsuranceAuthorizationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for HealthInsuranceAuthorizations.
+     */
+    cursor?: HealthInsuranceAuthorizationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` HealthInsuranceAuthorizations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` HealthInsuranceAuthorizations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of HealthInsuranceAuthorizations.
+     */
+    distinct?: HealthInsuranceAuthorizationScalarFieldEnum | HealthInsuranceAuthorizationScalarFieldEnum[]
+  }
+
+  /**
+   * HealthInsuranceAuthorization findFirstOrThrow
+   */
+  export type HealthInsuranceAuthorizationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceAuthorization
+     */
+    select?: HealthInsuranceAuthorizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceAuthorization
+     */
+    omit?: HealthInsuranceAuthorizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceAuthorizationInclude<ExtArgs> | null
+    /**
+     * Filter, which HealthInsuranceAuthorization to fetch.
+     */
+    where?: HealthInsuranceAuthorizationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of HealthInsuranceAuthorizations to fetch.
+     */
+    orderBy?: HealthInsuranceAuthorizationOrderByWithRelationInput | HealthInsuranceAuthorizationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for HealthInsuranceAuthorizations.
+     */
+    cursor?: HealthInsuranceAuthorizationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` HealthInsuranceAuthorizations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` HealthInsuranceAuthorizations.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of HealthInsuranceAuthorizations.
+     */
+    distinct?: HealthInsuranceAuthorizationScalarFieldEnum | HealthInsuranceAuthorizationScalarFieldEnum[]
+  }
+
+  /**
+   * HealthInsuranceAuthorization findMany
+   */
+  export type HealthInsuranceAuthorizationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceAuthorization
+     */
+    select?: HealthInsuranceAuthorizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceAuthorization
+     */
+    omit?: HealthInsuranceAuthorizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceAuthorizationInclude<ExtArgs> | null
+    /**
+     * Filter, which HealthInsuranceAuthorizations to fetch.
+     */
+    where?: HealthInsuranceAuthorizationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of HealthInsuranceAuthorizations to fetch.
+     */
+    orderBy?: HealthInsuranceAuthorizationOrderByWithRelationInput | HealthInsuranceAuthorizationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing HealthInsuranceAuthorizations.
+     */
+    cursor?: HealthInsuranceAuthorizationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` HealthInsuranceAuthorizations from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` HealthInsuranceAuthorizations.
+     */
+    skip?: number
+    distinct?: HealthInsuranceAuthorizationScalarFieldEnum | HealthInsuranceAuthorizationScalarFieldEnum[]
+  }
+
+  /**
+   * HealthInsuranceAuthorization create
+   */
+  export type HealthInsuranceAuthorizationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceAuthorization
+     */
+    select?: HealthInsuranceAuthorizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceAuthorization
+     */
+    omit?: HealthInsuranceAuthorizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceAuthorizationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a HealthInsuranceAuthorization.
+     */
+    data: XOR<HealthInsuranceAuthorizationCreateInput, HealthInsuranceAuthorizationUncheckedCreateInput>
+  }
+
+  /**
+   * HealthInsuranceAuthorization createMany
+   */
+  export type HealthInsuranceAuthorizationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many HealthInsuranceAuthorizations.
+     */
+    data: HealthInsuranceAuthorizationCreateManyInput | HealthInsuranceAuthorizationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * HealthInsuranceAuthorization createManyAndReturn
+   */
+  export type HealthInsuranceAuthorizationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceAuthorization
+     */
+    select?: HealthInsuranceAuthorizationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceAuthorization
+     */
+    omit?: HealthInsuranceAuthorizationOmit<ExtArgs> | null
+    /**
+     * The data used to create many HealthInsuranceAuthorizations.
+     */
+    data: HealthInsuranceAuthorizationCreateManyInput | HealthInsuranceAuthorizationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceAuthorizationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * HealthInsuranceAuthorization update
+   */
+  export type HealthInsuranceAuthorizationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceAuthorization
+     */
+    select?: HealthInsuranceAuthorizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceAuthorization
+     */
+    omit?: HealthInsuranceAuthorizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceAuthorizationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a HealthInsuranceAuthorization.
+     */
+    data: XOR<HealthInsuranceAuthorizationUpdateInput, HealthInsuranceAuthorizationUncheckedUpdateInput>
+    /**
+     * Choose, which HealthInsuranceAuthorization to update.
+     */
+    where: HealthInsuranceAuthorizationWhereUniqueInput
+  }
+
+  /**
+   * HealthInsuranceAuthorization updateMany
+   */
+  export type HealthInsuranceAuthorizationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update HealthInsuranceAuthorizations.
+     */
+    data: XOR<HealthInsuranceAuthorizationUpdateManyMutationInput, HealthInsuranceAuthorizationUncheckedUpdateManyInput>
+    /**
+     * Filter which HealthInsuranceAuthorizations to update
+     */
+    where?: HealthInsuranceAuthorizationWhereInput
+    /**
+     * Limit how many HealthInsuranceAuthorizations to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * HealthInsuranceAuthorization updateManyAndReturn
+   */
+  export type HealthInsuranceAuthorizationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceAuthorization
+     */
+    select?: HealthInsuranceAuthorizationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceAuthorization
+     */
+    omit?: HealthInsuranceAuthorizationOmit<ExtArgs> | null
+    /**
+     * The data used to update HealthInsuranceAuthorizations.
+     */
+    data: XOR<HealthInsuranceAuthorizationUpdateManyMutationInput, HealthInsuranceAuthorizationUncheckedUpdateManyInput>
+    /**
+     * Filter which HealthInsuranceAuthorizations to update
+     */
+    where?: HealthInsuranceAuthorizationWhereInput
+    /**
+     * Limit how many HealthInsuranceAuthorizations to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceAuthorizationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * HealthInsuranceAuthorization upsert
+   */
+  export type HealthInsuranceAuthorizationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceAuthorization
+     */
+    select?: HealthInsuranceAuthorizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceAuthorization
+     */
+    omit?: HealthInsuranceAuthorizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceAuthorizationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the HealthInsuranceAuthorization to update in case it exists.
+     */
+    where: HealthInsuranceAuthorizationWhereUniqueInput
+    /**
+     * In case the HealthInsuranceAuthorization found by the `where` argument doesn't exist, create a new HealthInsuranceAuthorization with this data.
+     */
+    create: XOR<HealthInsuranceAuthorizationCreateInput, HealthInsuranceAuthorizationUncheckedCreateInput>
+    /**
+     * In case the HealthInsuranceAuthorization was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<HealthInsuranceAuthorizationUpdateInput, HealthInsuranceAuthorizationUncheckedUpdateInput>
+  }
+
+  /**
+   * HealthInsuranceAuthorization delete
+   */
+  export type HealthInsuranceAuthorizationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceAuthorization
+     */
+    select?: HealthInsuranceAuthorizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceAuthorization
+     */
+    omit?: HealthInsuranceAuthorizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceAuthorizationInclude<ExtArgs> | null
+    /**
+     * Filter which HealthInsuranceAuthorization to delete.
+     */
+    where: HealthInsuranceAuthorizationWhereUniqueInput
+  }
+
+  /**
+   * HealthInsuranceAuthorization deleteMany
+   */
+  export type HealthInsuranceAuthorizationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which HealthInsuranceAuthorizations to delete
+     */
+    where?: HealthInsuranceAuthorizationWhereInput
+    /**
+     * Limit how many HealthInsuranceAuthorizations to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * HealthInsuranceAuthorization without action
+   */
+  export type HealthInsuranceAuthorizationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceAuthorization
+     */
+    select?: HealthInsuranceAuthorizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceAuthorization
+     */
+    omit?: HealthInsuranceAuthorizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceAuthorizationInclude<ExtArgs> | null
   }
 
 
@@ -5785,11 +7493,13 @@ export namespace Prisma {
   export type LegalGuardianAvgAggregateOutputType = {
     id: number | null
     userId: number | null
+    healthInsuranceProviderId: number | null
   }
 
   export type LegalGuardianSumAggregateOutputType = {
     id: number | null
     userId: number | null
+    healthInsuranceProviderId: number | null
   }
 
   export type LegalGuardianMinAggregateOutputType = {
@@ -5803,12 +7513,12 @@ export namespace Prisma {
     birthday: Date | null
     phone: string | null
     professionalActivity: string | null
-    healthInsuranceProvider: string | null
     legalGuardianType: $Enums.LegalGuardianType | null
     legalGuardianStatus: $Enums.LegalGuardianStatus | null
     isActive: boolean | null
     createdAt: Date | null
     userId: number | null
+    healthInsuranceProviderId: number | null
   }
 
   export type LegalGuardianMaxAggregateOutputType = {
@@ -5822,12 +7532,12 @@ export namespace Prisma {
     birthday: Date | null
     phone: string | null
     professionalActivity: string | null
-    healthInsuranceProvider: string | null
     legalGuardianType: $Enums.LegalGuardianType | null
     legalGuardianStatus: $Enums.LegalGuardianStatus | null
     isActive: boolean | null
     createdAt: Date | null
     userId: number | null
+    healthInsuranceProviderId: number | null
   }
 
   export type LegalGuardianCountAggregateOutputType = {
@@ -5841,12 +7551,12 @@ export namespace Prisma {
     birthday: number
     phone: number
     professionalActivity: number
-    healthInsuranceProvider: number
     legalGuardianType: number
     legalGuardianStatus: number
     isActive: number
     createdAt: number
     userId: number
+    healthInsuranceProviderId: number
     _all: number
   }
 
@@ -5854,11 +7564,13 @@ export namespace Prisma {
   export type LegalGuardianAvgAggregateInputType = {
     id?: true
     userId?: true
+    healthInsuranceProviderId?: true
   }
 
   export type LegalGuardianSumAggregateInputType = {
     id?: true
     userId?: true
+    healthInsuranceProviderId?: true
   }
 
   export type LegalGuardianMinAggregateInputType = {
@@ -5872,12 +7584,12 @@ export namespace Prisma {
     birthday?: true
     phone?: true
     professionalActivity?: true
-    healthInsuranceProvider?: true
     legalGuardianType?: true
     legalGuardianStatus?: true
     isActive?: true
     createdAt?: true
     userId?: true
+    healthInsuranceProviderId?: true
   }
 
   export type LegalGuardianMaxAggregateInputType = {
@@ -5891,12 +7603,12 @@ export namespace Prisma {
     birthday?: true
     phone?: true
     professionalActivity?: true
-    healthInsuranceProvider?: true
     legalGuardianType?: true
     legalGuardianStatus?: true
     isActive?: true
     createdAt?: true
     userId?: true
+    healthInsuranceProviderId?: true
   }
 
   export type LegalGuardianCountAggregateInputType = {
@@ -5910,12 +7622,12 @@ export namespace Prisma {
     birthday?: true
     phone?: true
     professionalActivity?: true
-    healthInsuranceProvider?: true
     legalGuardianType?: true
     legalGuardianStatus?: true
     isActive?: true
     createdAt?: true
     userId?: true
+    healthInsuranceProviderId?: true
     _all?: true
   }
 
@@ -6016,12 +7728,12 @@ export namespace Prisma {
     birthday: Date
     phone: string
     professionalActivity: string
-    healthInsuranceProvider: string | null
     legalGuardianType: $Enums.LegalGuardianType | null
     legalGuardianStatus: $Enums.LegalGuardianStatus | null
     isActive: boolean
     createdAt: Date
     userId: number | null
+    healthInsuranceProviderId: number | null
     _count: LegalGuardianCountAggregateOutputType | null
     _avg: LegalGuardianAvgAggregateOutputType | null
     _sum: LegalGuardianSumAggregateOutputType | null
@@ -6054,14 +7766,16 @@ export namespace Prisma {
     birthday?: boolean
     phone?: boolean
     professionalActivity?: boolean
-    healthInsuranceProvider?: boolean
     legalGuardianType?: boolean
     legalGuardianStatus?: boolean
     isActive?: boolean
     createdAt?: boolean
     userId?: boolean
+    healthInsuranceProviderId?: boolean
     user?: boolean | LegalGuardian$userArgs<ExtArgs>
     patients?: boolean | LegalGuardian$patientsArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | LegalGuardian$healthInsuranceProviderArgs<ExtArgs>
+    admissions?: boolean | LegalGuardian$admissionsArgs<ExtArgs>
     _count?: boolean | LegalGuardianCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["legalGuardian"]>
 
@@ -6076,13 +7790,14 @@ export namespace Prisma {
     birthday?: boolean
     phone?: boolean
     professionalActivity?: boolean
-    healthInsuranceProvider?: boolean
     legalGuardianType?: boolean
     legalGuardianStatus?: boolean
     isActive?: boolean
     createdAt?: boolean
     userId?: boolean
+    healthInsuranceProviderId?: boolean
     user?: boolean | LegalGuardian$userArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | LegalGuardian$healthInsuranceProviderArgs<ExtArgs>
   }, ExtArgs["result"]["legalGuardian"]>
 
   export type LegalGuardianSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6096,13 +7811,14 @@ export namespace Prisma {
     birthday?: boolean
     phone?: boolean
     professionalActivity?: boolean
-    healthInsuranceProvider?: boolean
     legalGuardianType?: boolean
     legalGuardianStatus?: boolean
     isActive?: boolean
     createdAt?: boolean
     userId?: boolean
+    healthInsuranceProviderId?: boolean
     user?: boolean | LegalGuardian$userArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | LegalGuardian$healthInsuranceProviderArgs<ExtArgs>
   }, ExtArgs["result"]["legalGuardian"]>
 
   export type LegalGuardianSelectScalar = {
@@ -6116,25 +7832,29 @@ export namespace Prisma {
     birthday?: boolean
     phone?: boolean
     professionalActivity?: boolean
-    healthInsuranceProvider?: boolean
     legalGuardianType?: boolean
     legalGuardianStatus?: boolean
     isActive?: boolean
     createdAt?: boolean
     userId?: boolean
+    healthInsuranceProviderId?: boolean
   }
 
-  export type LegalGuardianOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "address" | "dni" | "cuil" | "dniProcessingNumber" | "birthday" | "phone" | "professionalActivity" | "healthInsuranceProvider" | "legalGuardianType" | "legalGuardianStatus" | "isActive" | "createdAt" | "userId", ExtArgs["result"]["legalGuardian"]>
+  export type LegalGuardianOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "address" | "dni" | "cuil" | "dniProcessingNumber" | "birthday" | "phone" | "professionalActivity" | "legalGuardianType" | "legalGuardianStatus" | "isActive" | "createdAt" | "userId" | "healthInsuranceProviderId", ExtArgs["result"]["legalGuardian"]>
   export type LegalGuardianInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | LegalGuardian$userArgs<ExtArgs>
     patients?: boolean | LegalGuardian$patientsArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | LegalGuardian$healthInsuranceProviderArgs<ExtArgs>
+    admissions?: boolean | LegalGuardian$admissionsArgs<ExtArgs>
     _count?: boolean | LegalGuardianCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type LegalGuardianIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | LegalGuardian$userArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | LegalGuardian$healthInsuranceProviderArgs<ExtArgs>
   }
   export type LegalGuardianIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | LegalGuardian$userArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | LegalGuardian$healthInsuranceProviderArgs<ExtArgs>
   }
 
   export type $LegalGuardianPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6142,6 +7862,8 @@ export namespace Prisma {
     objects: {
       user: Prisma.$UserPayload<ExtArgs> | null
       patients: Prisma.$PatientPayload<ExtArgs>[]
+      healthInsuranceProvider: Prisma.$HealthInsuranceProviderPayload<ExtArgs> | null
+      admissions: Prisma.$AdmissionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -6154,12 +7876,12 @@ export namespace Prisma {
       birthday: Date
       phone: string
       professionalActivity: string
-      healthInsuranceProvider: string | null
       legalGuardianType: $Enums.LegalGuardianType | null
       legalGuardianStatus: $Enums.LegalGuardianStatus | null
       isActive: boolean
       createdAt: Date
       userId: number | null
+      healthInsuranceProviderId: number | null
     }, ExtArgs["result"]["legalGuardian"]>
     composites: {}
   }
@@ -6556,6 +8278,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends LegalGuardian$userArgs<ExtArgs> = {}>(args?: Subset<T, LegalGuardian$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     patients<T extends LegalGuardian$patientsArgs<ExtArgs> = {}>(args?: Subset<T, LegalGuardian$patientsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    healthInsuranceProvider<T extends LegalGuardian$healthInsuranceProviderArgs<ExtArgs> = {}>(args?: Subset<T, LegalGuardian$healthInsuranceProviderArgs<ExtArgs>>): Prisma__HealthInsuranceProviderClient<$Result.GetResult<Prisma.$HealthInsuranceProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    admissions<T extends LegalGuardian$admissionsArgs<ExtArgs> = {}>(args?: Subset<T, LegalGuardian$admissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6595,12 +8319,12 @@ export namespace Prisma {
     readonly birthday: FieldRef<"LegalGuardian", 'DateTime'>
     readonly phone: FieldRef<"LegalGuardian", 'String'>
     readonly professionalActivity: FieldRef<"LegalGuardian", 'String'>
-    readonly healthInsuranceProvider: FieldRef<"LegalGuardian", 'String'>
     readonly legalGuardianType: FieldRef<"LegalGuardian", 'LegalGuardianType'>
     readonly legalGuardianStatus: FieldRef<"LegalGuardian", 'LegalGuardianStatus'>
     readonly isActive: FieldRef<"LegalGuardian", 'Boolean'>
     readonly createdAt: FieldRef<"LegalGuardian", 'DateTime'>
     readonly userId: FieldRef<"LegalGuardian", 'Int'>
+    readonly healthInsuranceProviderId: FieldRef<"LegalGuardian", 'Int'>
   }
     
 
@@ -7040,6 +8764,49 @@ export namespace Prisma {
   }
 
   /**
+   * LegalGuardian.healthInsuranceProvider
+   */
+  export type LegalGuardian$healthInsuranceProviderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceProvider
+     */
+    select?: HealthInsuranceProviderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceProvider
+     */
+    omit?: HealthInsuranceProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceProviderInclude<ExtArgs> | null
+    where?: HealthInsuranceProviderWhereInput
+  }
+
+  /**
+   * LegalGuardian.admissions
+   */
+  export type LegalGuardian$admissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admission
+     */
+    select?: AdmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admission
+     */
+    omit?: AdmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdmissionInclude<ExtArgs> | null
+    where?: AdmissionWhereInput
+    orderBy?: AdmissionOrderByWithRelationInput | AdmissionOrderByWithRelationInput[]
+    cursor?: AdmissionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AdmissionScalarFieldEnum | AdmissionScalarFieldEnum[]
+  }
+
+  /**
    * LegalGuardian without action
    */
   export type LegalGuardianDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7073,11 +8840,13 @@ export namespace Prisma {
   export type ProfessionalAvgAggregateOutputType = {
     id: number | null
     userId: number | null
+    healthInsuranceProviderId: number | null
   }
 
   export type ProfessionalSumAggregateOutputType = {
     id: number | null
     userId: number | null
+    healthInsuranceProviderId: number | null
   }
 
   export type ProfessionalMinAggregateOutputType = {
@@ -7090,10 +8859,10 @@ export namespace Prisma {
     birthday: Date | null
     phone: string | null
     professionalActivity: string | null
-    healthInsuranceProvider: string | null
     isActive: boolean | null
     profecionalType: string | null
     userId: number | null
+    healthInsuranceProviderId: number | null
   }
 
   export type ProfessionalMaxAggregateOutputType = {
@@ -7106,10 +8875,10 @@ export namespace Prisma {
     birthday: Date | null
     phone: string | null
     professionalActivity: string | null
-    healthInsuranceProvider: string | null
     isActive: boolean | null
     profecionalType: string | null
     userId: number | null
+    healthInsuranceProviderId: number | null
   }
 
   export type ProfessionalCountAggregateOutputType = {
@@ -7122,10 +8891,10 @@ export namespace Prisma {
     birthday: number
     phone: number
     professionalActivity: number
-    healthInsuranceProvider: number
     isActive: number
     profecionalType: number
     userId: number
+    healthInsuranceProviderId: number
     _all: number
   }
 
@@ -7133,11 +8902,13 @@ export namespace Prisma {
   export type ProfessionalAvgAggregateInputType = {
     id?: true
     userId?: true
+    healthInsuranceProviderId?: true
   }
 
   export type ProfessionalSumAggregateInputType = {
     id?: true
     userId?: true
+    healthInsuranceProviderId?: true
   }
 
   export type ProfessionalMinAggregateInputType = {
@@ -7150,10 +8921,10 @@ export namespace Prisma {
     birthday?: true
     phone?: true
     professionalActivity?: true
-    healthInsuranceProvider?: true
     isActive?: true
     profecionalType?: true
     userId?: true
+    healthInsuranceProviderId?: true
   }
 
   export type ProfessionalMaxAggregateInputType = {
@@ -7166,10 +8937,10 @@ export namespace Prisma {
     birthday?: true
     phone?: true
     professionalActivity?: true
-    healthInsuranceProvider?: true
     isActive?: true
     profecionalType?: true
     userId?: true
+    healthInsuranceProviderId?: true
   }
 
   export type ProfessionalCountAggregateInputType = {
@@ -7182,10 +8953,10 @@ export namespace Prisma {
     birthday?: true
     phone?: true
     professionalActivity?: true
-    healthInsuranceProvider?: true
     isActive?: true
     profecionalType?: true
     userId?: true
+    healthInsuranceProviderId?: true
     _all?: true
   }
 
@@ -7285,10 +9056,10 @@ export namespace Prisma {
     birthday: Date
     phone: string
     professionalActivity: string
-    healthInsuranceProvider: string | null
     isActive: boolean
     profecionalType: string
     userId: number | null
+    healthInsuranceProviderId: number | null
     _count: ProfessionalCountAggregateOutputType | null
     _avg: ProfessionalAvgAggregateOutputType | null
     _sum: ProfessionalSumAggregateOutputType | null
@@ -7320,13 +9091,14 @@ export namespace Prisma {
     birthday?: boolean
     phone?: boolean
     professionalActivity?: boolean
-    healthInsuranceProvider?: boolean
     isActive?: boolean
     profecionalType?: boolean
     userId?: boolean
+    healthInsuranceProviderId?: boolean
     user?: boolean | Professional$userArgs<ExtArgs>
     events?: boolean | Professional$eventsArgs<ExtArgs>
     schedules?: boolean | Professional$schedulesArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | Professional$healthInsuranceProviderArgs<ExtArgs>
     _count?: boolean | ProfessionalCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professional"]>
 
@@ -7340,11 +9112,12 @@ export namespace Prisma {
     birthday?: boolean
     phone?: boolean
     professionalActivity?: boolean
-    healthInsuranceProvider?: boolean
     isActive?: boolean
     profecionalType?: boolean
     userId?: boolean
+    healthInsuranceProviderId?: boolean
     user?: boolean | Professional$userArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | Professional$healthInsuranceProviderArgs<ExtArgs>
   }, ExtArgs["result"]["professional"]>
 
   export type ProfessionalSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7357,11 +9130,12 @@ export namespace Prisma {
     birthday?: boolean
     phone?: boolean
     professionalActivity?: boolean
-    healthInsuranceProvider?: boolean
     isActive?: boolean
     profecionalType?: boolean
     userId?: boolean
+    healthInsuranceProviderId?: boolean
     user?: boolean | Professional$userArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | Professional$healthInsuranceProviderArgs<ExtArgs>
   }, ExtArgs["result"]["professional"]>
 
   export type ProfessionalSelectScalar = {
@@ -7374,24 +9148,27 @@ export namespace Prisma {
     birthday?: boolean
     phone?: boolean
     professionalActivity?: boolean
-    healthInsuranceProvider?: boolean
     isActive?: boolean
     profecionalType?: boolean
     userId?: boolean
+    healthInsuranceProviderId?: boolean
   }
 
-  export type ProfessionalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "address" | "dni" | "cuil" | "birthday" | "phone" | "professionalActivity" | "healthInsuranceProvider" | "isActive" | "profecionalType" | "userId", ExtArgs["result"]["professional"]>
+  export type ProfessionalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "address" | "dni" | "cuil" | "birthday" | "phone" | "professionalActivity" | "isActive" | "profecionalType" | "userId" | "healthInsuranceProviderId", ExtArgs["result"]["professional"]>
   export type ProfessionalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Professional$userArgs<ExtArgs>
     events?: boolean | Professional$eventsArgs<ExtArgs>
     schedules?: boolean | Professional$schedulesArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | Professional$healthInsuranceProviderArgs<ExtArgs>
     _count?: boolean | ProfessionalCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProfessionalIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Professional$userArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | Professional$healthInsuranceProviderArgs<ExtArgs>
   }
   export type ProfessionalIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Professional$userArgs<ExtArgs>
+    healthInsuranceProvider?: boolean | Professional$healthInsuranceProviderArgs<ExtArgs>
   }
 
   export type $ProfessionalPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7400,6 +9177,7 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs> | null
       events: Prisma.$EventPayload<ExtArgs>[]
       schedules: Prisma.$SchedulePayload<ExtArgs>[]
+      healthInsuranceProvider: Prisma.$HealthInsuranceProviderPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -7411,10 +9189,10 @@ export namespace Prisma {
       birthday: Date
       phone: string
       professionalActivity: string
-      healthInsuranceProvider: string | null
       isActive: boolean
       profecionalType: string
       userId: number | null
+      healthInsuranceProviderId: number | null
     }, ExtArgs["result"]["professional"]>
     composites: {}
   }
@@ -7812,6 +9590,7 @@ export namespace Prisma {
     user<T extends Professional$userArgs<ExtArgs> = {}>(args?: Subset<T, Professional$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     events<T extends Professional$eventsArgs<ExtArgs> = {}>(args?: Subset<T, Professional$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     schedules<T extends Professional$schedulesArgs<ExtArgs> = {}>(args?: Subset<T, Professional$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    healthInsuranceProvider<T extends Professional$healthInsuranceProviderArgs<ExtArgs> = {}>(args?: Subset<T, Professional$healthInsuranceProviderArgs<ExtArgs>>): Prisma__HealthInsuranceProviderClient<$Result.GetResult<Prisma.$HealthInsuranceProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7850,10 +9629,10 @@ export namespace Prisma {
     readonly birthday: FieldRef<"Professional", 'DateTime'>
     readonly phone: FieldRef<"Professional", 'String'>
     readonly professionalActivity: FieldRef<"Professional", 'String'>
-    readonly healthInsuranceProvider: FieldRef<"Professional", 'String'>
     readonly isActive: FieldRef<"Professional", 'Boolean'>
     readonly profecionalType: FieldRef<"Professional", 'String'>
     readonly userId: FieldRef<"Professional", 'Int'>
+    readonly healthInsuranceProviderId: FieldRef<"Professional", 'Int'>
   }
     
 
@@ -8317,6 +10096,25 @@ export namespace Prisma {
   }
 
   /**
+   * Professional.healthInsuranceProvider
+   */
+  export type Professional$healthInsuranceProviderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceProvider
+     */
+    select?: HealthInsuranceProviderSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceProvider
+     */
+    omit?: HealthInsuranceProviderOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceProviderInclude<ExtArgs> | null
+    where?: HealthInsuranceProviderWhereInput
+  }
+
+  /**
    * Professional without action
    */
   export type ProfessionalDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8349,60 +10147,122 @@ export namespace Prisma {
 
   export type AdmissionAvgAggregateOutputType = {
     id: number | null
+    admissionTypeId: number | null
     patientId: number | null
+    legalGuardianId: number | null
   }
 
   export type AdmissionSumAggregateOutputType = {
     id: number | null
+    admissionTypeId: number | null
     patientId: number | null
+    legalGuardianId: number | null
   }
 
   export type AdmissionMinAggregateOutputType = {
     id: number | null
-    admissionStatus: $Enums.AdmissionStatus | null
+    operationDate: Date | null
+    admissionDate: Date | null
+    admissionTypeId: number | null
+    isSchoolEnrolled: boolean | null
+    schoolShift: $Enums.SchoolShift | null
     patientId: number | null
+    cud: string | null
+    cudExpirationDate: Date | null
+    status: $Enums.AdmissionStatus | null
+    legalGuardianId: number | null
+    createdAt: Date | null
   }
 
   export type AdmissionMaxAggregateOutputType = {
     id: number | null
-    admissionStatus: $Enums.AdmissionStatus | null
+    operationDate: Date | null
+    admissionDate: Date | null
+    admissionTypeId: number | null
+    isSchoolEnrolled: boolean | null
+    schoolShift: $Enums.SchoolShift | null
     patientId: number | null
+    cud: string | null
+    cudExpirationDate: Date | null
+    status: $Enums.AdmissionStatus | null
+    legalGuardianId: number | null
+    createdAt: Date | null
   }
 
   export type AdmissionCountAggregateOutputType = {
     id: number
-    admissionStatus: number
+    operationDate: number
+    admissionDate: number
+    admissionTypeId: number
+    isSchoolEnrolled: number
+    schoolShift: number
     patientId: number
+    cud: number
+    cudExpirationDate: number
+    status: number
+    legalGuardianId: number
+    createdAt: number
     _all: number
   }
 
 
   export type AdmissionAvgAggregateInputType = {
     id?: true
+    admissionTypeId?: true
     patientId?: true
+    legalGuardianId?: true
   }
 
   export type AdmissionSumAggregateInputType = {
     id?: true
+    admissionTypeId?: true
     patientId?: true
+    legalGuardianId?: true
   }
 
   export type AdmissionMinAggregateInputType = {
     id?: true
-    admissionStatus?: true
+    operationDate?: true
+    admissionDate?: true
+    admissionTypeId?: true
+    isSchoolEnrolled?: true
+    schoolShift?: true
     patientId?: true
+    cud?: true
+    cudExpirationDate?: true
+    status?: true
+    legalGuardianId?: true
+    createdAt?: true
   }
 
   export type AdmissionMaxAggregateInputType = {
     id?: true
-    admissionStatus?: true
+    operationDate?: true
+    admissionDate?: true
+    admissionTypeId?: true
+    isSchoolEnrolled?: true
+    schoolShift?: true
     patientId?: true
+    cud?: true
+    cudExpirationDate?: true
+    status?: true
+    legalGuardianId?: true
+    createdAt?: true
   }
 
   export type AdmissionCountAggregateInputType = {
     id?: true
-    admissionStatus?: true
+    operationDate?: true
+    admissionDate?: true
+    admissionTypeId?: true
+    isSchoolEnrolled?: true
+    schoolShift?: true
     patientId?: true
+    cud?: true
+    cudExpirationDate?: true
+    status?: true
+    legalGuardianId?: true
+    createdAt?: true
     _all?: true
   }
 
@@ -8494,8 +10354,17 @@ export namespace Prisma {
 
   export type AdmissionGroupByOutputType = {
     id: number
-    admissionStatus: $Enums.AdmissionStatus | null
+    operationDate: Date
+    admissionDate: Date
+    admissionTypeId: number
+    isSchoolEnrolled: boolean
+    schoolShift: $Enums.SchoolShift | null
     patientId: number
+    cud: string | null
+    cudExpirationDate: Date | null
+    status: $Enums.AdmissionStatus | null
+    legalGuardianId: number | null
+    createdAt: Date
     _count: AdmissionCountAggregateOutputType | null
     _avg: AdmissionAvgAggregateOutputType | null
     _sum: AdmissionSumAggregateOutputType | null
@@ -8519,51 +10388,115 @@ export namespace Prisma {
 
   export type AdmissionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    admissionStatus?: boolean
+    operationDate?: boolean
+    admissionDate?: boolean
+    admissionTypeId?: boolean
+    isSchoolEnrolled?: boolean
+    schoolShift?: boolean
     patientId?: boolean
+    cud?: boolean
+    cudExpirationDate?: boolean
+    status?: boolean
+    legalGuardianId?: boolean
+    createdAt?: boolean
+    admissionType?: boolean | AdmissionTypeDefaultArgs<ExtArgs>
     patient?: boolean | PatientDefaultArgs<ExtArgs>
+    legalGuardian?: boolean | Admission$legalGuardianArgs<ExtArgs>
+    healthInsuranceAuthorizations?: boolean | Admission$healthInsuranceAuthorizationsArgs<ExtArgs>
+    _count?: boolean | AdmissionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["admission"]>
 
   export type AdmissionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    admissionStatus?: boolean
+    operationDate?: boolean
+    admissionDate?: boolean
+    admissionTypeId?: boolean
+    isSchoolEnrolled?: boolean
+    schoolShift?: boolean
     patientId?: boolean
+    cud?: boolean
+    cudExpirationDate?: boolean
+    status?: boolean
+    legalGuardianId?: boolean
+    createdAt?: boolean
+    admissionType?: boolean | AdmissionTypeDefaultArgs<ExtArgs>
     patient?: boolean | PatientDefaultArgs<ExtArgs>
+    legalGuardian?: boolean | Admission$legalGuardianArgs<ExtArgs>
   }, ExtArgs["result"]["admission"]>
 
   export type AdmissionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    admissionStatus?: boolean
+    operationDate?: boolean
+    admissionDate?: boolean
+    admissionTypeId?: boolean
+    isSchoolEnrolled?: boolean
+    schoolShift?: boolean
     patientId?: boolean
+    cud?: boolean
+    cudExpirationDate?: boolean
+    status?: boolean
+    legalGuardianId?: boolean
+    createdAt?: boolean
+    admissionType?: boolean | AdmissionTypeDefaultArgs<ExtArgs>
     patient?: boolean | PatientDefaultArgs<ExtArgs>
+    legalGuardian?: boolean | Admission$legalGuardianArgs<ExtArgs>
   }, ExtArgs["result"]["admission"]>
 
   export type AdmissionSelectScalar = {
     id?: boolean
-    admissionStatus?: boolean
+    operationDate?: boolean
+    admissionDate?: boolean
+    admissionTypeId?: boolean
+    isSchoolEnrolled?: boolean
+    schoolShift?: boolean
     patientId?: boolean
+    cud?: boolean
+    cudExpirationDate?: boolean
+    status?: boolean
+    legalGuardianId?: boolean
+    createdAt?: boolean
   }
 
-  export type AdmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "admissionStatus" | "patientId", ExtArgs["result"]["admission"]>
+  export type AdmissionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "operationDate" | "admissionDate" | "admissionTypeId" | "isSchoolEnrolled" | "schoolShift" | "patientId" | "cud" | "cudExpirationDate" | "status" | "legalGuardianId" | "createdAt", ExtArgs["result"]["admission"]>
   export type AdmissionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    admissionType?: boolean | AdmissionTypeDefaultArgs<ExtArgs>
     patient?: boolean | PatientDefaultArgs<ExtArgs>
+    legalGuardian?: boolean | Admission$legalGuardianArgs<ExtArgs>
+    healthInsuranceAuthorizations?: boolean | Admission$healthInsuranceAuthorizationsArgs<ExtArgs>
+    _count?: boolean | AdmissionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type AdmissionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    admissionType?: boolean | AdmissionTypeDefaultArgs<ExtArgs>
     patient?: boolean | PatientDefaultArgs<ExtArgs>
+    legalGuardian?: boolean | Admission$legalGuardianArgs<ExtArgs>
   }
   export type AdmissionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    admissionType?: boolean | AdmissionTypeDefaultArgs<ExtArgs>
     patient?: boolean | PatientDefaultArgs<ExtArgs>
+    legalGuardian?: boolean | Admission$legalGuardianArgs<ExtArgs>
   }
 
   export type $AdmissionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Admission"
     objects: {
+      admissionType: Prisma.$AdmissionTypePayload<ExtArgs>
       patient: Prisma.$PatientPayload<ExtArgs>
+      legalGuardian: Prisma.$LegalGuardianPayload<ExtArgs> | null
+      healthInsuranceAuthorizations: Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      admissionStatus: $Enums.AdmissionStatus | null
+      operationDate: Date
+      admissionDate: Date
+      admissionTypeId: number
+      isSchoolEnrolled: boolean
+      schoolShift: $Enums.SchoolShift | null
       patientId: number
+      cud: string | null
+      cudExpirationDate: Date | null
+      status: $Enums.AdmissionStatus | null
+      legalGuardianId: number | null
+      createdAt: Date
     }, ExtArgs["result"]["admission"]>
     composites: {}
   }
@@ -8958,7 +10891,10 @@ export namespace Prisma {
    */
   export interface Prisma__AdmissionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    admissionType<T extends AdmissionTypeDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AdmissionTypeDefaultArgs<ExtArgs>>): Prisma__AdmissionTypeClient<$Result.GetResult<Prisma.$AdmissionTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     patient<T extends PatientDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PatientDefaultArgs<ExtArgs>>): Prisma__PatientClient<$Result.GetResult<Prisma.$PatientPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    legalGuardian<T extends Admission$legalGuardianArgs<ExtArgs> = {}>(args?: Subset<T, Admission$legalGuardianArgs<ExtArgs>>): Prisma__LegalGuardianClient<$Result.GetResult<Prisma.$LegalGuardianPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    healthInsuranceAuthorizations<T extends Admission$healthInsuranceAuthorizationsArgs<ExtArgs> = {}>(args?: Subset<T, Admission$healthInsuranceAuthorizationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$HealthInsuranceAuthorizationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8989,8 +10925,17 @@ export namespace Prisma {
    */
   interface AdmissionFieldRefs {
     readonly id: FieldRef<"Admission", 'Int'>
-    readonly admissionStatus: FieldRef<"Admission", 'AdmissionStatus'>
+    readonly operationDate: FieldRef<"Admission", 'DateTime'>
+    readonly admissionDate: FieldRef<"Admission", 'DateTime'>
+    readonly admissionTypeId: FieldRef<"Admission", 'Int'>
+    readonly isSchoolEnrolled: FieldRef<"Admission", 'Boolean'>
+    readonly schoolShift: FieldRef<"Admission", 'SchoolShift'>
     readonly patientId: FieldRef<"Admission", 'Int'>
+    readonly cud: FieldRef<"Admission", 'String'>
+    readonly cudExpirationDate: FieldRef<"Admission", 'DateTime'>
+    readonly status: FieldRef<"Admission", 'AdmissionStatus'>
+    readonly legalGuardianId: FieldRef<"Admission", 'Int'>
+    readonly createdAt: FieldRef<"Admission", 'DateTime'>
   }
     
 
@@ -9384,6 +11329,49 @@ export namespace Prisma {
      * Limit how many Admissions to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Admission.legalGuardian
+   */
+  export type Admission$legalGuardianArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LegalGuardian
+     */
+    select?: LegalGuardianSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LegalGuardian
+     */
+    omit?: LegalGuardianOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LegalGuardianInclude<ExtArgs> | null
+    where?: LegalGuardianWhereInput
+  }
+
+  /**
+   * Admission.healthInsuranceAuthorizations
+   */
+  export type Admission$healthInsuranceAuthorizationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the HealthInsuranceAuthorization
+     */
+    select?: HealthInsuranceAuthorizationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the HealthInsuranceAuthorization
+     */
+    omit?: HealthInsuranceAuthorizationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: HealthInsuranceAuthorizationInclude<ExtArgs> | null
+    where?: HealthInsuranceAuthorizationWhereInput
+    orderBy?: HealthInsuranceAuthorizationOrderByWithRelationInput | HealthInsuranceAuthorizationOrderByWithRelationInput[]
+    cursor?: HealthInsuranceAuthorizationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: HealthInsuranceAuthorizationScalarFieldEnum | HealthInsuranceAuthorizationScalarFieldEnum[]
   }
 
   /**
@@ -14903,6 +16891,1071 @@ export namespace Prisma {
 
 
   /**
+   * Model AdmissionType
+   */
+
+  export type AggregateAdmissionType = {
+    _count: AdmissionTypeCountAggregateOutputType | null
+    _avg: AdmissionTypeAvgAggregateOutputType | null
+    _sum: AdmissionTypeSumAggregateOutputType | null
+    _min: AdmissionTypeMinAggregateOutputType | null
+    _max: AdmissionTypeMaxAggregateOutputType | null
+  }
+
+  export type AdmissionTypeAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type AdmissionTypeSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type AdmissionTypeMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+  }
+
+  export type AdmissionTypeMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+  }
+
+  export type AdmissionTypeCountAggregateOutputType = {
+    id: number
+    name: number
+    _all: number
+  }
+
+
+  export type AdmissionTypeAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type AdmissionTypeSumAggregateInputType = {
+    id?: true
+  }
+
+  export type AdmissionTypeMinAggregateInputType = {
+    id?: true
+    name?: true
+  }
+
+  export type AdmissionTypeMaxAggregateInputType = {
+    id?: true
+    name?: true
+  }
+
+  export type AdmissionTypeCountAggregateInputType = {
+    id?: true
+    name?: true
+    _all?: true
+  }
+
+  export type AdmissionTypeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AdmissionType to aggregate.
+     */
+    where?: AdmissionTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdmissionTypes to fetch.
+     */
+    orderBy?: AdmissionTypeOrderByWithRelationInput | AdmissionTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AdmissionTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdmissionTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdmissionTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AdmissionTypes
+    **/
+    _count?: true | AdmissionTypeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AdmissionTypeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AdmissionTypeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AdmissionTypeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AdmissionTypeMaxAggregateInputType
+  }
+
+  export type GetAdmissionTypeAggregateType<T extends AdmissionTypeAggregateArgs> = {
+        [P in keyof T & keyof AggregateAdmissionType]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAdmissionType[P]>
+      : GetScalarType<T[P], AggregateAdmissionType[P]>
+  }
+
+
+
+
+  export type AdmissionTypeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdmissionTypeWhereInput
+    orderBy?: AdmissionTypeOrderByWithAggregationInput | AdmissionTypeOrderByWithAggregationInput[]
+    by: AdmissionTypeScalarFieldEnum[] | AdmissionTypeScalarFieldEnum
+    having?: AdmissionTypeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AdmissionTypeCountAggregateInputType | true
+    _avg?: AdmissionTypeAvgAggregateInputType
+    _sum?: AdmissionTypeSumAggregateInputType
+    _min?: AdmissionTypeMinAggregateInputType
+    _max?: AdmissionTypeMaxAggregateInputType
+  }
+
+  export type AdmissionTypeGroupByOutputType = {
+    id: number
+    name: string
+    _count: AdmissionTypeCountAggregateOutputType | null
+    _avg: AdmissionTypeAvgAggregateOutputType | null
+    _sum: AdmissionTypeSumAggregateOutputType | null
+    _min: AdmissionTypeMinAggregateOutputType | null
+    _max: AdmissionTypeMaxAggregateOutputType | null
+  }
+
+  type GetAdmissionTypeGroupByPayload<T extends AdmissionTypeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AdmissionTypeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AdmissionTypeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AdmissionTypeGroupByOutputType[P]>
+            : GetScalarType<T[P], AdmissionTypeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AdmissionTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    admissions?: boolean | AdmissionType$admissionsArgs<ExtArgs>
+    _count?: boolean | AdmissionTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["admissionType"]>
+
+  export type AdmissionTypeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+  }, ExtArgs["result"]["admissionType"]>
+
+  export type AdmissionTypeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+  }, ExtArgs["result"]["admissionType"]>
+
+  export type AdmissionTypeSelectScalar = {
+    id?: boolean
+    name?: boolean
+  }
+
+  export type AdmissionTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name", ExtArgs["result"]["admissionType"]>
+  export type AdmissionTypeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    admissions?: boolean | AdmissionType$admissionsArgs<ExtArgs>
+    _count?: boolean | AdmissionTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AdmissionTypeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type AdmissionTypeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $AdmissionTypePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AdmissionType"
+    objects: {
+      admissions: Prisma.$AdmissionPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      name: string
+    }, ExtArgs["result"]["admissionType"]>
+    composites: {}
+  }
+
+  type AdmissionTypeGetPayload<S extends boolean | null | undefined | AdmissionTypeDefaultArgs> = $Result.GetResult<Prisma.$AdmissionTypePayload, S>
+
+  type AdmissionTypeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AdmissionTypeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AdmissionTypeCountAggregateInputType | true
+    }
+
+  export interface AdmissionTypeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AdmissionType'], meta: { name: 'AdmissionType' } }
+    /**
+     * Find zero or one AdmissionType that matches the filter.
+     * @param {AdmissionTypeFindUniqueArgs} args - Arguments to find a AdmissionType
+     * @example
+     * // Get one AdmissionType
+     * const admissionType = await prisma.admissionType.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AdmissionTypeFindUniqueArgs>(args: SelectSubset<T, AdmissionTypeFindUniqueArgs<ExtArgs>>): Prisma__AdmissionTypeClient<$Result.GetResult<Prisma.$AdmissionTypePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AdmissionType that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AdmissionTypeFindUniqueOrThrowArgs} args - Arguments to find a AdmissionType
+     * @example
+     * // Get one AdmissionType
+     * const admissionType = await prisma.admissionType.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AdmissionTypeFindUniqueOrThrowArgs>(args: SelectSubset<T, AdmissionTypeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AdmissionTypeClient<$Result.GetResult<Prisma.$AdmissionTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AdmissionType that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdmissionTypeFindFirstArgs} args - Arguments to find a AdmissionType
+     * @example
+     * // Get one AdmissionType
+     * const admissionType = await prisma.admissionType.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AdmissionTypeFindFirstArgs>(args?: SelectSubset<T, AdmissionTypeFindFirstArgs<ExtArgs>>): Prisma__AdmissionTypeClient<$Result.GetResult<Prisma.$AdmissionTypePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AdmissionType that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdmissionTypeFindFirstOrThrowArgs} args - Arguments to find a AdmissionType
+     * @example
+     * // Get one AdmissionType
+     * const admissionType = await prisma.admissionType.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AdmissionTypeFindFirstOrThrowArgs>(args?: SelectSubset<T, AdmissionTypeFindFirstOrThrowArgs<ExtArgs>>): Prisma__AdmissionTypeClient<$Result.GetResult<Prisma.$AdmissionTypePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AdmissionTypes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdmissionTypeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AdmissionTypes
+     * const admissionTypes = await prisma.admissionType.findMany()
+     * 
+     * // Get first 10 AdmissionTypes
+     * const admissionTypes = await prisma.admissionType.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const admissionTypeWithIdOnly = await prisma.admissionType.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AdmissionTypeFindManyArgs>(args?: SelectSubset<T, AdmissionTypeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdmissionTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AdmissionType.
+     * @param {AdmissionTypeCreateArgs} args - Arguments to create a AdmissionType.
+     * @example
+     * // Create one AdmissionType
+     * const AdmissionType = await prisma.admissionType.create({
+     *   data: {
+     *     // ... data to create a AdmissionType
+     *   }
+     * })
+     * 
+     */
+    create<T extends AdmissionTypeCreateArgs>(args: SelectSubset<T, AdmissionTypeCreateArgs<ExtArgs>>): Prisma__AdmissionTypeClient<$Result.GetResult<Prisma.$AdmissionTypePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AdmissionTypes.
+     * @param {AdmissionTypeCreateManyArgs} args - Arguments to create many AdmissionTypes.
+     * @example
+     * // Create many AdmissionTypes
+     * const admissionType = await prisma.admissionType.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AdmissionTypeCreateManyArgs>(args?: SelectSubset<T, AdmissionTypeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AdmissionTypes and returns the data saved in the database.
+     * @param {AdmissionTypeCreateManyAndReturnArgs} args - Arguments to create many AdmissionTypes.
+     * @example
+     * // Create many AdmissionTypes
+     * const admissionType = await prisma.admissionType.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AdmissionTypes and only return the `id`
+     * const admissionTypeWithIdOnly = await prisma.admissionType.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AdmissionTypeCreateManyAndReturnArgs>(args?: SelectSubset<T, AdmissionTypeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdmissionTypePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AdmissionType.
+     * @param {AdmissionTypeDeleteArgs} args - Arguments to delete one AdmissionType.
+     * @example
+     * // Delete one AdmissionType
+     * const AdmissionType = await prisma.admissionType.delete({
+     *   where: {
+     *     // ... filter to delete one AdmissionType
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AdmissionTypeDeleteArgs>(args: SelectSubset<T, AdmissionTypeDeleteArgs<ExtArgs>>): Prisma__AdmissionTypeClient<$Result.GetResult<Prisma.$AdmissionTypePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AdmissionType.
+     * @param {AdmissionTypeUpdateArgs} args - Arguments to update one AdmissionType.
+     * @example
+     * // Update one AdmissionType
+     * const admissionType = await prisma.admissionType.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AdmissionTypeUpdateArgs>(args: SelectSubset<T, AdmissionTypeUpdateArgs<ExtArgs>>): Prisma__AdmissionTypeClient<$Result.GetResult<Prisma.$AdmissionTypePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AdmissionTypes.
+     * @param {AdmissionTypeDeleteManyArgs} args - Arguments to filter AdmissionTypes to delete.
+     * @example
+     * // Delete a few AdmissionTypes
+     * const { count } = await prisma.admissionType.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AdmissionTypeDeleteManyArgs>(args?: SelectSubset<T, AdmissionTypeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AdmissionTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdmissionTypeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AdmissionTypes
+     * const admissionType = await prisma.admissionType.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AdmissionTypeUpdateManyArgs>(args: SelectSubset<T, AdmissionTypeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AdmissionTypes and returns the data updated in the database.
+     * @param {AdmissionTypeUpdateManyAndReturnArgs} args - Arguments to update many AdmissionTypes.
+     * @example
+     * // Update many AdmissionTypes
+     * const admissionType = await prisma.admissionType.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AdmissionTypes and only return the `id`
+     * const admissionTypeWithIdOnly = await prisma.admissionType.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AdmissionTypeUpdateManyAndReturnArgs>(args: SelectSubset<T, AdmissionTypeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdmissionTypePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AdmissionType.
+     * @param {AdmissionTypeUpsertArgs} args - Arguments to update or create a AdmissionType.
+     * @example
+     * // Update or create a AdmissionType
+     * const admissionType = await prisma.admissionType.upsert({
+     *   create: {
+     *     // ... data to create a AdmissionType
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AdmissionType we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AdmissionTypeUpsertArgs>(args: SelectSubset<T, AdmissionTypeUpsertArgs<ExtArgs>>): Prisma__AdmissionTypeClient<$Result.GetResult<Prisma.$AdmissionTypePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AdmissionTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdmissionTypeCountArgs} args - Arguments to filter AdmissionTypes to count.
+     * @example
+     * // Count the number of AdmissionTypes
+     * const count = await prisma.admissionType.count({
+     *   where: {
+     *     // ... the filter for the AdmissionTypes we want to count
+     *   }
+     * })
+    **/
+    count<T extends AdmissionTypeCountArgs>(
+      args?: Subset<T, AdmissionTypeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AdmissionTypeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AdmissionType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdmissionTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AdmissionTypeAggregateArgs>(args: Subset<T, AdmissionTypeAggregateArgs>): Prisma.PrismaPromise<GetAdmissionTypeAggregateType<T>>
+
+    /**
+     * Group by AdmissionType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdmissionTypeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AdmissionTypeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AdmissionTypeGroupByArgs['orderBy'] }
+        : { orderBy?: AdmissionTypeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AdmissionTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAdmissionTypeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AdmissionType model
+   */
+  readonly fields: AdmissionTypeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AdmissionType.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AdmissionTypeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    admissions<T extends AdmissionType$admissionsArgs<ExtArgs> = {}>(args?: Subset<T, AdmissionType$admissionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AdmissionType model
+   */
+  interface AdmissionTypeFieldRefs {
+    readonly id: FieldRef<"AdmissionType", 'Int'>
+    readonly name: FieldRef<"AdmissionType", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AdmissionType findUnique
+   */
+  export type AdmissionTypeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdmissionType
+     */
+    select?: AdmissionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdmissionType
+     */
+    omit?: AdmissionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdmissionTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which AdmissionType to fetch.
+     */
+    where: AdmissionTypeWhereUniqueInput
+  }
+
+  /**
+   * AdmissionType findUniqueOrThrow
+   */
+  export type AdmissionTypeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdmissionType
+     */
+    select?: AdmissionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdmissionType
+     */
+    omit?: AdmissionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdmissionTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which AdmissionType to fetch.
+     */
+    where: AdmissionTypeWhereUniqueInput
+  }
+
+  /**
+   * AdmissionType findFirst
+   */
+  export type AdmissionTypeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdmissionType
+     */
+    select?: AdmissionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdmissionType
+     */
+    omit?: AdmissionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdmissionTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which AdmissionType to fetch.
+     */
+    where?: AdmissionTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdmissionTypes to fetch.
+     */
+    orderBy?: AdmissionTypeOrderByWithRelationInput | AdmissionTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AdmissionTypes.
+     */
+    cursor?: AdmissionTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdmissionTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdmissionTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AdmissionTypes.
+     */
+    distinct?: AdmissionTypeScalarFieldEnum | AdmissionTypeScalarFieldEnum[]
+  }
+
+  /**
+   * AdmissionType findFirstOrThrow
+   */
+  export type AdmissionTypeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdmissionType
+     */
+    select?: AdmissionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdmissionType
+     */
+    omit?: AdmissionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdmissionTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which AdmissionType to fetch.
+     */
+    where?: AdmissionTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdmissionTypes to fetch.
+     */
+    orderBy?: AdmissionTypeOrderByWithRelationInput | AdmissionTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AdmissionTypes.
+     */
+    cursor?: AdmissionTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdmissionTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdmissionTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AdmissionTypes.
+     */
+    distinct?: AdmissionTypeScalarFieldEnum | AdmissionTypeScalarFieldEnum[]
+  }
+
+  /**
+   * AdmissionType findMany
+   */
+  export type AdmissionTypeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdmissionType
+     */
+    select?: AdmissionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdmissionType
+     */
+    omit?: AdmissionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdmissionTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which AdmissionTypes to fetch.
+     */
+    where?: AdmissionTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdmissionTypes to fetch.
+     */
+    orderBy?: AdmissionTypeOrderByWithRelationInput | AdmissionTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AdmissionTypes.
+     */
+    cursor?: AdmissionTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdmissionTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdmissionTypes.
+     */
+    skip?: number
+    distinct?: AdmissionTypeScalarFieldEnum | AdmissionTypeScalarFieldEnum[]
+  }
+
+  /**
+   * AdmissionType create
+   */
+  export type AdmissionTypeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdmissionType
+     */
+    select?: AdmissionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdmissionType
+     */
+    omit?: AdmissionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdmissionTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AdmissionType.
+     */
+    data: XOR<AdmissionTypeCreateInput, AdmissionTypeUncheckedCreateInput>
+  }
+
+  /**
+   * AdmissionType createMany
+   */
+  export type AdmissionTypeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AdmissionTypes.
+     */
+    data: AdmissionTypeCreateManyInput | AdmissionTypeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AdmissionType createManyAndReturn
+   */
+  export type AdmissionTypeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdmissionType
+     */
+    select?: AdmissionTypeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdmissionType
+     */
+    omit?: AdmissionTypeOmit<ExtArgs> | null
+    /**
+     * The data used to create many AdmissionTypes.
+     */
+    data: AdmissionTypeCreateManyInput | AdmissionTypeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AdmissionType update
+   */
+  export type AdmissionTypeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdmissionType
+     */
+    select?: AdmissionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdmissionType
+     */
+    omit?: AdmissionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdmissionTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AdmissionType.
+     */
+    data: XOR<AdmissionTypeUpdateInput, AdmissionTypeUncheckedUpdateInput>
+    /**
+     * Choose, which AdmissionType to update.
+     */
+    where: AdmissionTypeWhereUniqueInput
+  }
+
+  /**
+   * AdmissionType updateMany
+   */
+  export type AdmissionTypeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AdmissionTypes.
+     */
+    data: XOR<AdmissionTypeUpdateManyMutationInput, AdmissionTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which AdmissionTypes to update
+     */
+    where?: AdmissionTypeWhereInput
+    /**
+     * Limit how many AdmissionTypes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdmissionType updateManyAndReturn
+   */
+  export type AdmissionTypeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdmissionType
+     */
+    select?: AdmissionTypeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdmissionType
+     */
+    omit?: AdmissionTypeOmit<ExtArgs> | null
+    /**
+     * The data used to update AdmissionTypes.
+     */
+    data: XOR<AdmissionTypeUpdateManyMutationInput, AdmissionTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which AdmissionTypes to update
+     */
+    where?: AdmissionTypeWhereInput
+    /**
+     * Limit how many AdmissionTypes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdmissionType upsert
+   */
+  export type AdmissionTypeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdmissionType
+     */
+    select?: AdmissionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdmissionType
+     */
+    omit?: AdmissionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdmissionTypeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AdmissionType to update in case it exists.
+     */
+    where: AdmissionTypeWhereUniqueInput
+    /**
+     * In case the AdmissionType found by the `where` argument doesn't exist, create a new AdmissionType with this data.
+     */
+    create: XOR<AdmissionTypeCreateInput, AdmissionTypeUncheckedCreateInput>
+    /**
+     * In case the AdmissionType was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AdmissionTypeUpdateInput, AdmissionTypeUncheckedUpdateInput>
+  }
+
+  /**
+   * AdmissionType delete
+   */
+  export type AdmissionTypeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdmissionType
+     */
+    select?: AdmissionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdmissionType
+     */
+    omit?: AdmissionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdmissionTypeInclude<ExtArgs> | null
+    /**
+     * Filter which AdmissionType to delete.
+     */
+    where: AdmissionTypeWhereUniqueInput
+  }
+
+  /**
+   * AdmissionType deleteMany
+   */
+  export type AdmissionTypeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AdmissionTypes to delete
+     */
+    where?: AdmissionTypeWhereInput
+    /**
+     * Limit how many AdmissionTypes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdmissionType.admissions
+   */
+  export type AdmissionType$admissionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Admission
+     */
+    select?: AdmissionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Admission
+     */
+    omit?: AdmissionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdmissionInclude<ExtArgs> | null
+    where?: AdmissionWhereInput
+    orderBy?: AdmissionOrderByWithRelationInput | AdmissionOrderByWithRelationInput[]
+    cursor?: AdmissionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AdmissionScalarFieldEnum | AdmissionScalarFieldEnum[]
+  }
+
+  /**
+   * AdmissionType without action
+   */
+  export type AdmissionTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdmissionType
+     */
+    select?: AdmissionTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdmissionType
+     */
+    omit?: AdmissionTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AdmissionTypeInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -14941,13 +17994,13 @@ export namespace Prisma {
     phone: 'phone',
     affiliateNumber: 'affiliateNumber',
     professionalActivity: 'professionalActivity',
-    healthInsuranceProvider: 'healthInsuranceProvider',
     patientType: 'patientType',
     patientStatus: 'patientStatus',
     isActive: 'isActive',
     createdAt: 'createdAt',
     userId: 'userId',
-    legalGuardianId: 'legalGuardianId'
+    legalGuardianId: 'legalGuardianId',
+    healthInsuranceProviderId: 'healthInsuranceProviderId'
   };
 
   export type PatientScalarFieldEnum = (typeof PatientScalarFieldEnum)[keyof typeof PatientScalarFieldEnum]
@@ -14957,6 +18010,8 @@ export namespace Prisma {
     id: 'id',
     name: 'name',
     description: 'description',
+    contractor: 'contractor',
+    subcontractor: 'subcontractor',
     cuit: 'cuit',
     address: 'address',
     email: 'email',
@@ -14965,6 +18020,19 @@ export namespace Prisma {
   };
 
   export type HealthInsuranceProviderScalarFieldEnum = (typeof HealthInsuranceProviderScalarFieldEnum)[keyof typeof HealthInsuranceProviderScalarFieldEnum]
+
+
+  export const HealthInsuranceAuthorizationScalarFieldEnum: {
+    id: 'id',
+    healthInsuranceProviderId: 'healthInsuranceProviderId',
+    admissionId: 'admissionId',
+    service: 'service',
+    periodFrom: 'periodFrom',
+    periodTo: 'periodTo',
+    authorizedAt: 'authorizedAt'
+  };
+
+  export type HealthInsuranceAuthorizationScalarFieldEnum = (typeof HealthInsuranceAuthorizationScalarFieldEnum)[keyof typeof HealthInsuranceAuthorizationScalarFieldEnum]
 
 
   export const LegalGuardianScalarFieldEnum: {
@@ -14978,12 +18046,12 @@ export namespace Prisma {
     birthday: 'birthday',
     phone: 'phone',
     professionalActivity: 'professionalActivity',
-    healthInsuranceProvider: 'healthInsuranceProvider',
     legalGuardianType: 'legalGuardianType',
     legalGuardianStatus: 'legalGuardianStatus',
     isActive: 'isActive',
     createdAt: 'createdAt',
-    userId: 'userId'
+    userId: 'userId',
+    healthInsuranceProviderId: 'healthInsuranceProviderId'
   };
 
   export type LegalGuardianScalarFieldEnum = (typeof LegalGuardianScalarFieldEnum)[keyof typeof LegalGuardianScalarFieldEnum]
@@ -14999,10 +18067,10 @@ export namespace Prisma {
     birthday: 'birthday',
     phone: 'phone',
     professionalActivity: 'professionalActivity',
-    healthInsuranceProvider: 'healthInsuranceProvider',
     isActive: 'isActive',
     profecionalType: 'profecionalType',
-    userId: 'userId'
+    userId: 'userId',
+    healthInsuranceProviderId: 'healthInsuranceProviderId'
   };
 
   export type ProfessionalScalarFieldEnum = (typeof ProfessionalScalarFieldEnum)[keyof typeof ProfessionalScalarFieldEnum]
@@ -15010,8 +18078,17 @@ export namespace Prisma {
 
   export const AdmissionScalarFieldEnum: {
     id: 'id',
-    admissionStatus: 'admissionStatus',
-    patientId: 'patientId'
+    operationDate: 'operationDate',
+    admissionDate: 'admissionDate',
+    admissionTypeId: 'admissionTypeId',
+    isSchoolEnrolled: 'isSchoolEnrolled',
+    schoolShift: 'schoolShift',
+    patientId: 'patientId',
+    cud: 'cud',
+    cudExpirationDate: 'cudExpirationDate',
+    status: 'status',
+    legalGuardianId: 'legalGuardianId',
+    createdAt: 'createdAt'
   };
 
   export type AdmissionScalarFieldEnum = (typeof AdmissionScalarFieldEnum)[keyof typeof AdmissionScalarFieldEnum]
@@ -15078,6 +18155,14 @@ export namespace Prisma {
   };
 
   export type ScheduleScalarFieldEnum = (typeof ScheduleScalarFieldEnum)[keyof typeof ScheduleScalarFieldEnum]
+
+
+  export const AdmissionTypeScalarFieldEnum: {
+    id: 'id',
+    name: 'name'
+  };
+
+  export type AdmissionTypeScalarFieldEnum = (typeof AdmissionTypeScalarFieldEnum)[keyof typeof AdmissionTypeScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -15201,6 +18286,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'CoverageService'
+   */
+  export type EnumCoverageServiceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CoverageService'>
+    
+
+
+  /**
+   * Reference to a field of type 'CoverageService[]'
+   */
+  export type ListEnumCoverageServiceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CoverageService[]'>
+    
+
+
+  /**
    * Reference to a field of type 'LegalGuardianType'
    */
   export type EnumLegalGuardianTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LegalGuardianType'>
@@ -15225,6 +18324,20 @@ export namespace Prisma {
    * Reference to a field of type 'LegalGuardianStatus[]'
    */
   export type ListEnumLegalGuardianStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LegalGuardianStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'SchoolShift'
+   */
+  export type EnumSchoolShiftFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchoolShift'>
+    
+
+
+  /**
+   * Reference to a field of type 'SchoolShift[]'
+   */
+  export type ListEnumSchoolShiftFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchoolShift[]'>
     
 
 
@@ -15392,11 +18505,11 @@ export namespace Prisma {
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    firebaseUid?: string
     email?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
-    firebaseUid?: StringFilter<"User"> | string
     role?: EnumUserRolesFilter<"User"> | $Enums.UserRoles
     isActive?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -15406,7 +18519,7 @@ export namespace Prisma {
     professional?: XOR<ProfessionalNullableScalarRelationFilter, ProfessionalWhereInput> | null
     createdEvents?: EventListRelationFilter
     createdProcesses?: ProcessListRelationFilter
-  }, "id" | "email">
+  }, "id" | "firebaseUid" | "email">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
@@ -15451,17 +18564,18 @@ export namespace Prisma {
     phone?: StringFilter<"Patient"> | string
     affiliateNumber?: StringFilter<"Patient"> | string
     professionalActivity?: StringNullableFilter<"Patient"> | string | null
-    healthInsuranceProvider?: StringNullableFilter<"Patient"> | string | null
     patientType?: EnumPatientTypeNullableFilter<"Patient"> | $Enums.PatientType | null
     patientStatus?: EnumPatientStatusNullableFilter<"Patient"> | $Enums.PatientStatus | null
     isActive?: BoolFilter<"Patient"> | boolean
     createdAt?: DateTimeFilter<"Patient"> | Date | string
     userId?: IntNullableFilter<"Patient"> | number | null
     legalGuardianId?: IntNullableFilter<"Patient"> | number | null
+    healthInsuranceProviderId?: IntNullableFilter<"Patient"> | number | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     legalGuardian?: XOR<LegalGuardianNullableScalarRelationFilter, LegalGuardianWhereInput> | null
     events?: EventListRelationFilter
     admission?: XOR<AdmissionNullableScalarRelationFilter, AdmissionWhereInput> | null
+    healthInsuranceProvider?: XOR<HealthInsuranceProviderNullableScalarRelationFilter, HealthInsuranceProviderWhereInput> | null
   }
 
   export type PatientOrderByWithRelationInput = {
@@ -15476,17 +18590,18 @@ export namespace Prisma {
     phone?: SortOrder
     affiliateNumber?: SortOrder
     professionalActivity?: SortOrderInput | SortOrder
-    healthInsuranceProvider?: SortOrderInput | SortOrder
     patientType?: SortOrderInput | SortOrder
     patientStatus?: SortOrderInput | SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrderInput | SortOrder
     legalGuardianId?: SortOrderInput | SortOrder
+    healthInsuranceProviderId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     legalGuardian?: LegalGuardianOrderByWithRelationInput
     events?: EventOrderByRelationAggregateInput
     admission?: AdmissionOrderByWithRelationInput
+    healthInsuranceProvider?: HealthInsuranceProviderOrderByWithRelationInput
   }
 
   export type PatientWhereUniqueInput = Prisma.AtLeast<{
@@ -15505,16 +18620,17 @@ export namespace Prisma {
     phone?: StringFilter<"Patient"> | string
     affiliateNumber?: StringFilter<"Patient"> | string
     professionalActivity?: StringNullableFilter<"Patient"> | string | null
-    healthInsuranceProvider?: StringNullableFilter<"Patient"> | string | null
     patientType?: EnumPatientTypeNullableFilter<"Patient"> | $Enums.PatientType | null
     patientStatus?: EnumPatientStatusNullableFilter<"Patient"> | $Enums.PatientStatus | null
     isActive?: BoolFilter<"Patient"> | boolean
     createdAt?: DateTimeFilter<"Patient"> | Date | string
     legalGuardianId?: IntNullableFilter<"Patient"> | number | null
+    healthInsuranceProviderId?: IntNullableFilter<"Patient"> | number | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     legalGuardian?: XOR<LegalGuardianNullableScalarRelationFilter, LegalGuardianWhereInput> | null
     events?: EventListRelationFilter
     admission?: XOR<AdmissionNullableScalarRelationFilter, AdmissionWhereInput> | null
+    healthInsuranceProvider?: XOR<HealthInsuranceProviderNullableScalarRelationFilter, HealthInsuranceProviderWhereInput> | null
   }, "id" | "dni" | "cuil" | "userId">
 
   export type PatientOrderByWithAggregationInput = {
@@ -15529,13 +18645,13 @@ export namespace Prisma {
     phone?: SortOrder
     affiliateNumber?: SortOrder
     professionalActivity?: SortOrderInput | SortOrder
-    healthInsuranceProvider?: SortOrderInput | SortOrder
     patientType?: SortOrderInput | SortOrder
     patientStatus?: SortOrderInput | SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrderInput | SortOrder
     legalGuardianId?: SortOrderInput | SortOrder
+    healthInsuranceProviderId?: SortOrderInput | SortOrder
     _count?: PatientCountOrderByAggregateInput
     _avg?: PatientAvgOrderByAggregateInput
     _max?: PatientMaxOrderByAggregateInput
@@ -15558,13 +18674,13 @@ export namespace Prisma {
     phone?: StringWithAggregatesFilter<"Patient"> | string
     affiliateNumber?: StringWithAggregatesFilter<"Patient"> | string
     professionalActivity?: StringNullableWithAggregatesFilter<"Patient"> | string | null
-    healthInsuranceProvider?: StringNullableWithAggregatesFilter<"Patient"> | string | null
     patientType?: EnumPatientTypeNullableWithAggregatesFilter<"Patient"> | $Enums.PatientType | null
     patientStatus?: EnumPatientStatusNullableWithAggregatesFilter<"Patient"> | $Enums.PatientStatus | null
     isActive?: BoolWithAggregatesFilter<"Patient"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Patient"> | Date | string
     userId?: IntNullableWithAggregatesFilter<"Patient"> | number | null
     legalGuardianId?: IntNullableWithAggregatesFilter<"Patient"> | number | null
+    healthInsuranceProviderId?: IntNullableWithAggregatesFilter<"Patient"> | number | null
   }
 
   export type HealthInsuranceProviderWhereInput = {
@@ -15574,22 +18690,34 @@ export namespace Prisma {
     id?: IntFilter<"HealthInsuranceProvider"> | number
     name?: StringFilter<"HealthInsuranceProvider"> | string
     description?: StringFilter<"HealthInsuranceProvider"> | string
+    contractor?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
+    subcontractor?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
     cuit?: StringFilter<"HealthInsuranceProvider"> | string
     address?: StringFilter<"HealthInsuranceProvider"> | string
     email?: StringFilter<"HealthInsuranceProvider"> | string
     phone?: StringFilter<"HealthInsuranceProvider"> | string
     contact?: StringFilter<"HealthInsuranceProvider"> | string
+    authorizations?: HealthInsuranceAuthorizationListRelationFilter
+    patients?: PatientListRelationFilter
+    legalGuardians?: LegalGuardianListRelationFilter
+    professionals?: ProfessionalListRelationFilter
   }
 
   export type HealthInsuranceProviderOrderByWithRelationInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    contractor?: SortOrderInput | SortOrder
+    subcontractor?: SortOrderInput | SortOrder
     cuit?: SortOrder
     address?: SortOrder
     email?: SortOrder
     phone?: SortOrder
     contact?: SortOrder
+    authorizations?: HealthInsuranceAuthorizationOrderByRelationAggregateInput
+    patients?: PatientOrderByRelationAggregateInput
+    legalGuardians?: LegalGuardianOrderByRelationAggregateInput
+    professionals?: ProfessionalOrderByRelationAggregateInput
   }
 
   export type HealthInsuranceProviderWhereUniqueInput = Prisma.AtLeast<{
@@ -15599,17 +18727,25 @@ export namespace Prisma {
     NOT?: HealthInsuranceProviderWhereInput | HealthInsuranceProviderWhereInput[]
     name?: StringFilter<"HealthInsuranceProvider"> | string
     description?: StringFilter<"HealthInsuranceProvider"> | string
+    contractor?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
+    subcontractor?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
     cuit?: StringFilter<"HealthInsuranceProvider"> | string
     address?: StringFilter<"HealthInsuranceProvider"> | string
     email?: StringFilter<"HealthInsuranceProvider"> | string
     phone?: StringFilter<"HealthInsuranceProvider"> | string
     contact?: StringFilter<"HealthInsuranceProvider"> | string
+    authorizations?: HealthInsuranceAuthorizationListRelationFilter
+    patients?: PatientListRelationFilter
+    legalGuardians?: LegalGuardianListRelationFilter
+    professionals?: ProfessionalListRelationFilter
   }, "id">
 
   export type HealthInsuranceProviderOrderByWithAggregationInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    contractor?: SortOrderInput | SortOrder
+    subcontractor?: SortOrderInput | SortOrder
     cuit?: SortOrder
     address?: SortOrder
     email?: SortOrder
@@ -15629,11 +18765,83 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"HealthInsuranceProvider"> | number
     name?: StringWithAggregatesFilter<"HealthInsuranceProvider"> | string
     description?: StringWithAggregatesFilter<"HealthInsuranceProvider"> | string
+    contractor?: StringNullableWithAggregatesFilter<"HealthInsuranceProvider"> | string | null
+    subcontractor?: StringNullableWithAggregatesFilter<"HealthInsuranceProvider"> | string | null
     cuit?: StringWithAggregatesFilter<"HealthInsuranceProvider"> | string
     address?: StringWithAggregatesFilter<"HealthInsuranceProvider"> | string
     email?: StringWithAggregatesFilter<"HealthInsuranceProvider"> | string
     phone?: StringWithAggregatesFilter<"HealthInsuranceProvider"> | string
     contact?: StringWithAggregatesFilter<"HealthInsuranceProvider"> | string
+  }
+
+  export type HealthInsuranceAuthorizationWhereInput = {
+    AND?: HealthInsuranceAuthorizationWhereInput | HealthInsuranceAuthorizationWhereInput[]
+    OR?: HealthInsuranceAuthorizationWhereInput[]
+    NOT?: HealthInsuranceAuthorizationWhereInput | HealthInsuranceAuthorizationWhereInput[]
+    id?: IntFilter<"HealthInsuranceAuthorization"> | number
+    healthInsuranceProviderId?: IntFilter<"HealthInsuranceAuthorization"> | number
+    admissionId?: IntFilter<"HealthInsuranceAuthorization"> | number
+    service?: EnumCoverageServiceFilter<"HealthInsuranceAuthorization"> | $Enums.CoverageService
+    periodFrom?: DateTimeFilter<"HealthInsuranceAuthorization"> | Date | string
+    periodTo?: DateTimeFilter<"HealthInsuranceAuthorization"> | Date | string
+    authorizedAt?: DateTimeFilter<"HealthInsuranceAuthorization"> | Date | string
+    healthInsuranceProvider?: XOR<HealthInsuranceProviderScalarRelationFilter, HealthInsuranceProviderWhereInput>
+    admission?: XOR<AdmissionScalarRelationFilter, AdmissionWhereInput>
+  }
+
+  export type HealthInsuranceAuthorizationOrderByWithRelationInput = {
+    id?: SortOrder
+    healthInsuranceProviderId?: SortOrder
+    admissionId?: SortOrder
+    service?: SortOrder
+    periodFrom?: SortOrder
+    periodTo?: SortOrder
+    authorizedAt?: SortOrder
+    healthInsuranceProvider?: HealthInsuranceProviderOrderByWithRelationInput
+    admission?: AdmissionOrderByWithRelationInput
+  }
+
+  export type HealthInsuranceAuthorizationWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: HealthInsuranceAuthorizationWhereInput | HealthInsuranceAuthorizationWhereInput[]
+    OR?: HealthInsuranceAuthorizationWhereInput[]
+    NOT?: HealthInsuranceAuthorizationWhereInput | HealthInsuranceAuthorizationWhereInput[]
+    healthInsuranceProviderId?: IntFilter<"HealthInsuranceAuthorization"> | number
+    admissionId?: IntFilter<"HealthInsuranceAuthorization"> | number
+    service?: EnumCoverageServiceFilter<"HealthInsuranceAuthorization"> | $Enums.CoverageService
+    periodFrom?: DateTimeFilter<"HealthInsuranceAuthorization"> | Date | string
+    periodTo?: DateTimeFilter<"HealthInsuranceAuthorization"> | Date | string
+    authorizedAt?: DateTimeFilter<"HealthInsuranceAuthorization"> | Date | string
+    healthInsuranceProvider?: XOR<HealthInsuranceProviderScalarRelationFilter, HealthInsuranceProviderWhereInput>
+    admission?: XOR<AdmissionScalarRelationFilter, AdmissionWhereInput>
+  }, "id">
+
+  export type HealthInsuranceAuthorizationOrderByWithAggregationInput = {
+    id?: SortOrder
+    healthInsuranceProviderId?: SortOrder
+    admissionId?: SortOrder
+    service?: SortOrder
+    periodFrom?: SortOrder
+    periodTo?: SortOrder
+    authorizedAt?: SortOrder
+    _count?: HealthInsuranceAuthorizationCountOrderByAggregateInput
+    _avg?: HealthInsuranceAuthorizationAvgOrderByAggregateInput
+    _max?: HealthInsuranceAuthorizationMaxOrderByAggregateInput
+    _min?: HealthInsuranceAuthorizationMinOrderByAggregateInput
+    _sum?: HealthInsuranceAuthorizationSumOrderByAggregateInput
+  }
+
+  export type HealthInsuranceAuthorizationScalarWhereWithAggregatesInput = {
+    AND?: HealthInsuranceAuthorizationScalarWhereWithAggregatesInput | HealthInsuranceAuthorizationScalarWhereWithAggregatesInput[]
+    OR?: HealthInsuranceAuthorizationScalarWhereWithAggregatesInput[]
+    NOT?: HealthInsuranceAuthorizationScalarWhereWithAggregatesInput | HealthInsuranceAuthorizationScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"HealthInsuranceAuthorization"> | number
+    healthInsuranceProviderId?: IntWithAggregatesFilter<"HealthInsuranceAuthorization"> | number
+    admissionId?: IntWithAggregatesFilter<"HealthInsuranceAuthorization"> | number
+    service?: EnumCoverageServiceWithAggregatesFilter<"HealthInsuranceAuthorization"> | $Enums.CoverageService
+    periodFrom?: DateTimeWithAggregatesFilter<"HealthInsuranceAuthorization"> | Date | string
+    periodTo?: DateTimeWithAggregatesFilter<"HealthInsuranceAuthorization"> | Date | string
+    authorizedAt?: DateTimeWithAggregatesFilter<"HealthInsuranceAuthorization"> | Date | string
   }
 
   export type LegalGuardianWhereInput = {
@@ -15650,14 +18858,16 @@ export namespace Prisma {
     birthday?: DateTimeFilter<"LegalGuardian"> | Date | string
     phone?: StringFilter<"LegalGuardian"> | string
     professionalActivity?: StringFilter<"LegalGuardian"> | string
-    healthInsuranceProvider?: StringNullableFilter<"LegalGuardian"> | string | null
     legalGuardianType?: EnumLegalGuardianTypeNullableFilter<"LegalGuardian"> | $Enums.LegalGuardianType | null
     legalGuardianStatus?: EnumLegalGuardianStatusNullableFilter<"LegalGuardian"> | $Enums.LegalGuardianStatus | null
     isActive?: BoolFilter<"LegalGuardian"> | boolean
     createdAt?: DateTimeFilter<"LegalGuardian"> | Date | string
     userId?: IntNullableFilter<"LegalGuardian"> | number | null
+    healthInsuranceProviderId?: IntNullableFilter<"LegalGuardian"> | number | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     patients?: PatientListRelationFilter
+    healthInsuranceProvider?: XOR<HealthInsuranceProviderNullableScalarRelationFilter, HealthInsuranceProviderWhereInput> | null
+    admissions?: AdmissionListRelationFilter
   }
 
   export type LegalGuardianOrderByWithRelationInput = {
@@ -15671,14 +18881,16 @@ export namespace Prisma {
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
-    healthInsuranceProvider?: SortOrderInput | SortOrder
     legalGuardianType?: SortOrderInput | SortOrder
     legalGuardianStatus?: SortOrderInput | SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrderInput | SortOrder
+    healthInsuranceProviderId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     patients?: PatientOrderByRelationAggregateInput
+    healthInsuranceProvider?: HealthInsuranceProviderOrderByWithRelationInput
+    admissions?: AdmissionOrderByRelationAggregateInput
   }
 
   export type LegalGuardianWhereUniqueInput = Prisma.AtLeast<{
@@ -15696,13 +18908,15 @@ export namespace Prisma {
     birthday?: DateTimeFilter<"LegalGuardian"> | Date | string
     phone?: StringFilter<"LegalGuardian"> | string
     professionalActivity?: StringFilter<"LegalGuardian"> | string
-    healthInsuranceProvider?: StringNullableFilter<"LegalGuardian"> | string | null
     legalGuardianType?: EnumLegalGuardianTypeNullableFilter<"LegalGuardian"> | $Enums.LegalGuardianType | null
     legalGuardianStatus?: EnumLegalGuardianStatusNullableFilter<"LegalGuardian"> | $Enums.LegalGuardianStatus | null
     isActive?: BoolFilter<"LegalGuardian"> | boolean
     createdAt?: DateTimeFilter<"LegalGuardian"> | Date | string
+    healthInsuranceProviderId?: IntNullableFilter<"LegalGuardian"> | number | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     patients?: PatientListRelationFilter
+    healthInsuranceProvider?: XOR<HealthInsuranceProviderNullableScalarRelationFilter, HealthInsuranceProviderWhereInput> | null
+    admissions?: AdmissionListRelationFilter
   }, "id" | "userId">
 
   export type LegalGuardianOrderByWithAggregationInput = {
@@ -15716,12 +18930,12 @@ export namespace Prisma {
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
-    healthInsuranceProvider?: SortOrderInput | SortOrder
     legalGuardianType?: SortOrderInput | SortOrder
     legalGuardianStatus?: SortOrderInput | SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrderInput | SortOrder
+    healthInsuranceProviderId?: SortOrderInput | SortOrder
     _count?: LegalGuardianCountOrderByAggregateInput
     _avg?: LegalGuardianAvgOrderByAggregateInput
     _max?: LegalGuardianMaxOrderByAggregateInput
@@ -15743,12 +18957,12 @@ export namespace Prisma {
     birthday?: DateTimeWithAggregatesFilter<"LegalGuardian"> | Date | string
     phone?: StringWithAggregatesFilter<"LegalGuardian"> | string
     professionalActivity?: StringWithAggregatesFilter<"LegalGuardian"> | string
-    healthInsuranceProvider?: StringNullableWithAggregatesFilter<"LegalGuardian"> | string | null
     legalGuardianType?: EnumLegalGuardianTypeNullableWithAggregatesFilter<"LegalGuardian"> | $Enums.LegalGuardianType | null
     legalGuardianStatus?: EnumLegalGuardianStatusNullableWithAggregatesFilter<"LegalGuardian"> | $Enums.LegalGuardianStatus | null
     isActive?: BoolWithAggregatesFilter<"LegalGuardian"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"LegalGuardian"> | Date | string
     userId?: IntNullableWithAggregatesFilter<"LegalGuardian"> | number | null
+    healthInsuranceProviderId?: IntNullableWithAggregatesFilter<"LegalGuardian"> | number | null
   }
 
   export type ProfessionalWhereInput = {
@@ -15764,13 +18978,14 @@ export namespace Prisma {
     birthday?: DateTimeFilter<"Professional"> | Date | string
     phone?: StringFilter<"Professional"> | string
     professionalActivity?: StringFilter<"Professional"> | string
-    healthInsuranceProvider?: StringNullableFilter<"Professional"> | string | null
     isActive?: BoolFilter<"Professional"> | boolean
     profecionalType?: StringFilter<"Professional"> | string
     userId?: IntNullableFilter<"Professional"> | number | null
+    healthInsuranceProviderId?: IntNullableFilter<"Professional"> | number | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     events?: EventListRelationFilter
     schedules?: ScheduleListRelationFilter
+    healthInsuranceProvider?: XOR<HealthInsuranceProviderNullableScalarRelationFilter, HealthInsuranceProviderWhereInput> | null
   }
 
   export type ProfessionalOrderByWithRelationInput = {
@@ -15783,13 +18998,14 @@ export namespace Prisma {
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
-    healthInsuranceProvider?: SortOrderInput | SortOrder
     isActive?: SortOrder
     profecionalType?: SortOrder
     userId?: SortOrderInput | SortOrder
+    healthInsuranceProviderId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     events?: EventOrderByRelationAggregateInput
     schedules?: ScheduleOrderByRelationAggregateInput
+    healthInsuranceProvider?: HealthInsuranceProviderOrderByWithRelationInput
   }
 
   export type ProfessionalWhereUniqueInput = Prisma.AtLeast<{
@@ -15806,12 +19022,13 @@ export namespace Prisma {
     birthday?: DateTimeFilter<"Professional"> | Date | string
     phone?: StringFilter<"Professional"> | string
     professionalActivity?: StringFilter<"Professional"> | string
-    healthInsuranceProvider?: StringNullableFilter<"Professional"> | string | null
     isActive?: BoolFilter<"Professional"> | boolean
     profecionalType?: StringFilter<"Professional"> | string
+    healthInsuranceProviderId?: IntNullableFilter<"Professional"> | number | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     events?: EventListRelationFilter
     schedules?: ScheduleListRelationFilter
+    healthInsuranceProvider?: XOR<HealthInsuranceProviderNullableScalarRelationFilter, HealthInsuranceProviderWhereInput> | null
   }, "id" | "dni" | "cuil" | "userId">
 
   export type ProfessionalOrderByWithAggregationInput = {
@@ -15824,10 +19041,10 @@ export namespace Prisma {
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
-    healthInsuranceProvider?: SortOrderInput | SortOrder
     isActive?: SortOrder
     profecionalType?: SortOrder
     userId?: SortOrderInput | SortOrder
+    healthInsuranceProviderId?: SortOrderInput | SortOrder
     _count?: ProfessionalCountOrderByAggregateInput
     _avg?: ProfessionalAvgOrderByAggregateInput
     _max?: ProfessionalMaxOrderByAggregateInput
@@ -15848,10 +19065,10 @@ export namespace Prisma {
     birthday?: DateTimeWithAggregatesFilter<"Professional"> | Date | string
     phone?: StringWithAggregatesFilter<"Professional"> | string
     professionalActivity?: StringWithAggregatesFilter<"Professional"> | string
-    healthInsuranceProvider?: StringNullableWithAggregatesFilter<"Professional"> | string | null
     isActive?: BoolWithAggregatesFilter<"Professional"> | boolean
     profecionalType?: StringWithAggregatesFilter<"Professional"> | string
     userId?: IntNullableWithAggregatesFilter<"Professional"> | number | null
+    healthInsuranceProviderId?: IntNullableWithAggregatesFilter<"Professional"> | number | null
   }
 
   export type AdmissionWhereInput = {
@@ -15859,16 +19076,40 @@ export namespace Prisma {
     OR?: AdmissionWhereInput[]
     NOT?: AdmissionWhereInput | AdmissionWhereInput[]
     id?: IntFilter<"Admission"> | number
-    admissionStatus?: EnumAdmissionStatusNullableFilter<"Admission"> | $Enums.AdmissionStatus | null
+    operationDate?: DateTimeFilter<"Admission"> | Date | string
+    admissionDate?: DateTimeFilter<"Admission"> | Date | string
+    admissionTypeId?: IntFilter<"Admission"> | number
+    isSchoolEnrolled?: BoolFilter<"Admission"> | boolean
+    schoolShift?: EnumSchoolShiftNullableFilter<"Admission"> | $Enums.SchoolShift | null
     patientId?: IntFilter<"Admission"> | number
+    cud?: StringNullableFilter<"Admission"> | string | null
+    cudExpirationDate?: DateTimeNullableFilter<"Admission"> | Date | string | null
+    status?: EnumAdmissionStatusNullableFilter<"Admission"> | $Enums.AdmissionStatus | null
+    legalGuardianId?: IntNullableFilter<"Admission"> | number | null
+    createdAt?: DateTimeFilter<"Admission"> | Date | string
+    admissionType?: XOR<AdmissionTypeScalarRelationFilter, AdmissionTypeWhereInput>
     patient?: XOR<PatientScalarRelationFilter, PatientWhereInput>
+    legalGuardian?: XOR<LegalGuardianNullableScalarRelationFilter, LegalGuardianWhereInput> | null
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationListRelationFilter
   }
 
   export type AdmissionOrderByWithRelationInput = {
     id?: SortOrder
-    admissionStatus?: SortOrderInput | SortOrder
+    operationDate?: SortOrder
+    admissionDate?: SortOrder
+    admissionTypeId?: SortOrder
+    isSchoolEnrolled?: SortOrder
+    schoolShift?: SortOrderInput | SortOrder
     patientId?: SortOrder
+    cud?: SortOrderInput | SortOrder
+    cudExpirationDate?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
+    legalGuardianId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    admissionType?: AdmissionTypeOrderByWithRelationInput
     patient?: PatientOrderByWithRelationInput
+    legalGuardian?: LegalGuardianOrderByWithRelationInput
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationOrderByRelationAggregateInput
   }
 
   export type AdmissionWhereUniqueInput = Prisma.AtLeast<{
@@ -15877,14 +19118,35 @@ export namespace Prisma {
     AND?: AdmissionWhereInput | AdmissionWhereInput[]
     OR?: AdmissionWhereInput[]
     NOT?: AdmissionWhereInput | AdmissionWhereInput[]
-    admissionStatus?: EnumAdmissionStatusNullableFilter<"Admission"> | $Enums.AdmissionStatus | null
+    operationDate?: DateTimeFilter<"Admission"> | Date | string
+    admissionDate?: DateTimeFilter<"Admission"> | Date | string
+    admissionTypeId?: IntFilter<"Admission"> | number
+    isSchoolEnrolled?: BoolFilter<"Admission"> | boolean
+    schoolShift?: EnumSchoolShiftNullableFilter<"Admission"> | $Enums.SchoolShift | null
+    cud?: StringNullableFilter<"Admission"> | string | null
+    cudExpirationDate?: DateTimeNullableFilter<"Admission"> | Date | string | null
+    status?: EnumAdmissionStatusNullableFilter<"Admission"> | $Enums.AdmissionStatus | null
+    legalGuardianId?: IntNullableFilter<"Admission"> | number | null
+    createdAt?: DateTimeFilter<"Admission"> | Date | string
+    admissionType?: XOR<AdmissionTypeScalarRelationFilter, AdmissionTypeWhereInput>
     patient?: XOR<PatientScalarRelationFilter, PatientWhereInput>
+    legalGuardian?: XOR<LegalGuardianNullableScalarRelationFilter, LegalGuardianWhereInput> | null
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationListRelationFilter
   }, "id" | "patientId">
 
   export type AdmissionOrderByWithAggregationInput = {
     id?: SortOrder
-    admissionStatus?: SortOrderInput | SortOrder
+    operationDate?: SortOrder
+    admissionDate?: SortOrder
+    admissionTypeId?: SortOrder
+    isSchoolEnrolled?: SortOrder
+    schoolShift?: SortOrderInput | SortOrder
     patientId?: SortOrder
+    cud?: SortOrderInput | SortOrder
+    cudExpirationDate?: SortOrderInput | SortOrder
+    status?: SortOrderInput | SortOrder
+    legalGuardianId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
     _count?: AdmissionCountOrderByAggregateInput
     _avg?: AdmissionAvgOrderByAggregateInput
     _max?: AdmissionMaxOrderByAggregateInput
@@ -15897,8 +19159,17 @@ export namespace Prisma {
     OR?: AdmissionScalarWhereWithAggregatesInput[]
     NOT?: AdmissionScalarWhereWithAggregatesInput | AdmissionScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Admission"> | number
-    admissionStatus?: EnumAdmissionStatusNullableWithAggregatesFilter<"Admission"> | $Enums.AdmissionStatus | null
+    operationDate?: DateTimeWithAggregatesFilter<"Admission"> | Date | string
+    admissionDate?: DateTimeWithAggregatesFilter<"Admission"> | Date | string
+    admissionTypeId?: IntWithAggregatesFilter<"Admission"> | number
+    isSchoolEnrolled?: BoolWithAggregatesFilter<"Admission"> | boolean
+    schoolShift?: EnumSchoolShiftNullableWithAggregatesFilter<"Admission"> | $Enums.SchoolShift | null
     patientId?: IntWithAggregatesFilter<"Admission"> | number
+    cud?: StringNullableWithAggregatesFilter<"Admission"> | string | null
+    cudExpirationDate?: DateTimeNullableWithAggregatesFilter<"Admission"> | Date | string | null
+    status?: EnumAdmissionStatusNullableWithAggregatesFilter<"Admission"> | $Enums.AdmissionStatus | null
+    legalGuardianId?: IntNullableWithAggregatesFilter<"Admission"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"Admission"> | Date | string
   }
 
   export type EventWhereInput = {
@@ -16226,6 +19497,48 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Schedule"> | Date | string
   }
 
+  export type AdmissionTypeWhereInput = {
+    AND?: AdmissionTypeWhereInput | AdmissionTypeWhereInput[]
+    OR?: AdmissionTypeWhereInput[]
+    NOT?: AdmissionTypeWhereInput | AdmissionTypeWhereInput[]
+    id?: IntFilter<"AdmissionType"> | number
+    name?: StringFilter<"AdmissionType"> | string
+    admissions?: AdmissionListRelationFilter
+  }
+
+  export type AdmissionTypeOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    admissions?: AdmissionOrderByRelationAggregateInput
+  }
+
+  export type AdmissionTypeWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: AdmissionTypeWhereInput | AdmissionTypeWhereInput[]
+    OR?: AdmissionTypeWhereInput[]
+    NOT?: AdmissionTypeWhereInput | AdmissionTypeWhereInput[]
+    name?: StringFilter<"AdmissionType"> | string
+    admissions?: AdmissionListRelationFilter
+  }, "id">
+
+  export type AdmissionTypeOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    _count?: AdmissionTypeCountOrderByAggregateInput
+    _avg?: AdmissionTypeAvgOrderByAggregateInput
+    _max?: AdmissionTypeMaxOrderByAggregateInput
+    _min?: AdmissionTypeMinOrderByAggregateInput
+    _sum?: AdmissionTypeSumOrderByAggregateInput
+  }
+
+  export type AdmissionTypeScalarWhereWithAggregatesInput = {
+    AND?: AdmissionTypeScalarWhereWithAggregatesInput | AdmissionTypeScalarWhereWithAggregatesInput[]
+    OR?: AdmissionTypeScalarWhereWithAggregatesInput[]
+    NOT?: AdmissionTypeScalarWhereWithAggregatesInput | AdmissionTypeScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"AdmissionType"> | number
+    name?: StringWithAggregatesFilter<"AdmissionType"> | string
+  }
+
   export type UserCreateInput = {
     firebaseUid: string
     role?: $Enums.UserRoles
@@ -16324,7 +19637,6 @@ export namespace Prisma {
     phone: string
     affiliateNumber: string
     professionalActivity?: string | null
-    healthInsuranceProvider?: string | null
     patientType?: $Enums.PatientType | null
     patientStatus?: $Enums.PatientStatus | null
     isActive?: boolean
@@ -16333,6 +19645,7 @@ export namespace Prisma {
     legalGuardian?: LegalGuardianCreateNestedOneWithoutPatientsInput
     events?: EventCreateNestedManyWithoutPatientInput
     admission?: AdmissionCreateNestedOneWithoutPatientInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutPatientsInput
   }
 
   export type PatientUncheckedCreateInput = {
@@ -16347,13 +19660,13 @@ export namespace Prisma {
     phone: string
     affiliateNumber: string
     professionalActivity?: string | null
-    healthInsuranceProvider?: string | null
     patientType?: $Enums.PatientType | null
     patientStatus?: $Enums.PatientStatus | null
     isActive?: boolean
     createdAt?: Date | string
     userId?: number | null
     legalGuardianId?: number | null
+    healthInsuranceProviderId?: number | null
     events?: EventUncheckedCreateNestedManyWithoutPatientInput
     admission?: AdmissionUncheckedCreateNestedOneWithoutPatientInput
   }
@@ -16369,7 +19682,6 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     affiliateNumber?: StringFieldUpdateOperationsInput | string
     professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
     patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -16378,6 +19690,7 @@ export namespace Prisma {
     legalGuardian?: LegalGuardianUpdateOneWithoutPatientsNestedInput
     events?: EventUpdateManyWithoutPatientNestedInput
     admission?: AdmissionUpdateOneWithoutPatientNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutPatientsNestedInput
   }
 
   export type PatientUncheckedUpdateInput = {
@@ -16392,13 +19705,13 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     affiliateNumber?: StringFieldUpdateOperationsInput | string
     professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
     patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     legalGuardianId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     events?: EventUncheckedUpdateManyWithoutPatientNestedInput
     admission?: AdmissionUncheckedUpdateOneWithoutPatientNestedInput
   }
@@ -16415,13 +19728,13 @@ export namespace Prisma {
     phone: string
     affiliateNumber: string
     professionalActivity?: string | null
-    healthInsuranceProvider?: string | null
     patientType?: $Enums.PatientType | null
     patientStatus?: $Enums.PatientStatus | null
     isActive?: boolean
     createdAt?: Date | string
     userId?: number | null
     legalGuardianId?: number | null
+    healthInsuranceProviderId?: number | null
   }
 
   export type PatientUpdateManyMutationInput = {
@@ -16435,7 +19748,6 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     affiliateNumber?: StringFieldUpdateOperationsInput | string
     professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
     patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -16454,61 +19766,87 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     affiliateNumber?: StringFieldUpdateOperationsInput | string
     professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
     patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     legalGuardianId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type HealthInsuranceProviderCreateInput = {
     name: string
     description: string
+    contractor?: string | null
+    subcontractor?: string | null
     cuit: string
     address: string
     email: string
     phone: string
     contact: string
+    authorizations?: HealthInsuranceAuthorizationCreateNestedManyWithoutHealthInsuranceProviderInput
+    patients?: PatientCreateNestedManyWithoutHealthInsuranceProviderInput
+    legalGuardians?: LegalGuardianCreateNestedManyWithoutHealthInsuranceProviderInput
+    professionals?: ProfessionalCreateNestedManyWithoutHealthInsuranceProviderInput
   }
 
   export type HealthInsuranceProviderUncheckedCreateInput = {
     id?: number
     name: string
     description: string
+    contractor?: string | null
+    subcontractor?: string | null
     cuit: string
     address: string
     email: string
     phone: string
     contact: string
+    authorizations?: HealthInsuranceAuthorizationUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+    patients?: PatientUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+    legalGuardians?: LegalGuardianUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+    professionals?: ProfessionalUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
   }
 
   export type HealthInsuranceProviderUpdateInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    contractor?: NullableStringFieldUpdateOperationsInput | string | null
+    subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     contact?: StringFieldUpdateOperationsInput | string
+    authorizations?: HealthInsuranceAuthorizationUpdateManyWithoutHealthInsuranceProviderNestedInput
+    patients?: PatientUpdateManyWithoutHealthInsuranceProviderNestedInput
+    legalGuardians?: LegalGuardianUpdateManyWithoutHealthInsuranceProviderNestedInput
+    professionals?: ProfessionalUpdateManyWithoutHealthInsuranceProviderNestedInput
   }
 
   export type HealthInsuranceProviderUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    contractor?: NullableStringFieldUpdateOperationsInput | string | null
+    subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     contact?: StringFieldUpdateOperationsInput | string
+    authorizations?: HealthInsuranceAuthorizationUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+    patients?: PatientUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+    legalGuardians?: LegalGuardianUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+    professionals?: ProfessionalUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
   }
 
   export type HealthInsuranceProviderCreateManyInput = {
     id?: number
     name: string
     description: string
+    contractor?: string | null
+    subcontractor?: string | null
     cuit: string
     address: string
     email: string
@@ -16519,6 +19857,8 @@ export namespace Prisma {
   export type HealthInsuranceProviderUpdateManyMutationInput = {
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    contractor?: NullableStringFieldUpdateOperationsInput | string | null
+    subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
@@ -16530,11 +19870,78 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
+    contractor?: NullableStringFieldUpdateOperationsInput | string | null
+    subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
     contact?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type HealthInsuranceAuthorizationCreateInput = {
+    service: $Enums.CoverageService
+    periodFrom: Date | string
+    periodTo: Date | string
+    authorizedAt: Date | string
+    healthInsuranceProvider: HealthInsuranceProviderCreateNestedOneWithoutAuthorizationsInput
+    admission: AdmissionCreateNestedOneWithoutHealthInsuranceAuthorizationsInput
+  }
+
+  export type HealthInsuranceAuthorizationUncheckedCreateInput = {
+    id?: number
+    healthInsuranceProviderId: number
+    admissionId: number
+    service: $Enums.CoverageService
+    periodFrom: Date | string
+    periodTo: Date | string
+    authorizedAt: Date | string
+  }
+
+  export type HealthInsuranceAuthorizationUpdateInput = {
+    service?: EnumCoverageServiceFieldUpdateOperationsInput | $Enums.CoverageService
+    periodFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodTo?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorizedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneRequiredWithoutAuthorizationsNestedInput
+    admission?: AdmissionUpdateOneRequiredWithoutHealthInsuranceAuthorizationsNestedInput
+  }
+
+  export type HealthInsuranceAuthorizationUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    healthInsuranceProviderId?: IntFieldUpdateOperationsInput | number
+    admissionId?: IntFieldUpdateOperationsInput | number
+    service?: EnumCoverageServiceFieldUpdateOperationsInput | $Enums.CoverageService
+    periodFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodTo?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorizedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HealthInsuranceAuthorizationCreateManyInput = {
+    id?: number
+    healthInsuranceProviderId: number
+    admissionId: number
+    service: $Enums.CoverageService
+    periodFrom: Date | string
+    periodTo: Date | string
+    authorizedAt: Date | string
+  }
+
+  export type HealthInsuranceAuthorizationUpdateManyMutationInput = {
+    service?: EnumCoverageServiceFieldUpdateOperationsInput | $Enums.CoverageService
+    periodFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodTo?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorizedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HealthInsuranceAuthorizationUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    healthInsuranceProviderId?: IntFieldUpdateOperationsInput | number
+    admissionId?: IntFieldUpdateOperationsInput | number
+    service?: EnumCoverageServiceFieldUpdateOperationsInput | $Enums.CoverageService
+    periodFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodTo?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorizedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LegalGuardianCreateInput = {
@@ -16547,13 +19954,14 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     legalGuardianType?: $Enums.LegalGuardianType | null
     legalGuardianStatus?: $Enums.LegalGuardianStatus | null
     isActive?: boolean
     createdAt?: Date | string
     user?: UserCreateNestedOneWithoutLegalGuardianInput
     patients?: PatientCreateNestedManyWithoutLegalGuardianInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutLegalGuardiansInput
+    admissions?: AdmissionCreateNestedManyWithoutLegalGuardianInput
   }
 
   export type LegalGuardianUncheckedCreateInput = {
@@ -16567,13 +19975,14 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     legalGuardianType?: $Enums.LegalGuardianType | null
     legalGuardianStatus?: $Enums.LegalGuardianStatus | null
     isActive?: boolean
     createdAt?: Date | string
     userId?: number | null
+    healthInsuranceProviderId?: number | null
     patients?: PatientUncheckedCreateNestedManyWithoutLegalGuardianInput
+    admissions?: AdmissionUncheckedCreateNestedManyWithoutLegalGuardianInput
   }
 
   export type LegalGuardianUpdateInput = {
@@ -16586,13 +19995,14 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     legalGuardianType?: NullableEnumLegalGuardianTypeFieldUpdateOperationsInput | $Enums.LegalGuardianType | null
     legalGuardianStatus?: NullableEnumLegalGuardianStatusFieldUpdateOperationsInput | $Enums.LegalGuardianStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutLegalGuardianNestedInput
     patients?: PatientUpdateManyWithoutLegalGuardianNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutLegalGuardiansNestedInput
+    admissions?: AdmissionUpdateManyWithoutLegalGuardianNestedInput
   }
 
   export type LegalGuardianUncheckedUpdateInput = {
@@ -16606,13 +20016,14 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     legalGuardianType?: NullableEnumLegalGuardianTypeFieldUpdateOperationsInput | $Enums.LegalGuardianType | null
     legalGuardianStatus?: NullableEnumLegalGuardianStatusFieldUpdateOperationsInput | $Enums.LegalGuardianStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     patients?: PatientUncheckedUpdateManyWithoutLegalGuardianNestedInput
+    admissions?: AdmissionUncheckedUpdateManyWithoutLegalGuardianNestedInput
   }
 
   export type LegalGuardianCreateManyInput = {
@@ -16626,12 +20037,12 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     legalGuardianType?: $Enums.LegalGuardianType | null
     legalGuardianStatus?: $Enums.LegalGuardianStatus | null
     isActive?: boolean
     createdAt?: Date | string
     userId?: number | null
+    healthInsuranceProviderId?: number | null
   }
 
   export type LegalGuardianUpdateManyMutationInput = {
@@ -16644,7 +20055,6 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     legalGuardianType?: NullableEnumLegalGuardianTypeFieldUpdateOperationsInput | $Enums.LegalGuardianType | null
     legalGuardianStatus?: NullableEnumLegalGuardianStatusFieldUpdateOperationsInput | $Enums.LegalGuardianStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -16662,12 +20072,12 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     legalGuardianType?: NullableEnumLegalGuardianTypeFieldUpdateOperationsInput | $Enums.LegalGuardianType | null
     legalGuardianStatus?: NullableEnumLegalGuardianStatusFieldUpdateOperationsInput | $Enums.LegalGuardianStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type ProfessionalCreateInput = {
@@ -16679,12 +20089,12 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     isActive?: boolean
     profecionalType: string
     user?: UserCreateNestedOneWithoutProfessionalInput
     events?: EventCreateNestedManyWithoutProfessionalInput
     schedules?: ScheduleCreateNestedManyWithoutProfessionalInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutProfessionalsInput
   }
 
   export type ProfessionalUncheckedCreateInput = {
@@ -16697,10 +20107,10 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     isActive?: boolean
     profecionalType: string
     userId?: number | null
+    healthInsuranceProviderId?: number | null
     events?: EventUncheckedCreateNestedManyWithoutProfessionalInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutProfessionalInput
   }
@@ -16714,12 +20124,12 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     profecionalType?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneWithoutProfessionalNestedInput
     events?: EventUpdateManyWithoutProfessionalNestedInput
     schedules?: ScheduleUpdateManyWithoutProfessionalNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutProfessionalsNestedInput
   }
 
   export type ProfessionalUncheckedUpdateInput = {
@@ -16732,10 +20142,10 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     profecionalType?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     events?: EventUncheckedUpdateManyWithoutProfessionalNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutProfessionalNestedInput
   }
@@ -16750,10 +20160,10 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     isActive?: boolean
     profecionalType: string
     userId?: number | null
+    healthInsuranceProviderId?: number | null
   }
 
   export type ProfessionalUpdateManyMutationInput = {
@@ -16765,7 +20175,6 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     profecionalType?: StringFieldUpdateOperationsInput | string
   }
@@ -16780,48 +20189,113 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     profecionalType?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type AdmissionCreateInput = {
-    admissionStatus?: $Enums.AdmissionStatus | null
+    operationDate?: Date | string
+    admissionDate: Date | string
+    isSchoolEnrolled: boolean
+    schoolShift?: $Enums.SchoolShift | null
+    cud?: string | null
+    cudExpirationDate?: Date | string | null
+    status?: $Enums.AdmissionStatus | null
+    createdAt?: Date | string
+    admissionType: AdmissionTypeCreateNestedOneWithoutAdmissionsInput
     patient: PatientCreateNestedOneWithoutAdmissionInput
+    legalGuardian?: LegalGuardianCreateNestedOneWithoutAdmissionsInput
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationCreateNestedManyWithoutAdmissionInput
   }
 
   export type AdmissionUncheckedCreateInput = {
     id?: number
-    admissionStatus?: $Enums.AdmissionStatus | null
+    operationDate?: Date | string
+    admissionDate: Date | string
+    admissionTypeId: number
+    isSchoolEnrolled: boolean
+    schoolShift?: $Enums.SchoolShift | null
     patientId: number
+    cud?: string | null
+    cudExpirationDate?: Date | string | null
+    status?: $Enums.AdmissionStatus | null
+    legalGuardianId?: number | null
+    createdAt?: Date | string
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationUncheckedCreateNestedManyWithoutAdmissionInput
   }
 
   export type AdmissionUpdateInput = {
-    admissionStatus?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    operationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSchoolEnrolled?: BoolFieldUpdateOperationsInput | boolean
+    schoolShift?: NullableEnumSchoolShiftFieldUpdateOperationsInput | $Enums.SchoolShift | null
+    cud?: NullableStringFieldUpdateOperationsInput | string | null
+    cudExpirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionType?: AdmissionTypeUpdateOneRequiredWithoutAdmissionsNestedInput
     patient?: PatientUpdateOneRequiredWithoutAdmissionNestedInput
+    legalGuardian?: LegalGuardianUpdateOneWithoutAdmissionsNestedInput
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationUpdateManyWithoutAdmissionNestedInput
   }
 
   export type AdmissionUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    admissionStatus?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    operationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionTypeId?: IntFieldUpdateOperationsInput | number
+    isSchoolEnrolled?: BoolFieldUpdateOperationsInput | boolean
+    schoolShift?: NullableEnumSchoolShiftFieldUpdateOperationsInput | $Enums.SchoolShift | null
     patientId?: IntFieldUpdateOperationsInput | number
+    cud?: NullableStringFieldUpdateOperationsInput | string | null
+    cudExpirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    legalGuardianId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationUncheckedUpdateManyWithoutAdmissionNestedInput
   }
 
   export type AdmissionCreateManyInput = {
     id?: number
-    admissionStatus?: $Enums.AdmissionStatus | null
+    operationDate?: Date | string
+    admissionDate: Date | string
+    admissionTypeId: number
+    isSchoolEnrolled: boolean
+    schoolShift?: $Enums.SchoolShift | null
     patientId: number
+    cud?: string | null
+    cudExpirationDate?: Date | string | null
+    status?: $Enums.AdmissionStatus | null
+    legalGuardianId?: number | null
+    createdAt?: Date | string
   }
 
   export type AdmissionUpdateManyMutationInput = {
-    admissionStatus?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    operationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSchoolEnrolled?: BoolFieldUpdateOperationsInput | boolean
+    schoolShift?: NullableEnumSchoolShiftFieldUpdateOperationsInput | $Enums.SchoolShift | null
+    cud?: NullableStringFieldUpdateOperationsInput | string | null
+    cudExpirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AdmissionUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    admissionStatus?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    operationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionTypeId?: IntFieldUpdateOperationsInput | number
+    isSchoolEnrolled?: BoolFieldUpdateOperationsInput | boolean
+    schoolShift?: NullableEnumSchoolShiftFieldUpdateOperationsInput | $Enums.SchoolShift | null
     patientId?: IntFieldUpdateOperationsInput | number
+    cud?: NullableStringFieldUpdateOperationsInput | string | null
+    cudExpirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    legalGuardianId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EventCreateInput = {
@@ -17140,6 +20614,42 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AdmissionTypeCreateInput = {
+    name: string
+    admissions?: AdmissionCreateNestedManyWithoutAdmissionTypeInput
+  }
+
+  export type AdmissionTypeUncheckedCreateInput = {
+    id?: number
+    name: string
+    admissions?: AdmissionUncheckedCreateNestedManyWithoutAdmissionTypeInput
+  }
+
+  export type AdmissionTypeUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    admissions?: AdmissionUpdateManyWithoutAdmissionTypeNestedInput
+  }
+
+  export type AdmissionTypeUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    admissions?: AdmissionUncheckedUpdateManyWithoutAdmissionTypeNestedInput
+  }
+
+  export type AdmissionTypeCreateManyInput = {
+    id?: number
+    name: string
+  }
+
+  export type AdmissionTypeUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AdmissionTypeUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -17401,6 +20911,11 @@ export namespace Prisma {
     isNot?: AdmissionWhereInput | null
   }
 
+  export type HealthInsuranceProviderNullableScalarRelationFilter = {
+    is?: HealthInsuranceProviderWhereInput | null
+    isNot?: HealthInsuranceProviderWhereInput | null
+  }
+
   export type PatientCountOrderByAggregateInput = {
     id?: SortOrder
     firstName?: SortOrder
@@ -17413,19 +20928,20 @@ export namespace Prisma {
     phone?: SortOrder
     affiliateNumber?: SortOrder
     professionalActivity?: SortOrder
-    healthInsuranceProvider?: SortOrder
     patientType?: SortOrder
     patientStatus?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrder
     legalGuardianId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
   }
 
   export type PatientAvgOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
     legalGuardianId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
   }
 
   export type PatientMaxOrderByAggregateInput = {
@@ -17440,13 +20956,13 @@ export namespace Prisma {
     phone?: SortOrder
     affiliateNumber?: SortOrder
     professionalActivity?: SortOrder
-    healthInsuranceProvider?: SortOrder
     patientType?: SortOrder
     patientStatus?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrder
     legalGuardianId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
   }
 
   export type PatientMinOrderByAggregateInput = {
@@ -17461,19 +20977,20 @@ export namespace Prisma {
     phone?: SortOrder
     affiliateNumber?: SortOrder
     professionalActivity?: SortOrder
-    healthInsuranceProvider?: SortOrder
     patientType?: SortOrder
     patientStatus?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrder
     legalGuardianId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
   }
 
   export type PatientSumOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
     legalGuardianId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
   }
 
   export type EnumPatientTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -17512,10 +21029,52 @@ export namespace Prisma {
     _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
+  export type HealthInsuranceAuthorizationListRelationFilter = {
+    every?: HealthInsuranceAuthorizationWhereInput
+    some?: HealthInsuranceAuthorizationWhereInput
+    none?: HealthInsuranceAuthorizationWhereInput
+  }
+
+  export type PatientListRelationFilter = {
+    every?: PatientWhereInput
+    some?: PatientWhereInput
+    none?: PatientWhereInput
+  }
+
+  export type LegalGuardianListRelationFilter = {
+    every?: LegalGuardianWhereInput
+    some?: LegalGuardianWhereInput
+    none?: LegalGuardianWhereInput
+  }
+
+  export type ProfessionalListRelationFilter = {
+    every?: ProfessionalWhereInput
+    some?: ProfessionalWhereInput
+    none?: ProfessionalWhereInput
+  }
+
+  export type HealthInsuranceAuthorizationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PatientOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LegalGuardianOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProfessionalOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type HealthInsuranceProviderCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    contractor?: SortOrder
+    subcontractor?: SortOrder
     cuit?: SortOrder
     address?: SortOrder
     email?: SortOrder
@@ -17531,6 +21090,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    contractor?: SortOrder
+    subcontractor?: SortOrder
     cuit?: SortOrder
     address?: SortOrder
     email?: SortOrder
@@ -17542,6 +21103,8 @@ export namespace Prisma {
     id?: SortOrder
     name?: SortOrder
     description?: SortOrder
+    contractor?: SortOrder
+    subcontractor?: SortOrder
     cuit?: SortOrder
     address?: SortOrder
     email?: SortOrder
@@ -17551,6 +21114,75 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderSumOrderByAggregateInput = {
     id?: SortOrder
+  }
+
+  export type EnumCoverageServiceFilter<$PrismaModel = never> = {
+    equals?: $Enums.CoverageService | EnumCoverageServiceFieldRefInput<$PrismaModel>
+    in?: $Enums.CoverageService[] | ListEnumCoverageServiceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CoverageService[] | ListEnumCoverageServiceFieldRefInput<$PrismaModel>
+    not?: NestedEnumCoverageServiceFilter<$PrismaModel> | $Enums.CoverageService
+  }
+
+  export type HealthInsuranceProviderScalarRelationFilter = {
+    is?: HealthInsuranceProviderWhereInput
+    isNot?: HealthInsuranceProviderWhereInput
+  }
+
+  export type AdmissionScalarRelationFilter = {
+    is?: AdmissionWhereInput
+    isNot?: AdmissionWhereInput
+  }
+
+  export type HealthInsuranceAuthorizationCountOrderByAggregateInput = {
+    id?: SortOrder
+    healthInsuranceProviderId?: SortOrder
+    admissionId?: SortOrder
+    service?: SortOrder
+    periodFrom?: SortOrder
+    periodTo?: SortOrder
+    authorizedAt?: SortOrder
+  }
+
+  export type HealthInsuranceAuthorizationAvgOrderByAggregateInput = {
+    id?: SortOrder
+    healthInsuranceProviderId?: SortOrder
+    admissionId?: SortOrder
+  }
+
+  export type HealthInsuranceAuthorizationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    healthInsuranceProviderId?: SortOrder
+    admissionId?: SortOrder
+    service?: SortOrder
+    periodFrom?: SortOrder
+    periodTo?: SortOrder
+    authorizedAt?: SortOrder
+  }
+
+  export type HealthInsuranceAuthorizationMinOrderByAggregateInput = {
+    id?: SortOrder
+    healthInsuranceProviderId?: SortOrder
+    admissionId?: SortOrder
+    service?: SortOrder
+    periodFrom?: SortOrder
+    periodTo?: SortOrder
+    authorizedAt?: SortOrder
+  }
+
+  export type HealthInsuranceAuthorizationSumOrderByAggregateInput = {
+    id?: SortOrder
+    healthInsuranceProviderId?: SortOrder
+    admissionId?: SortOrder
+  }
+
+  export type EnumCoverageServiceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CoverageService | EnumCoverageServiceFieldRefInput<$PrismaModel>
+    in?: $Enums.CoverageService[] | ListEnumCoverageServiceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CoverageService[] | ListEnumCoverageServiceFieldRefInput<$PrismaModel>
+    not?: NestedEnumCoverageServiceWithAggregatesFilter<$PrismaModel> | $Enums.CoverageService
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCoverageServiceFilter<$PrismaModel>
+    _max?: NestedEnumCoverageServiceFilter<$PrismaModel>
   }
 
   export type EnumLegalGuardianTypeNullableFilter<$PrismaModel = never> = {
@@ -17567,13 +21199,13 @@ export namespace Prisma {
     not?: NestedEnumLegalGuardianStatusNullableFilter<$PrismaModel> | $Enums.LegalGuardianStatus | null
   }
 
-  export type PatientListRelationFilter = {
-    every?: PatientWhereInput
-    some?: PatientWhereInput
-    none?: PatientWhereInput
+  export type AdmissionListRelationFilter = {
+    every?: AdmissionWhereInput
+    some?: AdmissionWhereInput
+    none?: AdmissionWhereInput
   }
 
-  export type PatientOrderByRelationAggregateInput = {
+  export type AdmissionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -17588,17 +21220,18 @@ export namespace Prisma {
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
-    healthInsuranceProvider?: SortOrder
     legalGuardianType?: SortOrder
     legalGuardianStatus?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
   }
 
   export type LegalGuardianAvgOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
   }
 
   export type LegalGuardianMaxOrderByAggregateInput = {
@@ -17612,12 +21245,12 @@ export namespace Prisma {
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
-    healthInsuranceProvider?: SortOrder
     legalGuardianType?: SortOrder
     legalGuardianStatus?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
   }
 
   export type LegalGuardianMinOrderByAggregateInput = {
@@ -17631,17 +21264,18 @@ export namespace Prisma {
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
-    healthInsuranceProvider?: SortOrder
     legalGuardianType?: SortOrder
     legalGuardianStatus?: SortOrder
     isActive?: SortOrder
     createdAt?: SortOrder
     userId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
   }
 
   export type LegalGuardianSumOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
   }
 
   export type EnumLegalGuardianTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -17684,15 +21318,16 @@ export namespace Prisma {
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
-    healthInsuranceProvider?: SortOrder
     isActive?: SortOrder
     profecionalType?: SortOrder
     userId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
   }
 
   export type ProfessionalAvgOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
   }
 
   export type ProfessionalMaxOrderByAggregateInput = {
@@ -17705,10 +21340,10 @@ export namespace Prisma {
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
-    healthInsuranceProvider?: SortOrder
     isActive?: SortOrder
     profecionalType?: SortOrder
     userId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
   }
 
   export type ProfessionalMinOrderByAggregateInput = {
@@ -17721,15 +21356,34 @@ export namespace Prisma {
     birthday?: SortOrder
     phone?: SortOrder
     professionalActivity?: SortOrder
-    healthInsuranceProvider?: SortOrder
     isActive?: SortOrder
     profecionalType?: SortOrder
     userId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
   }
 
   export type ProfessionalSumOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    healthInsuranceProviderId?: SortOrder
+  }
+
+  export type EnumSchoolShiftNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.SchoolShift | EnumSchoolShiftFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SchoolShift[] | ListEnumSchoolShiftFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SchoolShift[] | ListEnumSchoolShiftFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSchoolShiftNullableFilter<$PrismaModel> | $Enums.SchoolShift | null
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type EnumAdmissionStatusNullableFilter<$PrismaModel = never> = {
@@ -17739,6 +21393,11 @@ export namespace Prisma {
     not?: NestedEnumAdmissionStatusNullableFilter<$PrismaModel> | $Enums.AdmissionStatus | null
   }
 
+  export type AdmissionTypeScalarRelationFilter = {
+    is?: AdmissionTypeWhereInput
+    isNot?: AdmissionTypeWhereInput
+  }
+
   export type PatientScalarRelationFilter = {
     is?: PatientWhereInput
     isNot?: PatientWhereInput
@@ -17746,30 +21405,85 @@ export namespace Prisma {
 
   export type AdmissionCountOrderByAggregateInput = {
     id?: SortOrder
-    admissionStatus?: SortOrder
+    operationDate?: SortOrder
+    admissionDate?: SortOrder
+    admissionTypeId?: SortOrder
+    isSchoolEnrolled?: SortOrder
+    schoolShift?: SortOrder
     patientId?: SortOrder
+    cud?: SortOrder
+    cudExpirationDate?: SortOrder
+    status?: SortOrder
+    legalGuardianId?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type AdmissionAvgOrderByAggregateInput = {
     id?: SortOrder
+    admissionTypeId?: SortOrder
     patientId?: SortOrder
+    legalGuardianId?: SortOrder
   }
 
   export type AdmissionMaxOrderByAggregateInput = {
     id?: SortOrder
-    admissionStatus?: SortOrder
+    operationDate?: SortOrder
+    admissionDate?: SortOrder
+    admissionTypeId?: SortOrder
+    isSchoolEnrolled?: SortOrder
+    schoolShift?: SortOrder
     patientId?: SortOrder
+    cud?: SortOrder
+    cudExpirationDate?: SortOrder
+    status?: SortOrder
+    legalGuardianId?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type AdmissionMinOrderByAggregateInput = {
     id?: SortOrder
-    admissionStatus?: SortOrder
+    operationDate?: SortOrder
+    admissionDate?: SortOrder
+    admissionTypeId?: SortOrder
+    isSchoolEnrolled?: SortOrder
+    schoolShift?: SortOrder
     patientId?: SortOrder
+    cud?: SortOrder
+    cudExpirationDate?: SortOrder
+    status?: SortOrder
+    legalGuardianId?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type AdmissionSumOrderByAggregateInput = {
     id?: SortOrder
+    admissionTypeId?: SortOrder
     patientId?: SortOrder
+    legalGuardianId?: SortOrder
+  }
+
+  export type EnumSchoolShiftNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SchoolShift | EnumSchoolShiftFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SchoolShift[] | ListEnumSchoolShiftFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SchoolShift[] | ListEnumSchoolShiftFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSchoolShiftNullableWithAggregatesFilter<$PrismaModel> | $Enums.SchoolShift | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumSchoolShiftNullableFilter<$PrismaModel>
+    _max?: NestedEnumSchoolShiftNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type EnumAdmissionStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -18107,6 +21821,29 @@ export namespace Prisma {
     _max?: NestedEnumWeekDayFilter<$PrismaModel>
   }
 
+  export type AdmissionTypeCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type AdmissionTypeAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type AdmissionTypeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type AdmissionTypeMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+  }
+
+  export type AdmissionTypeSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
   export type PatientCreateNestedOneWithoutUserInput = {
     create?: XOR<PatientCreateWithoutUserInput, PatientUncheckedCreateWithoutUserInput>
     connectOrCreate?: PatientCreateOrConnectWithoutUserInput
@@ -18340,6 +22077,12 @@ export namespace Prisma {
     connect?: AdmissionWhereUniqueInput
   }
 
+  export type HealthInsuranceProviderCreateNestedOneWithoutPatientsInput = {
+    create?: XOR<HealthInsuranceProviderCreateWithoutPatientsInput, HealthInsuranceProviderUncheckedCreateWithoutPatientsInput>
+    connectOrCreate?: HealthInsuranceProviderCreateOrConnectWithoutPatientsInput
+    connect?: HealthInsuranceProviderWhereUniqueInput
+  }
+
   export type EventUncheckedCreateNestedManyWithoutPatientInput = {
     create?: XOR<EventCreateWithoutPatientInput, EventUncheckedCreateWithoutPatientInput> | EventCreateWithoutPatientInput[] | EventUncheckedCreateWithoutPatientInput[]
     connectOrCreate?: EventCreateOrConnectWithoutPatientInput | EventCreateOrConnectWithoutPatientInput[]
@@ -18405,6 +22148,16 @@ export namespace Prisma {
     update?: XOR<XOR<AdmissionUpdateToOneWithWhereWithoutPatientInput, AdmissionUpdateWithoutPatientInput>, AdmissionUncheckedUpdateWithoutPatientInput>
   }
 
+  export type HealthInsuranceProviderUpdateOneWithoutPatientsNestedInput = {
+    create?: XOR<HealthInsuranceProviderCreateWithoutPatientsInput, HealthInsuranceProviderUncheckedCreateWithoutPatientsInput>
+    connectOrCreate?: HealthInsuranceProviderCreateOrConnectWithoutPatientsInput
+    upsert?: HealthInsuranceProviderUpsertWithoutPatientsInput
+    disconnect?: HealthInsuranceProviderWhereInput | boolean
+    delete?: HealthInsuranceProviderWhereInput | boolean
+    connect?: HealthInsuranceProviderWhereUniqueInput
+    update?: XOR<XOR<HealthInsuranceProviderUpdateToOneWithWhereWithoutPatientsInput, HealthInsuranceProviderUpdateWithoutPatientsInput>, HealthInsuranceProviderUncheckedUpdateWithoutPatientsInput>
+  }
+
   export type NullableIntFieldUpdateOperationsInput = {
     set?: number | null
     increment?: number
@@ -18437,6 +22190,206 @@ export namespace Prisma {
     update?: XOR<XOR<AdmissionUpdateToOneWithWhereWithoutPatientInput, AdmissionUpdateWithoutPatientInput>, AdmissionUncheckedUpdateWithoutPatientInput>
   }
 
+  export type HealthInsuranceAuthorizationCreateNestedManyWithoutHealthInsuranceProviderInput = {
+    create?: XOR<HealthInsuranceAuthorizationCreateWithoutHealthInsuranceProviderInput, HealthInsuranceAuthorizationUncheckedCreateWithoutHealthInsuranceProviderInput> | HealthInsuranceAuthorizationCreateWithoutHealthInsuranceProviderInput[] | HealthInsuranceAuthorizationUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: HealthInsuranceAuthorizationCreateOrConnectWithoutHealthInsuranceProviderInput | HealthInsuranceAuthorizationCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    createMany?: HealthInsuranceAuthorizationCreateManyHealthInsuranceProviderInputEnvelope
+    connect?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+  }
+
+  export type PatientCreateNestedManyWithoutHealthInsuranceProviderInput = {
+    create?: XOR<PatientCreateWithoutHealthInsuranceProviderInput, PatientUncheckedCreateWithoutHealthInsuranceProviderInput> | PatientCreateWithoutHealthInsuranceProviderInput[] | PatientUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: PatientCreateOrConnectWithoutHealthInsuranceProviderInput | PatientCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    createMany?: PatientCreateManyHealthInsuranceProviderInputEnvelope
+    connect?: PatientWhereUniqueInput | PatientWhereUniqueInput[]
+  }
+
+  export type LegalGuardianCreateNestedManyWithoutHealthInsuranceProviderInput = {
+    create?: XOR<LegalGuardianCreateWithoutHealthInsuranceProviderInput, LegalGuardianUncheckedCreateWithoutHealthInsuranceProviderInput> | LegalGuardianCreateWithoutHealthInsuranceProviderInput[] | LegalGuardianUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: LegalGuardianCreateOrConnectWithoutHealthInsuranceProviderInput | LegalGuardianCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    createMany?: LegalGuardianCreateManyHealthInsuranceProviderInputEnvelope
+    connect?: LegalGuardianWhereUniqueInput | LegalGuardianWhereUniqueInput[]
+  }
+
+  export type ProfessionalCreateNestedManyWithoutHealthInsuranceProviderInput = {
+    create?: XOR<ProfessionalCreateWithoutHealthInsuranceProviderInput, ProfessionalUncheckedCreateWithoutHealthInsuranceProviderInput> | ProfessionalCreateWithoutHealthInsuranceProviderInput[] | ProfessionalUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: ProfessionalCreateOrConnectWithoutHealthInsuranceProviderInput | ProfessionalCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    createMany?: ProfessionalCreateManyHealthInsuranceProviderInputEnvelope
+    connect?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+  }
+
+  export type HealthInsuranceAuthorizationUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput = {
+    create?: XOR<HealthInsuranceAuthorizationCreateWithoutHealthInsuranceProviderInput, HealthInsuranceAuthorizationUncheckedCreateWithoutHealthInsuranceProviderInput> | HealthInsuranceAuthorizationCreateWithoutHealthInsuranceProviderInput[] | HealthInsuranceAuthorizationUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: HealthInsuranceAuthorizationCreateOrConnectWithoutHealthInsuranceProviderInput | HealthInsuranceAuthorizationCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    createMany?: HealthInsuranceAuthorizationCreateManyHealthInsuranceProviderInputEnvelope
+    connect?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+  }
+
+  export type PatientUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput = {
+    create?: XOR<PatientCreateWithoutHealthInsuranceProviderInput, PatientUncheckedCreateWithoutHealthInsuranceProviderInput> | PatientCreateWithoutHealthInsuranceProviderInput[] | PatientUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: PatientCreateOrConnectWithoutHealthInsuranceProviderInput | PatientCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    createMany?: PatientCreateManyHealthInsuranceProviderInputEnvelope
+    connect?: PatientWhereUniqueInput | PatientWhereUniqueInput[]
+  }
+
+  export type LegalGuardianUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput = {
+    create?: XOR<LegalGuardianCreateWithoutHealthInsuranceProviderInput, LegalGuardianUncheckedCreateWithoutHealthInsuranceProviderInput> | LegalGuardianCreateWithoutHealthInsuranceProviderInput[] | LegalGuardianUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: LegalGuardianCreateOrConnectWithoutHealthInsuranceProviderInput | LegalGuardianCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    createMany?: LegalGuardianCreateManyHealthInsuranceProviderInputEnvelope
+    connect?: LegalGuardianWhereUniqueInput | LegalGuardianWhereUniqueInput[]
+  }
+
+  export type ProfessionalUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput = {
+    create?: XOR<ProfessionalCreateWithoutHealthInsuranceProviderInput, ProfessionalUncheckedCreateWithoutHealthInsuranceProviderInput> | ProfessionalCreateWithoutHealthInsuranceProviderInput[] | ProfessionalUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: ProfessionalCreateOrConnectWithoutHealthInsuranceProviderInput | ProfessionalCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    createMany?: ProfessionalCreateManyHealthInsuranceProviderInputEnvelope
+    connect?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+  }
+
+  export type HealthInsuranceAuthorizationUpdateManyWithoutHealthInsuranceProviderNestedInput = {
+    create?: XOR<HealthInsuranceAuthorizationCreateWithoutHealthInsuranceProviderInput, HealthInsuranceAuthorizationUncheckedCreateWithoutHealthInsuranceProviderInput> | HealthInsuranceAuthorizationCreateWithoutHealthInsuranceProviderInput[] | HealthInsuranceAuthorizationUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: HealthInsuranceAuthorizationCreateOrConnectWithoutHealthInsuranceProviderInput | HealthInsuranceAuthorizationCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    upsert?: HealthInsuranceAuthorizationUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput | HealthInsuranceAuthorizationUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    createMany?: HealthInsuranceAuthorizationCreateManyHealthInsuranceProviderInputEnvelope
+    set?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    disconnect?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    delete?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    connect?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    update?: HealthInsuranceAuthorizationUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput | HealthInsuranceAuthorizationUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    updateMany?: HealthInsuranceAuthorizationUpdateManyWithWhereWithoutHealthInsuranceProviderInput | HealthInsuranceAuthorizationUpdateManyWithWhereWithoutHealthInsuranceProviderInput[]
+    deleteMany?: HealthInsuranceAuthorizationScalarWhereInput | HealthInsuranceAuthorizationScalarWhereInput[]
+  }
+
+  export type PatientUpdateManyWithoutHealthInsuranceProviderNestedInput = {
+    create?: XOR<PatientCreateWithoutHealthInsuranceProviderInput, PatientUncheckedCreateWithoutHealthInsuranceProviderInput> | PatientCreateWithoutHealthInsuranceProviderInput[] | PatientUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: PatientCreateOrConnectWithoutHealthInsuranceProviderInput | PatientCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    upsert?: PatientUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput | PatientUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    createMany?: PatientCreateManyHealthInsuranceProviderInputEnvelope
+    set?: PatientWhereUniqueInput | PatientWhereUniqueInput[]
+    disconnect?: PatientWhereUniqueInput | PatientWhereUniqueInput[]
+    delete?: PatientWhereUniqueInput | PatientWhereUniqueInput[]
+    connect?: PatientWhereUniqueInput | PatientWhereUniqueInput[]
+    update?: PatientUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput | PatientUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    updateMany?: PatientUpdateManyWithWhereWithoutHealthInsuranceProviderInput | PatientUpdateManyWithWhereWithoutHealthInsuranceProviderInput[]
+    deleteMany?: PatientScalarWhereInput | PatientScalarWhereInput[]
+  }
+
+  export type LegalGuardianUpdateManyWithoutHealthInsuranceProviderNestedInput = {
+    create?: XOR<LegalGuardianCreateWithoutHealthInsuranceProviderInput, LegalGuardianUncheckedCreateWithoutHealthInsuranceProviderInput> | LegalGuardianCreateWithoutHealthInsuranceProviderInput[] | LegalGuardianUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: LegalGuardianCreateOrConnectWithoutHealthInsuranceProviderInput | LegalGuardianCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    upsert?: LegalGuardianUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput | LegalGuardianUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    createMany?: LegalGuardianCreateManyHealthInsuranceProviderInputEnvelope
+    set?: LegalGuardianWhereUniqueInput | LegalGuardianWhereUniqueInput[]
+    disconnect?: LegalGuardianWhereUniqueInput | LegalGuardianWhereUniqueInput[]
+    delete?: LegalGuardianWhereUniqueInput | LegalGuardianWhereUniqueInput[]
+    connect?: LegalGuardianWhereUniqueInput | LegalGuardianWhereUniqueInput[]
+    update?: LegalGuardianUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput | LegalGuardianUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    updateMany?: LegalGuardianUpdateManyWithWhereWithoutHealthInsuranceProviderInput | LegalGuardianUpdateManyWithWhereWithoutHealthInsuranceProviderInput[]
+    deleteMany?: LegalGuardianScalarWhereInput | LegalGuardianScalarWhereInput[]
+  }
+
+  export type ProfessionalUpdateManyWithoutHealthInsuranceProviderNestedInput = {
+    create?: XOR<ProfessionalCreateWithoutHealthInsuranceProviderInput, ProfessionalUncheckedCreateWithoutHealthInsuranceProviderInput> | ProfessionalCreateWithoutHealthInsuranceProviderInput[] | ProfessionalUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: ProfessionalCreateOrConnectWithoutHealthInsuranceProviderInput | ProfessionalCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    upsert?: ProfessionalUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput | ProfessionalUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    createMany?: ProfessionalCreateManyHealthInsuranceProviderInputEnvelope
+    set?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    disconnect?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    delete?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    connect?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    update?: ProfessionalUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput | ProfessionalUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    updateMany?: ProfessionalUpdateManyWithWhereWithoutHealthInsuranceProviderInput | ProfessionalUpdateManyWithWhereWithoutHealthInsuranceProviderInput[]
+    deleteMany?: ProfessionalScalarWhereInput | ProfessionalScalarWhereInput[]
+  }
+
+  export type HealthInsuranceAuthorizationUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput = {
+    create?: XOR<HealthInsuranceAuthorizationCreateWithoutHealthInsuranceProviderInput, HealthInsuranceAuthorizationUncheckedCreateWithoutHealthInsuranceProviderInput> | HealthInsuranceAuthorizationCreateWithoutHealthInsuranceProviderInput[] | HealthInsuranceAuthorizationUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: HealthInsuranceAuthorizationCreateOrConnectWithoutHealthInsuranceProviderInput | HealthInsuranceAuthorizationCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    upsert?: HealthInsuranceAuthorizationUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput | HealthInsuranceAuthorizationUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    createMany?: HealthInsuranceAuthorizationCreateManyHealthInsuranceProviderInputEnvelope
+    set?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    disconnect?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    delete?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    connect?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    update?: HealthInsuranceAuthorizationUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput | HealthInsuranceAuthorizationUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    updateMany?: HealthInsuranceAuthorizationUpdateManyWithWhereWithoutHealthInsuranceProviderInput | HealthInsuranceAuthorizationUpdateManyWithWhereWithoutHealthInsuranceProviderInput[]
+    deleteMany?: HealthInsuranceAuthorizationScalarWhereInput | HealthInsuranceAuthorizationScalarWhereInput[]
+  }
+
+  export type PatientUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput = {
+    create?: XOR<PatientCreateWithoutHealthInsuranceProviderInput, PatientUncheckedCreateWithoutHealthInsuranceProviderInput> | PatientCreateWithoutHealthInsuranceProviderInput[] | PatientUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: PatientCreateOrConnectWithoutHealthInsuranceProviderInput | PatientCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    upsert?: PatientUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput | PatientUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    createMany?: PatientCreateManyHealthInsuranceProviderInputEnvelope
+    set?: PatientWhereUniqueInput | PatientWhereUniqueInput[]
+    disconnect?: PatientWhereUniqueInput | PatientWhereUniqueInput[]
+    delete?: PatientWhereUniqueInput | PatientWhereUniqueInput[]
+    connect?: PatientWhereUniqueInput | PatientWhereUniqueInput[]
+    update?: PatientUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput | PatientUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    updateMany?: PatientUpdateManyWithWhereWithoutHealthInsuranceProviderInput | PatientUpdateManyWithWhereWithoutHealthInsuranceProviderInput[]
+    deleteMany?: PatientScalarWhereInput | PatientScalarWhereInput[]
+  }
+
+  export type LegalGuardianUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput = {
+    create?: XOR<LegalGuardianCreateWithoutHealthInsuranceProviderInput, LegalGuardianUncheckedCreateWithoutHealthInsuranceProviderInput> | LegalGuardianCreateWithoutHealthInsuranceProviderInput[] | LegalGuardianUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: LegalGuardianCreateOrConnectWithoutHealthInsuranceProviderInput | LegalGuardianCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    upsert?: LegalGuardianUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput | LegalGuardianUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    createMany?: LegalGuardianCreateManyHealthInsuranceProviderInputEnvelope
+    set?: LegalGuardianWhereUniqueInput | LegalGuardianWhereUniqueInput[]
+    disconnect?: LegalGuardianWhereUniqueInput | LegalGuardianWhereUniqueInput[]
+    delete?: LegalGuardianWhereUniqueInput | LegalGuardianWhereUniqueInput[]
+    connect?: LegalGuardianWhereUniqueInput | LegalGuardianWhereUniqueInput[]
+    update?: LegalGuardianUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput | LegalGuardianUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    updateMany?: LegalGuardianUpdateManyWithWhereWithoutHealthInsuranceProviderInput | LegalGuardianUpdateManyWithWhereWithoutHealthInsuranceProviderInput[]
+    deleteMany?: LegalGuardianScalarWhereInput | LegalGuardianScalarWhereInput[]
+  }
+
+  export type ProfessionalUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput = {
+    create?: XOR<ProfessionalCreateWithoutHealthInsuranceProviderInput, ProfessionalUncheckedCreateWithoutHealthInsuranceProviderInput> | ProfessionalCreateWithoutHealthInsuranceProviderInput[] | ProfessionalUncheckedCreateWithoutHealthInsuranceProviderInput[]
+    connectOrCreate?: ProfessionalCreateOrConnectWithoutHealthInsuranceProviderInput | ProfessionalCreateOrConnectWithoutHealthInsuranceProviderInput[]
+    upsert?: ProfessionalUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput | ProfessionalUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    createMany?: ProfessionalCreateManyHealthInsuranceProviderInputEnvelope
+    set?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    disconnect?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    delete?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    connect?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    update?: ProfessionalUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput | ProfessionalUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput[]
+    updateMany?: ProfessionalUpdateManyWithWhereWithoutHealthInsuranceProviderInput | ProfessionalUpdateManyWithWhereWithoutHealthInsuranceProviderInput[]
+    deleteMany?: ProfessionalScalarWhereInput | ProfessionalScalarWhereInput[]
+  }
+
+  export type HealthInsuranceProviderCreateNestedOneWithoutAuthorizationsInput = {
+    create?: XOR<HealthInsuranceProviderCreateWithoutAuthorizationsInput, HealthInsuranceProviderUncheckedCreateWithoutAuthorizationsInput>
+    connectOrCreate?: HealthInsuranceProviderCreateOrConnectWithoutAuthorizationsInput
+    connect?: HealthInsuranceProviderWhereUniqueInput
+  }
+
+  export type AdmissionCreateNestedOneWithoutHealthInsuranceAuthorizationsInput = {
+    create?: XOR<AdmissionCreateWithoutHealthInsuranceAuthorizationsInput, AdmissionUncheckedCreateWithoutHealthInsuranceAuthorizationsInput>
+    connectOrCreate?: AdmissionCreateOrConnectWithoutHealthInsuranceAuthorizationsInput
+    connect?: AdmissionWhereUniqueInput
+  }
+
+  export type EnumCoverageServiceFieldUpdateOperationsInput = {
+    set?: $Enums.CoverageService
+  }
+
+  export type HealthInsuranceProviderUpdateOneRequiredWithoutAuthorizationsNestedInput = {
+    create?: XOR<HealthInsuranceProviderCreateWithoutAuthorizationsInput, HealthInsuranceProviderUncheckedCreateWithoutAuthorizationsInput>
+    connectOrCreate?: HealthInsuranceProviderCreateOrConnectWithoutAuthorizationsInput
+    upsert?: HealthInsuranceProviderUpsertWithoutAuthorizationsInput
+    connect?: HealthInsuranceProviderWhereUniqueInput
+    update?: XOR<XOR<HealthInsuranceProviderUpdateToOneWithWhereWithoutAuthorizationsInput, HealthInsuranceProviderUpdateWithoutAuthorizationsInput>, HealthInsuranceProviderUncheckedUpdateWithoutAuthorizationsInput>
+  }
+
+  export type AdmissionUpdateOneRequiredWithoutHealthInsuranceAuthorizationsNestedInput = {
+    create?: XOR<AdmissionCreateWithoutHealthInsuranceAuthorizationsInput, AdmissionUncheckedCreateWithoutHealthInsuranceAuthorizationsInput>
+    connectOrCreate?: AdmissionCreateOrConnectWithoutHealthInsuranceAuthorizationsInput
+    upsert?: AdmissionUpsertWithoutHealthInsuranceAuthorizationsInput
+    connect?: AdmissionWhereUniqueInput
+    update?: XOR<XOR<AdmissionUpdateToOneWithWhereWithoutHealthInsuranceAuthorizationsInput, AdmissionUpdateWithoutHealthInsuranceAuthorizationsInput>, AdmissionUncheckedUpdateWithoutHealthInsuranceAuthorizationsInput>
+  }
+
   export type UserCreateNestedOneWithoutLegalGuardianInput = {
     create?: XOR<UserCreateWithoutLegalGuardianInput, UserUncheckedCreateWithoutLegalGuardianInput>
     connectOrCreate?: UserCreateOrConnectWithoutLegalGuardianInput
@@ -18450,11 +22403,31 @@ export namespace Prisma {
     connect?: PatientWhereUniqueInput | PatientWhereUniqueInput[]
   }
 
+  export type HealthInsuranceProviderCreateNestedOneWithoutLegalGuardiansInput = {
+    create?: XOR<HealthInsuranceProviderCreateWithoutLegalGuardiansInput, HealthInsuranceProviderUncheckedCreateWithoutLegalGuardiansInput>
+    connectOrCreate?: HealthInsuranceProviderCreateOrConnectWithoutLegalGuardiansInput
+    connect?: HealthInsuranceProviderWhereUniqueInput
+  }
+
+  export type AdmissionCreateNestedManyWithoutLegalGuardianInput = {
+    create?: XOR<AdmissionCreateWithoutLegalGuardianInput, AdmissionUncheckedCreateWithoutLegalGuardianInput> | AdmissionCreateWithoutLegalGuardianInput[] | AdmissionUncheckedCreateWithoutLegalGuardianInput[]
+    connectOrCreate?: AdmissionCreateOrConnectWithoutLegalGuardianInput | AdmissionCreateOrConnectWithoutLegalGuardianInput[]
+    createMany?: AdmissionCreateManyLegalGuardianInputEnvelope
+    connect?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+  }
+
   export type PatientUncheckedCreateNestedManyWithoutLegalGuardianInput = {
     create?: XOR<PatientCreateWithoutLegalGuardianInput, PatientUncheckedCreateWithoutLegalGuardianInput> | PatientCreateWithoutLegalGuardianInput[] | PatientUncheckedCreateWithoutLegalGuardianInput[]
     connectOrCreate?: PatientCreateOrConnectWithoutLegalGuardianInput | PatientCreateOrConnectWithoutLegalGuardianInput[]
     createMany?: PatientCreateManyLegalGuardianInputEnvelope
     connect?: PatientWhereUniqueInput | PatientWhereUniqueInput[]
+  }
+
+  export type AdmissionUncheckedCreateNestedManyWithoutLegalGuardianInput = {
+    create?: XOR<AdmissionCreateWithoutLegalGuardianInput, AdmissionUncheckedCreateWithoutLegalGuardianInput> | AdmissionCreateWithoutLegalGuardianInput[] | AdmissionUncheckedCreateWithoutLegalGuardianInput[]
+    connectOrCreate?: AdmissionCreateOrConnectWithoutLegalGuardianInput | AdmissionCreateOrConnectWithoutLegalGuardianInput[]
+    createMany?: AdmissionCreateManyLegalGuardianInputEnvelope
+    connect?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
   }
 
   export type NullableEnumLegalGuardianTypeFieldUpdateOperationsInput = {
@@ -18489,6 +22462,30 @@ export namespace Prisma {
     deleteMany?: PatientScalarWhereInput | PatientScalarWhereInput[]
   }
 
+  export type HealthInsuranceProviderUpdateOneWithoutLegalGuardiansNestedInput = {
+    create?: XOR<HealthInsuranceProviderCreateWithoutLegalGuardiansInput, HealthInsuranceProviderUncheckedCreateWithoutLegalGuardiansInput>
+    connectOrCreate?: HealthInsuranceProviderCreateOrConnectWithoutLegalGuardiansInput
+    upsert?: HealthInsuranceProviderUpsertWithoutLegalGuardiansInput
+    disconnect?: HealthInsuranceProviderWhereInput | boolean
+    delete?: HealthInsuranceProviderWhereInput | boolean
+    connect?: HealthInsuranceProviderWhereUniqueInput
+    update?: XOR<XOR<HealthInsuranceProviderUpdateToOneWithWhereWithoutLegalGuardiansInput, HealthInsuranceProviderUpdateWithoutLegalGuardiansInput>, HealthInsuranceProviderUncheckedUpdateWithoutLegalGuardiansInput>
+  }
+
+  export type AdmissionUpdateManyWithoutLegalGuardianNestedInput = {
+    create?: XOR<AdmissionCreateWithoutLegalGuardianInput, AdmissionUncheckedCreateWithoutLegalGuardianInput> | AdmissionCreateWithoutLegalGuardianInput[] | AdmissionUncheckedCreateWithoutLegalGuardianInput[]
+    connectOrCreate?: AdmissionCreateOrConnectWithoutLegalGuardianInput | AdmissionCreateOrConnectWithoutLegalGuardianInput[]
+    upsert?: AdmissionUpsertWithWhereUniqueWithoutLegalGuardianInput | AdmissionUpsertWithWhereUniqueWithoutLegalGuardianInput[]
+    createMany?: AdmissionCreateManyLegalGuardianInputEnvelope
+    set?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    disconnect?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    delete?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    connect?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    update?: AdmissionUpdateWithWhereUniqueWithoutLegalGuardianInput | AdmissionUpdateWithWhereUniqueWithoutLegalGuardianInput[]
+    updateMany?: AdmissionUpdateManyWithWhereWithoutLegalGuardianInput | AdmissionUpdateManyWithWhereWithoutLegalGuardianInput[]
+    deleteMany?: AdmissionScalarWhereInput | AdmissionScalarWhereInput[]
+  }
+
   export type PatientUncheckedUpdateManyWithoutLegalGuardianNestedInput = {
     create?: XOR<PatientCreateWithoutLegalGuardianInput, PatientUncheckedCreateWithoutLegalGuardianInput> | PatientCreateWithoutLegalGuardianInput[] | PatientUncheckedCreateWithoutLegalGuardianInput[]
     connectOrCreate?: PatientCreateOrConnectWithoutLegalGuardianInput | PatientCreateOrConnectWithoutLegalGuardianInput[]
@@ -18501,6 +22498,20 @@ export namespace Prisma {
     update?: PatientUpdateWithWhereUniqueWithoutLegalGuardianInput | PatientUpdateWithWhereUniqueWithoutLegalGuardianInput[]
     updateMany?: PatientUpdateManyWithWhereWithoutLegalGuardianInput | PatientUpdateManyWithWhereWithoutLegalGuardianInput[]
     deleteMany?: PatientScalarWhereInput | PatientScalarWhereInput[]
+  }
+
+  export type AdmissionUncheckedUpdateManyWithoutLegalGuardianNestedInput = {
+    create?: XOR<AdmissionCreateWithoutLegalGuardianInput, AdmissionUncheckedCreateWithoutLegalGuardianInput> | AdmissionCreateWithoutLegalGuardianInput[] | AdmissionUncheckedCreateWithoutLegalGuardianInput[]
+    connectOrCreate?: AdmissionCreateOrConnectWithoutLegalGuardianInput | AdmissionCreateOrConnectWithoutLegalGuardianInput[]
+    upsert?: AdmissionUpsertWithWhereUniqueWithoutLegalGuardianInput | AdmissionUpsertWithWhereUniqueWithoutLegalGuardianInput[]
+    createMany?: AdmissionCreateManyLegalGuardianInputEnvelope
+    set?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    disconnect?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    delete?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    connect?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    update?: AdmissionUpdateWithWhereUniqueWithoutLegalGuardianInput | AdmissionUpdateWithWhereUniqueWithoutLegalGuardianInput[]
+    updateMany?: AdmissionUpdateManyWithWhereWithoutLegalGuardianInput | AdmissionUpdateManyWithWhereWithoutLegalGuardianInput[]
+    deleteMany?: AdmissionScalarWhereInput | AdmissionScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutProfessionalInput = {
@@ -18521,6 +22532,12 @@ export namespace Prisma {
     connectOrCreate?: ScheduleCreateOrConnectWithoutProfessionalInput | ScheduleCreateOrConnectWithoutProfessionalInput[]
     createMany?: ScheduleCreateManyProfessionalInputEnvelope
     connect?: ScheduleWhereUniqueInput | ScheduleWhereUniqueInput[]
+  }
+
+  export type HealthInsuranceProviderCreateNestedOneWithoutProfessionalsInput = {
+    create?: XOR<HealthInsuranceProviderCreateWithoutProfessionalsInput, HealthInsuranceProviderUncheckedCreateWithoutProfessionalsInput>
+    connectOrCreate?: HealthInsuranceProviderCreateOrConnectWithoutProfessionalsInput
+    connect?: HealthInsuranceProviderWhereUniqueInput
   }
 
   export type EventUncheckedCreateNestedManyWithoutProfessionalInput = {
@@ -18575,6 +22592,16 @@ export namespace Prisma {
     deleteMany?: ScheduleScalarWhereInput | ScheduleScalarWhereInput[]
   }
 
+  export type HealthInsuranceProviderUpdateOneWithoutProfessionalsNestedInput = {
+    create?: XOR<HealthInsuranceProviderCreateWithoutProfessionalsInput, HealthInsuranceProviderUncheckedCreateWithoutProfessionalsInput>
+    connectOrCreate?: HealthInsuranceProviderCreateOrConnectWithoutProfessionalsInput
+    upsert?: HealthInsuranceProviderUpsertWithoutProfessionalsInput
+    disconnect?: HealthInsuranceProviderWhereInput | boolean
+    delete?: HealthInsuranceProviderWhereInput | boolean
+    connect?: HealthInsuranceProviderWhereUniqueInput
+    update?: XOR<XOR<HealthInsuranceProviderUpdateToOneWithWhereWithoutProfessionalsInput, HealthInsuranceProviderUpdateWithoutProfessionalsInput>, HealthInsuranceProviderUncheckedUpdateWithoutProfessionalsInput>
+  }
+
   export type EventUncheckedUpdateManyWithoutProfessionalNestedInput = {
     create?: XOR<EventCreateWithoutProfessionalInput, EventUncheckedCreateWithoutProfessionalInput> | EventCreateWithoutProfessionalInput[] | EventUncheckedCreateWithoutProfessionalInput[]
     connectOrCreate?: EventCreateOrConnectWithoutProfessionalInput | EventCreateOrConnectWithoutProfessionalInput[]
@@ -18603,14 +22630,56 @@ export namespace Prisma {
     deleteMany?: ScheduleScalarWhereInput | ScheduleScalarWhereInput[]
   }
 
+  export type AdmissionTypeCreateNestedOneWithoutAdmissionsInput = {
+    create?: XOR<AdmissionTypeCreateWithoutAdmissionsInput, AdmissionTypeUncheckedCreateWithoutAdmissionsInput>
+    connectOrCreate?: AdmissionTypeCreateOrConnectWithoutAdmissionsInput
+    connect?: AdmissionTypeWhereUniqueInput
+  }
+
   export type PatientCreateNestedOneWithoutAdmissionInput = {
     create?: XOR<PatientCreateWithoutAdmissionInput, PatientUncheckedCreateWithoutAdmissionInput>
     connectOrCreate?: PatientCreateOrConnectWithoutAdmissionInput
     connect?: PatientWhereUniqueInput
   }
 
+  export type LegalGuardianCreateNestedOneWithoutAdmissionsInput = {
+    create?: XOR<LegalGuardianCreateWithoutAdmissionsInput, LegalGuardianUncheckedCreateWithoutAdmissionsInput>
+    connectOrCreate?: LegalGuardianCreateOrConnectWithoutAdmissionsInput
+    connect?: LegalGuardianWhereUniqueInput
+  }
+
+  export type HealthInsuranceAuthorizationCreateNestedManyWithoutAdmissionInput = {
+    create?: XOR<HealthInsuranceAuthorizationCreateWithoutAdmissionInput, HealthInsuranceAuthorizationUncheckedCreateWithoutAdmissionInput> | HealthInsuranceAuthorizationCreateWithoutAdmissionInput[] | HealthInsuranceAuthorizationUncheckedCreateWithoutAdmissionInput[]
+    connectOrCreate?: HealthInsuranceAuthorizationCreateOrConnectWithoutAdmissionInput | HealthInsuranceAuthorizationCreateOrConnectWithoutAdmissionInput[]
+    createMany?: HealthInsuranceAuthorizationCreateManyAdmissionInputEnvelope
+    connect?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+  }
+
+  export type HealthInsuranceAuthorizationUncheckedCreateNestedManyWithoutAdmissionInput = {
+    create?: XOR<HealthInsuranceAuthorizationCreateWithoutAdmissionInput, HealthInsuranceAuthorizationUncheckedCreateWithoutAdmissionInput> | HealthInsuranceAuthorizationCreateWithoutAdmissionInput[] | HealthInsuranceAuthorizationUncheckedCreateWithoutAdmissionInput[]
+    connectOrCreate?: HealthInsuranceAuthorizationCreateOrConnectWithoutAdmissionInput | HealthInsuranceAuthorizationCreateOrConnectWithoutAdmissionInput[]
+    createMany?: HealthInsuranceAuthorizationCreateManyAdmissionInputEnvelope
+    connect?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+  }
+
+  export type NullableEnumSchoolShiftFieldUpdateOperationsInput = {
+    set?: $Enums.SchoolShift | null
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type NullableEnumAdmissionStatusFieldUpdateOperationsInput = {
     set?: $Enums.AdmissionStatus | null
+  }
+
+  export type AdmissionTypeUpdateOneRequiredWithoutAdmissionsNestedInput = {
+    create?: XOR<AdmissionTypeCreateWithoutAdmissionsInput, AdmissionTypeUncheckedCreateWithoutAdmissionsInput>
+    connectOrCreate?: AdmissionTypeCreateOrConnectWithoutAdmissionsInput
+    upsert?: AdmissionTypeUpsertWithoutAdmissionsInput
+    connect?: AdmissionTypeWhereUniqueInput
+    update?: XOR<XOR<AdmissionTypeUpdateToOneWithWhereWithoutAdmissionsInput, AdmissionTypeUpdateWithoutAdmissionsInput>, AdmissionTypeUncheckedUpdateWithoutAdmissionsInput>
   }
 
   export type PatientUpdateOneRequiredWithoutAdmissionNestedInput = {
@@ -18619,6 +22688,44 @@ export namespace Prisma {
     upsert?: PatientUpsertWithoutAdmissionInput
     connect?: PatientWhereUniqueInput
     update?: XOR<XOR<PatientUpdateToOneWithWhereWithoutAdmissionInput, PatientUpdateWithoutAdmissionInput>, PatientUncheckedUpdateWithoutAdmissionInput>
+  }
+
+  export type LegalGuardianUpdateOneWithoutAdmissionsNestedInput = {
+    create?: XOR<LegalGuardianCreateWithoutAdmissionsInput, LegalGuardianUncheckedCreateWithoutAdmissionsInput>
+    connectOrCreate?: LegalGuardianCreateOrConnectWithoutAdmissionsInput
+    upsert?: LegalGuardianUpsertWithoutAdmissionsInput
+    disconnect?: LegalGuardianWhereInput | boolean
+    delete?: LegalGuardianWhereInput | boolean
+    connect?: LegalGuardianWhereUniqueInput
+    update?: XOR<XOR<LegalGuardianUpdateToOneWithWhereWithoutAdmissionsInput, LegalGuardianUpdateWithoutAdmissionsInput>, LegalGuardianUncheckedUpdateWithoutAdmissionsInput>
+  }
+
+  export type HealthInsuranceAuthorizationUpdateManyWithoutAdmissionNestedInput = {
+    create?: XOR<HealthInsuranceAuthorizationCreateWithoutAdmissionInput, HealthInsuranceAuthorizationUncheckedCreateWithoutAdmissionInput> | HealthInsuranceAuthorizationCreateWithoutAdmissionInput[] | HealthInsuranceAuthorizationUncheckedCreateWithoutAdmissionInput[]
+    connectOrCreate?: HealthInsuranceAuthorizationCreateOrConnectWithoutAdmissionInput | HealthInsuranceAuthorizationCreateOrConnectWithoutAdmissionInput[]
+    upsert?: HealthInsuranceAuthorizationUpsertWithWhereUniqueWithoutAdmissionInput | HealthInsuranceAuthorizationUpsertWithWhereUniqueWithoutAdmissionInput[]
+    createMany?: HealthInsuranceAuthorizationCreateManyAdmissionInputEnvelope
+    set?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    disconnect?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    delete?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    connect?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    update?: HealthInsuranceAuthorizationUpdateWithWhereUniqueWithoutAdmissionInput | HealthInsuranceAuthorizationUpdateWithWhereUniqueWithoutAdmissionInput[]
+    updateMany?: HealthInsuranceAuthorizationUpdateManyWithWhereWithoutAdmissionInput | HealthInsuranceAuthorizationUpdateManyWithWhereWithoutAdmissionInput[]
+    deleteMany?: HealthInsuranceAuthorizationScalarWhereInput | HealthInsuranceAuthorizationScalarWhereInput[]
+  }
+
+  export type HealthInsuranceAuthorizationUncheckedUpdateManyWithoutAdmissionNestedInput = {
+    create?: XOR<HealthInsuranceAuthorizationCreateWithoutAdmissionInput, HealthInsuranceAuthorizationUncheckedCreateWithoutAdmissionInput> | HealthInsuranceAuthorizationCreateWithoutAdmissionInput[] | HealthInsuranceAuthorizationUncheckedCreateWithoutAdmissionInput[]
+    connectOrCreate?: HealthInsuranceAuthorizationCreateOrConnectWithoutAdmissionInput | HealthInsuranceAuthorizationCreateOrConnectWithoutAdmissionInput[]
+    upsert?: HealthInsuranceAuthorizationUpsertWithWhereUniqueWithoutAdmissionInput | HealthInsuranceAuthorizationUpsertWithWhereUniqueWithoutAdmissionInput[]
+    createMany?: HealthInsuranceAuthorizationCreateManyAdmissionInputEnvelope
+    set?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    disconnect?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    delete?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    connect?: HealthInsuranceAuthorizationWhereUniqueInput | HealthInsuranceAuthorizationWhereUniqueInput[]
+    update?: HealthInsuranceAuthorizationUpdateWithWhereUniqueWithoutAdmissionInput | HealthInsuranceAuthorizationUpdateWithWhereUniqueWithoutAdmissionInput[]
+    updateMany?: HealthInsuranceAuthorizationUpdateManyWithWhereWithoutAdmissionInput | HealthInsuranceAuthorizationUpdateManyWithWhereWithoutAdmissionInput[]
+    deleteMany?: HealthInsuranceAuthorizationScalarWhereInput | HealthInsuranceAuthorizationScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutCreatedEventsInput = {
@@ -18719,6 +22826,48 @@ export namespace Prisma {
     upsert?: ProfessionalUpsertWithoutSchedulesInput
     connect?: ProfessionalWhereUniqueInput
     update?: XOR<XOR<ProfessionalUpdateToOneWithWhereWithoutSchedulesInput, ProfessionalUpdateWithoutSchedulesInput>, ProfessionalUncheckedUpdateWithoutSchedulesInput>
+  }
+
+  export type AdmissionCreateNestedManyWithoutAdmissionTypeInput = {
+    create?: XOR<AdmissionCreateWithoutAdmissionTypeInput, AdmissionUncheckedCreateWithoutAdmissionTypeInput> | AdmissionCreateWithoutAdmissionTypeInput[] | AdmissionUncheckedCreateWithoutAdmissionTypeInput[]
+    connectOrCreate?: AdmissionCreateOrConnectWithoutAdmissionTypeInput | AdmissionCreateOrConnectWithoutAdmissionTypeInput[]
+    createMany?: AdmissionCreateManyAdmissionTypeInputEnvelope
+    connect?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+  }
+
+  export type AdmissionUncheckedCreateNestedManyWithoutAdmissionTypeInput = {
+    create?: XOR<AdmissionCreateWithoutAdmissionTypeInput, AdmissionUncheckedCreateWithoutAdmissionTypeInput> | AdmissionCreateWithoutAdmissionTypeInput[] | AdmissionUncheckedCreateWithoutAdmissionTypeInput[]
+    connectOrCreate?: AdmissionCreateOrConnectWithoutAdmissionTypeInput | AdmissionCreateOrConnectWithoutAdmissionTypeInput[]
+    createMany?: AdmissionCreateManyAdmissionTypeInputEnvelope
+    connect?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+  }
+
+  export type AdmissionUpdateManyWithoutAdmissionTypeNestedInput = {
+    create?: XOR<AdmissionCreateWithoutAdmissionTypeInput, AdmissionUncheckedCreateWithoutAdmissionTypeInput> | AdmissionCreateWithoutAdmissionTypeInput[] | AdmissionUncheckedCreateWithoutAdmissionTypeInput[]
+    connectOrCreate?: AdmissionCreateOrConnectWithoutAdmissionTypeInput | AdmissionCreateOrConnectWithoutAdmissionTypeInput[]
+    upsert?: AdmissionUpsertWithWhereUniqueWithoutAdmissionTypeInput | AdmissionUpsertWithWhereUniqueWithoutAdmissionTypeInput[]
+    createMany?: AdmissionCreateManyAdmissionTypeInputEnvelope
+    set?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    disconnect?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    delete?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    connect?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    update?: AdmissionUpdateWithWhereUniqueWithoutAdmissionTypeInput | AdmissionUpdateWithWhereUniqueWithoutAdmissionTypeInput[]
+    updateMany?: AdmissionUpdateManyWithWhereWithoutAdmissionTypeInput | AdmissionUpdateManyWithWhereWithoutAdmissionTypeInput[]
+    deleteMany?: AdmissionScalarWhereInput | AdmissionScalarWhereInput[]
+  }
+
+  export type AdmissionUncheckedUpdateManyWithoutAdmissionTypeNestedInput = {
+    create?: XOR<AdmissionCreateWithoutAdmissionTypeInput, AdmissionUncheckedCreateWithoutAdmissionTypeInput> | AdmissionCreateWithoutAdmissionTypeInput[] | AdmissionUncheckedCreateWithoutAdmissionTypeInput[]
+    connectOrCreate?: AdmissionCreateOrConnectWithoutAdmissionTypeInput | AdmissionCreateOrConnectWithoutAdmissionTypeInput[]
+    upsert?: AdmissionUpsertWithWhereUniqueWithoutAdmissionTypeInput | AdmissionUpsertWithWhereUniqueWithoutAdmissionTypeInput[]
+    createMany?: AdmissionCreateManyAdmissionTypeInputEnvelope
+    set?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    disconnect?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    delete?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    connect?: AdmissionWhereUniqueInput | AdmissionWhereUniqueInput[]
+    update?: AdmissionUpdateWithWhereUniqueWithoutAdmissionTypeInput | AdmissionUpdateWithWhereUniqueWithoutAdmissionTypeInput[]
+    updateMany?: AdmissionUpdateManyWithWhereWithoutAdmissionTypeInput | AdmissionUpdateManyWithWhereWithoutAdmissionTypeInput[]
+    deleteMany?: AdmissionScalarWhereInput | AdmissionScalarWhereInput[]
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -18948,6 +23097,23 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type NestedEnumCoverageServiceFilter<$PrismaModel = never> = {
+    equals?: $Enums.CoverageService | EnumCoverageServiceFieldRefInput<$PrismaModel>
+    in?: $Enums.CoverageService[] | ListEnumCoverageServiceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CoverageService[] | ListEnumCoverageServiceFieldRefInput<$PrismaModel>
+    not?: NestedEnumCoverageServiceFilter<$PrismaModel> | $Enums.CoverageService
+  }
+
+  export type NestedEnumCoverageServiceWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.CoverageService | EnumCoverageServiceFieldRefInput<$PrismaModel>
+    in?: $Enums.CoverageService[] | ListEnumCoverageServiceFieldRefInput<$PrismaModel>
+    notIn?: $Enums.CoverageService[] | ListEnumCoverageServiceFieldRefInput<$PrismaModel>
+    not?: NestedEnumCoverageServiceWithAggregatesFilter<$PrismaModel> | $Enums.CoverageService
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCoverageServiceFilter<$PrismaModel>
+    _max?: NestedEnumCoverageServiceFilter<$PrismaModel>
+  }
+
   export type NestedEnumLegalGuardianTypeNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.LegalGuardianType | EnumLegalGuardianTypeFieldRefInput<$PrismaModel> | null
     in?: $Enums.LegalGuardianType[] | ListEnumLegalGuardianTypeFieldRefInput<$PrismaModel> | null
@@ -18982,11 +23148,53 @@ export namespace Prisma {
     _max?: NestedEnumLegalGuardianStatusNullableFilter<$PrismaModel>
   }
 
+  export type NestedEnumSchoolShiftNullableFilter<$PrismaModel = never> = {
+    equals?: $Enums.SchoolShift | EnumSchoolShiftFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SchoolShift[] | ListEnumSchoolShiftFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SchoolShift[] | ListEnumSchoolShiftFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSchoolShiftNullableFilter<$PrismaModel> | $Enums.SchoolShift | null
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedEnumAdmissionStatusNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.AdmissionStatus | EnumAdmissionStatusFieldRefInput<$PrismaModel> | null
     in?: $Enums.AdmissionStatus[] | ListEnumAdmissionStatusFieldRefInput<$PrismaModel> | null
     notIn?: $Enums.AdmissionStatus[] | ListEnumAdmissionStatusFieldRefInput<$PrismaModel> | null
     not?: NestedEnumAdmissionStatusNullableFilter<$PrismaModel> | $Enums.AdmissionStatus | null
+  }
+
+  export type NestedEnumSchoolShiftNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.SchoolShift | EnumSchoolShiftFieldRefInput<$PrismaModel> | null
+    in?: $Enums.SchoolShift[] | ListEnumSchoolShiftFieldRefInput<$PrismaModel> | null
+    notIn?: $Enums.SchoolShift[] | ListEnumSchoolShiftFieldRefInput<$PrismaModel> | null
+    not?: NestedEnumSchoolShiftNullableWithAggregatesFilter<$PrismaModel> | $Enums.SchoolShift | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedEnumSchoolShiftNullableFilter<$PrismaModel>
+    _max?: NestedEnumSchoolShiftNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumAdmissionStatusNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -19129,7 +23337,6 @@ export namespace Prisma {
     phone: string
     affiliateNumber: string
     professionalActivity?: string | null
-    healthInsuranceProvider?: string | null
     patientType?: $Enums.PatientType | null
     patientStatus?: $Enums.PatientStatus | null
     isActive?: boolean
@@ -19137,6 +23344,7 @@ export namespace Prisma {
     legalGuardian?: LegalGuardianCreateNestedOneWithoutPatientsInput
     events?: EventCreateNestedManyWithoutPatientInput
     admission?: AdmissionCreateNestedOneWithoutPatientInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutPatientsInput
   }
 
   export type PatientUncheckedCreateWithoutUserInput = {
@@ -19151,12 +23359,12 @@ export namespace Prisma {
     phone: string
     affiliateNumber: string
     professionalActivity?: string | null
-    healthInsuranceProvider?: string | null
     patientType?: $Enums.PatientType | null
     patientStatus?: $Enums.PatientStatus | null
     isActive?: boolean
     createdAt?: Date | string
     legalGuardianId?: number | null
+    healthInsuranceProviderId?: number | null
     events?: EventUncheckedCreateNestedManyWithoutPatientInput
     admission?: AdmissionUncheckedCreateNestedOneWithoutPatientInput
   }
@@ -19176,12 +23384,13 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     legalGuardianType?: $Enums.LegalGuardianType | null
     legalGuardianStatus?: $Enums.LegalGuardianStatus | null
     isActive?: boolean
     createdAt?: Date | string
     patients?: PatientCreateNestedManyWithoutLegalGuardianInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutLegalGuardiansInput
+    admissions?: AdmissionCreateNestedManyWithoutLegalGuardianInput
   }
 
   export type LegalGuardianUncheckedCreateWithoutUserInput = {
@@ -19195,12 +23404,13 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     legalGuardianType?: $Enums.LegalGuardianType | null
     legalGuardianStatus?: $Enums.LegalGuardianStatus | null
     isActive?: boolean
     createdAt?: Date | string
+    healthInsuranceProviderId?: number | null
     patients?: PatientUncheckedCreateNestedManyWithoutLegalGuardianInput
+    admissions?: AdmissionUncheckedCreateNestedManyWithoutLegalGuardianInput
   }
 
   export type LegalGuardianCreateOrConnectWithoutUserInput = {
@@ -19217,11 +23427,11 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     isActive?: boolean
     profecionalType: string
     events?: EventCreateNestedManyWithoutProfessionalInput
     schedules?: ScheduleCreateNestedManyWithoutProfessionalInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutProfessionalsInput
   }
 
   export type ProfessionalUncheckedCreateWithoutUserInput = {
@@ -19234,9 +23444,9 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     isActive?: boolean
     profecionalType: string
+    healthInsuranceProviderId?: number | null
     events?: EventUncheckedCreateNestedManyWithoutProfessionalInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutProfessionalInput
   }
@@ -19330,7 +23540,6 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     affiliateNumber?: StringFieldUpdateOperationsInput | string
     professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
     patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -19338,6 +23547,7 @@ export namespace Prisma {
     legalGuardian?: LegalGuardianUpdateOneWithoutPatientsNestedInput
     events?: EventUpdateManyWithoutPatientNestedInput
     admission?: AdmissionUpdateOneWithoutPatientNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutPatientsNestedInput
   }
 
   export type PatientUncheckedUpdateWithoutUserInput = {
@@ -19352,12 +23562,12 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     affiliateNumber?: StringFieldUpdateOperationsInput | string
     professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
     patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     legalGuardianId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     events?: EventUncheckedUpdateManyWithoutPatientNestedInput
     admission?: AdmissionUncheckedUpdateOneWithoutPatientNestedInput
   }
@@ -19383,12 +23593,13 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     legalGuardianType?: NullableEnumLegalGuardianTypeFieldUpdateOperationsInput | $Enums.LegalGuardianType | null
     legalGuardianStatus?: NullableEnumLegalGuardianStatusFieldUpdateOperationsInput | $Enums.LegalGuardianStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     patients?: PatientUpdateManyWithoutLegalGuardianNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutLegalGuardiansNestedInput
+    admissions?: AdmissionUpdateManyWithoutLegalGuardianNestedInput
   }
 
   export type LegalGuardianUncheckedUpdateWithoutUserInput = {
@@ -19402,12 +23613,13 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     legalGuardianType?: NullableEnumLegalGuardianTypeFieldUpdateOperationsInput | $Enums.LegalGuardianType | null
     legalGuardianStatus?: NullableEnumLegalGuardianStatusFieldUpdateOperationsInput | $Enums.LegalGuardianStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     patients?: PatientUncheckedUpdateManyWithoutLegalGuardianNestedInput
+    admissions?: AdmissionUncheckedUpdateManyWithoutLegalGuardianNestedInput
   }
 
   export type ProfessionalUpsertWithoutUserInput = {
@@ -19430,11 +23642,11 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     profecionalType?: StringFieldUpdateOperationsInput | string
     events?: EventUpdateManyWithoutProfessionalNestedInput
     schedules?: ScheduleUpdateManyWithoutProfessionalNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutProfessionalsNestedInput
   }
 
   export type ProfessionalUncheckedUpdateWithoutUserInput = {
@@ -19447,9 +23659,9 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     profecionalType?: StringFieldUpdateOperationsInput | string
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     events?: EventUncheckedUpdateManyWithoutProfessionalNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutProfessionalNestedInput
   }
@@ -19558,12 +23770,13 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     legalGuardianType?: $Enums.LegalGuardianType | null
     legalGuardianStatus?: $Enums.LegalGuardianStatus | null
     isActive?: boolean
     createdAt?: Date | string
     user?: UserCreateNestedOneWithoutLegalGuardianInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutLegalGuardiansInput
+    admissions?: AdmissionCreateNestedManyWithoutLegalGuardianInput
   }
 
   export type LegalGuardianUncheckedCreateWithoutPatientsInput = {
@@ -19577,12 +23790,13 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     legalGuardianType?: $Enums.LegalGuardianType | null
     legalGuardianStatus?: $Enums.LegalGuardianStatus | null
     isActive?: boolean
     createdAt?: Date | string
     userId?: number | null
+    healthInsuranceProviderId?: number | null
+    admissions?: AdmissionUncheckedCreateNestedManyWithoutLegalGuardianInput
   }
 
   export type LegalGuardianCreateOrConnectWithoutPatientsInput = {
@@ -19626,17 +23840,73 @@ export namespace Prisma {
   }
 
   export type AdmissionCreateWithoutPatientInput = {
-    admissionStatus?: $Enums.AdmissionStatus | null
+    operationDate?: Date | string
+    admissionDate: Date | string
+    isSchoolEnrolled: boolean
+    schoolShift?: $Enums.SchoolShift | null
+    cud?: string | null
+    cudExpirationDate?: Date | string | null
+    status?: $Enums.AdmissionStatus | null
+    createdAt?: Date | string
+    admissionType: AdmissionTypeCreateNestedOneWithoutAdmissionsInput
+    legalGuardian?: LegalGuardianCreateNestedOneWithoutAdmissionsInput
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationCreateNestedManyWithoutAdmissionInput
   }
 
   export type AdmissionUncheckedCreateWithoutPatientInput = {
     id?: number
-    admissionStatus?: $Enums.AdmissionStatus | null
+    operationDate?: Date | string
+    admissionDate: Date | string
+    admissionTypeId: number
+    isSchoolEnrolled: boolean
+    schoolShift?: $Enums.SchoolShift | null
+    cud?: string | null
+    cudExpirationDate?: Date | string | null
+    status?: $Enums.AdmissionStatus | null
+    legalGuardianId?: number | null
+    createdAt?: Date | string
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationUncheckedCreateNestedManyWithoutAdmissionInput
   }
 
   export type AdmissionCreateOrConnectWithoutPatientInput = {
     where: AdmissionWhereUniqueInput
     create: XOR<AdmissionCreateWithoutPatientInput, AdmissionUncheckedCreateWithoutPatientInput>
+  }
+
+  export type HealthInsuranceProviderCreateWithoutPatientsInput = {
+    name: string
+    description: string
+    contractor?: string | null
+    subcontractor?: string | null
+    cuit: string
+    address: string
+    email: string
+    phone: string
+    contact: string
+    authorizations?: HealthInsuranceAuthorizationCreateNestedManyWithoutHealthInsuranceProviderInput
+    legalGuardians?: LegalGuardianCreateNestedManyWithoutHealthInsuranceProviderInput
+    professionals?: ProfessionalCreateNestedManyWithoutHealthInsuranceProviderInput
+  }
+
+  export type HealthInsuranceProviderUncheckedCreateWithoutPatientsInput = {
+    id?: number
+    name: string
+    description: string
+    contractor?: string | null
+    subcontractor?: string | null
+    cuit: string
+    address: string
+    email: string
+    phone: string
+    contact: string
+    authorizations?: HealthInsuranceAuthorizationUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+    legalGuardians?: LegalGuardianUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+    professionals?: ProfessionalUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+  }
+
+  export type HealthInsuranceProviderCreateOrConnectWithoutPatientsInput = {
+    where: HealthInsuranceProviderWhereUniqueInput
+    create: XOR<HealthInsuranceProviderCreateWithoutPatientsInput, HealthInsuranceProviderUncheckedCreateWithoutPatientsInput>
   }
 
   export type UserUpsertWithoutPatientInput = {
@@ -19698,12 +23968,13 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     legalGuardianType?: NullableEnumLegalGuardianTypeFieldUpdateOperationsInput | $Enums.LegalGuardianType | null
     legalGuardianStatus?: NullableEnumLegalGuardianStatusFieldUpdateOperationsInput | $Enums.LegalGuardianStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneWithoutLegalGuardianNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutLegalGuardiansNestedInput
+    admissions?: AdmissionUpdateManyWithoutLegalGuardianNestedInput
   }
 
   export type LegalGuardianUncheckedUpdateWithoutPatientsInput = {
@@ -19717,12 +23988,13 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     legalGuardianType?: NullableEnumLegalGuardianTypeFieldUpdateOperationsInput | $Enums.LegalGuardianType | null
     legalGuardianStatus?: NullableEnumLegalGuardianStatusFieldUpdateOperationsInput | $Enums.LegalGuardianStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
+    admissions?: AdmissionUncheckedUpdateManyWithoutLegalGuardianNestedInput
   }
 
   export type EventUpsertWithWhereUniqueWithoutPatientInput = {
@@ -19753,12 +24025,540 @@ export namespace Prisma {
   }
 
   export type AdmissionUpdateWithoutPatientInput = {
-    admissionStatus?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    operationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSchoolEnrolled?: BoolFieldUpdateOperationsInput | boolean
+    schoolShift?: NullableEnumSchoolShiftFieldUpdateOperationsInput | $Enums.SchoolShift | null
+    cud?: NullableStringFieldUpdateOperationsInput | string | null
+    cudExpirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionType?: AdmissionTypeUpdateOneRequiredWithoutAdmissionsNestedInput
+    legalGuardian?: LegalGuardianUpdateOneWithoutAdmissionsNestedInput
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationUpdateManyWithoutAdmissionNestedInput
   }
 
   export type AdmissionUncheckedUpdateWithoutPatientInput = {
     id?: IntFieldUpdateOperationsInput | number
-    admissionStatus?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    operationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionTypeId?: IntFieldUpdateOperationsInput | number
+    isSchoolEnrolled?: BoolFieldUpdateOperationsInput | boolean
+    schoolShift?: NullableEnumSchoolShiftFieldUpdateOperationsInput | $Enums.SchoolShift | null
+    cud?: NullableStringFieldUpdateOperationsInput | string | null
+    cudExpirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    legalGuardianId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationUncheckedUpdateManyWithoutAdmissionNestedInput
+  }
+
+  export type HealthInsuranceProviderUpsertWithoutPatientsInput = {
+    update: XOR<HealthInsuranceProviderUpdateWithoutPatientsInput, HealthInsuranceProviderUncheckedUpdateWithoutPatientsInput>
+    create: XOR<HealthInsuranceProviderCreateWithoutPatientsInput, HealthInsuranceProviderUncheckedCreateWithoutPatientsInput>
+    where?: HealthInsuranceProviderWhereInput
+  }
+
+  export type HealthInsuranceProviderUpdateToOneWithWhereWithoutPatientsInput = {
+    where?: HealthInsuranceProviderWhereInput
+    data: XOR<HealthInsuranceProviderUpdateWithoutPatientsInput, HealthInsuranceProviderUncheckedUpdateWithoutPatientsInput>
+  }
+
+  export type HealthInsuranceProviderUpdateWithoutPatientsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    contractor?: NullableStringFieldUpdateOperationsInput | string | null
+    subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
+    cuit?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    authorizations?: HealthInsuranceAuthorizationUpdateManyWithoutHealthInsuranceProviderNestedInput
+    legalGuardians?: LegalGuardianUpdateManyWithoutHealthInsuranceProviderNestedInput
+    professionals?: ProfessionalUpdateManyWithoutHealthInsuranceProviderNestedInput
+  }
+
+  export type HealthInsuranceProviderUncheckedUpdateWithoutPatientsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    contractor?: NullableStringFieldUpdateOperationsInput | string | null
+    subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
+    cuit?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    authorizations?: HealthInsuranceAuthorizationUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+    legalGuardians?: LegalGuardianUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+    professionals?: ProfessionalUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+  }
+
+  export type HealthInsuranceAuthorizationCreateWithoutHealthInsuranceProviderInput = {
+    service: $Enums.CoverageService
+    periodFrom: Date | string
+    periodTo: Date | string
+    authorizedAt: Date | string
+    admission: AdmissionCreateNestedOneWithoutHealthInsuranceAuthorizationsInput
+  }
+
+  export type HealthInsuranceAuthorizationUncheckedCreateWithoutHealthInsuranceProviderInput = {
+    id?: number
+    admissionId: number
+    service: $Enums.CoverageService
+    periodFrom: Date | string
+    periodTo: Date | string
+    authorizedAt: Date | string
+  }
+
+  export type HealthInsuranceAuthorizationCreateOrConnectWithoutHealthInsuranceProviderInput = {
+    where: HealthInsuranceAuthorizationWhereUniqueInput
+    create: XOR<HealthInsuranceAuthorizationCreateWithoutHealthInsuranceProviderInput, HealthInsuranceAuthorizationUncheckedCreateWithoutHealthInsuranceProviderInput>
+  }
+
+  export type HealthInsuranceAuthorizationCreateManyHealthInsuranceProviderInputEnvelope = {
+    data: HealthInsuranceAuthorizationCreateManyHealthInsuranceProviderInput | HealthInsuranceAuthorizationCreateManyHealthInsuranceProviderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PatientCreateWithoutHealthInsuranceProviderInput = {
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    dniProcessingNumber: string
+    birthday: Date | string
+    phone: string
+    affiliateNumber: string
+    professionalActivity?: string | null
+    patientType?: $Enums.PatientType | null
+    patientStatus?: $Enums.PatientStatus | null
+    isActive?: boolean
+    createdAt?: Date | string
+    user?: UserCreateNestedOneWithoutPatientInput
+    legalGuardian?: LegalGuardianCreateNestedOneWithoutPatientsInput
+    events?: EventCreateNestedManyWithoutPatientInput
+    admission?: AdmissionCreateNestedOneWithoutPatientInput
+  }
+
+  export type PatientUncheckedCreateWithoutHealthInsuranceProviderInput = {
+    id?: number
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    dniProcessingNumber: string
+    birthday: Date | string
+    phone: string
+    affiliateNumber: string
+    professionalActivity?: string | null
+    patientType?: $Enums.PatientType | null
+    patientStatus?: $Enums.PatientStatus | null
+    isActive?: boolean
+    createdAt?: Date | string
+    userId?: number | null
+    legalGuardianId?: number | null
+    events?: EventUncheckedCreateNestedManyWithoutPatientInput
+    admission?: AdmissionUncheckedCreateNestedOneWithoutPatientInput
+  }
+
+  export type PatientCreateOrConnectWithoutHealthInsuranceProviderInput = {
+    where: PatientWhereUniqueInput
+    create: XOR<PatientCreateWithoutHealthInsuranceProviderInput, PatientUncheckedCreateWithoutHealthInsuranceProviderInput>
+  }
+
+  export type PatientCreateManyHealthInsuranceProviderInputEnvelope = {
+    data: PatientCreateManyHealthInsuranceProviderInput | PatientCreateManyHealthInsuranceProviderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type LegalGuardianCreateWithoutHealthInsuranceProviderInput = {
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    dniProcessingNumber: string
+    birthday: Date | string
+    phone: string
+    professionalActivity: string
+    legalGuardianType?: $Enums.LegalGuardianType | null
+    legalGuardianStatus?: $Enums.LegalGuardianStatus | null
+    isActive?: boolean
+    createdAt?: Date | string
+    user?: UserCreateNestedOneWithoutLegalGuardianInput
+    patients?: PatientCreateNestedManyWithoutLegalGuardianInput
+    admissions?: AdmissionCreateNestedManyWithoutLegalGuardianInput
+  }
+
+  export type LegalGuardianUncheckedCreateWithoutHealthInsuranceProviderInput = {
+    id?: number
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    dniProcessingNumber: string
+    birthday: Date | string
+    phone: string
+    professionalActivity: string
+    legalGuardianType?: $Enums.LegalGuardianType | null
+    legalGuardianStatus?: $Enums.LegalGuardianStatus | null
+    isActive?: boolean
+    createdAt?: Date | string
+    userId?: number | null
+    patients?: PatientUncheckedCreateNestedManyWithoutLegalGuardianInput
+    admissions?: AdmissionUncheckedCreateNestedManyWithoutLegalGuardianInput
+  }
+
+  export type LegalGuardianCreateOrConnectWithoutHealthInsuranceProviderInput = {
+    where: LegalGuardianWhereUniqueInput
+    create: XOR<LegalGuardianCreateWithoutHealthInsuranceProviderInput, LegalGuardianUncheckedCreateWithoutHealthInsuranceProviderInput>
+  }
+
+  export type LegalGuardianCreateManyHealthInsuranceProviderInputEnvelope = {
+    data: LegalGuardianCreateManyHealthInsuranceProviderInput | LegalGuardianCreateManyHealthInsuranceProviderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ProfessionalCreateWithoutHealthInsuranceProviderInput = {
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    birthday: Date | string
+    phone: string
+    professionalActivity: string
+    isActive?: boolean
+    profecionalType: string
+    user?: UserCreateNestedOneWithoutProfessionalInput
+    events?: EventCreateNestedManyWithoutProfessionalInput
+    schedules?: ScheduleCreateNestedManyWithoutProfessionalInput
+  }
+
+  export type ProfessionalUncheckedCreateWithoutHealthInsuranceProviderInput = {
+    id?: number
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    birthday: Date | string
+    phone: string
+    professionalActivity: string
+    isActive?: boolean
+    profecionalType: string
+    userId?: number | null
+    events?: EventUncheckedCreateNestedManyWithoutProfessionalInput
+    schedules?: ScheduleUncheckedCreateNestedManyWithoutProfessionalInput
+  }
+
+  export type ProfessionalCreateOrConnectWithoutHealthInsuranceProviderInput = {
+    where: ProfessionalWhereUniqueInput
+    create: XOR<ProfessionalCreateWithoutHealthInsuranceProviderInput, ProfessionalUncheckedCreateWithoutHealthInsuranceProviderInput>
+  }
+
+  export type ProfessionalCreateManyHealthInsuranceProviderInputEnvelope = {
+    data: ProfessionalCreateManyHealthInsuranceProviderInput | ProfessionalCreateManyHealthInsuranceProviderInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type HealthInsuranceAuthorizationUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput = {
+    where: HealthInsuranceAuthorizationWhereUniqueInput
+    update: XOR<HealthInsuranceAuthorizationUpdateWithoutHealthInsuranceProviderInput, HealthInsuranceAuthorizationUncheckedUpdateWithoutHealthInsuranceProviderInput>
+    create: XOR<HealthInsuranceAuthorizationCreateWithoutHealthInsuranceProviderInput, HealthInsuranceAuthorizationUncheckedCreateWithoutHealthInsuranceProviderInput>
+  }
+
+  export type HealthInsuranceAuthorizationUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput = {
+    where: HealthInsuranceAuthorizationWhereUniqueInput
+    data: XOR<HealthInsuranceAuthorizationUpdateWithoutHealthInsuranceProviderInput, HealthInsuranceAuthorizationUncheckedUpdateWithoutHealthInsuranceProviderInput>
+  }
+
+  export type HealthInsuranceAuthorizationUpdateManyWithWhereWithoutHealthInsuranceProviderInput = {
+    where: HealthInsuranceAuthorizationScalarWhereInput
+    data: XOR<HealthInsuranceAuthorizationUpdateManyMutationInput, HealthInsuranceAuthorizationUncheckedUpdateManyWithoutHealthInsuranceProviderInput>
+  }
+
+  export type HealthInsuranceAuthorizationScalarWhereInput = {
+    AND?: HealthInsuranceAuthorizationScalarWhereInput | HealthInsuranceAuthorizationScalarWhereInput[]
+    OR?: HealthInsuranceAuthorizationScalarWhereInput[]
+    NOT?: HealthInsuranceAuthorizationScalarWhereInput | HealthInsuranceAuthorizationScalarWhereInput[]
+    id?: IntFilter<"HealthInsuranceAuthorization"> | number
+    healthInsuranceProviderId?: IntFilter<"HealthInsuranceAuthorization"> | number
+    admissionId?: IntFilter<"HealthInsuranceAuthorization"> | number
+    service?: EnumCoverageServiceFilter<"HealthInsuranceAuthorization"> | $Enums.CoverageService
+    periodFrom?: DateTimeFilter<"HealthInsuranceAuthorization"> | Date | string
+    periodTo?: DateTimeFilter<"HealthInsuranceAuthorization"> | Date | string
+    authorizedAt?: DateTimeFilter<"HealthInsuranceAuthorization"> | Date | string
+  }
+
+  export type PatientUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput = {
+    where: PatientWhereUniqueInput
+    update: XOR<PatientUpdateWithoutHealthInsuranceProviderInput, PatientUncheckedUpdateWithoutHealthInsuranceProviderInput>
+    create: XOR<PatientCreateWithoutHealthInsuranceProviderInput, PatientUncheckedCreateWithoutHealthInsuranceProviderInput>
+  }
+
+  export type PatientUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput = {
+    where: PatientWhereUniqueInput
+    data: XOR<PatientUpdateWithoutHealthInsuranceProviderInput, PatientUncheckedUpdateWithoutHealthInsuranceProviderInput>
+  }
+
+  export type PatientUpdateManyWithWhereWithoutHealthInsuranceProviderInput = {
+    where: PatientScalarWhereInput
+    data: XOR<PatientUpdateManyMutationInput, PatientUncheckedUpdateManyWithoutHealthInsuranceProviderInput>
+  }
+
+  export type PatientScalarWhereInput = {
+    AND?: PatientScalarWhereInput | PatientScalarWhereInput[]
+    OR?: PatientScalarWhereInput[]
+    NOT?: PatientScalarWhereInput | PatientScalarWhereInput[]
+    id?: IntFilter<"Patient"> | number
+    firstName?: StringFilter<"Patient"> | string
+    lastName?: StringFilter<"Patient"> | string
+    address?: StringFilter<"Patient"> | string
+    dni?: StringFilter<"Patient"> | string
+    cuil?: StringFilter<"Patient"> | string
+    dniProcessingNumber?: StringFilter<"Patient"> | string
+    birthday?: DateTimeFilter<"Patient"> | Date | string
+    phone?: StringFilter<"Patient"> | string
+    affiliateNumber?: StringFilter<"Patient"> | string
+    professionalActivity?: StringNullableFilter<"Patient"> | string | null
+    patientType?: EnumPatientTypeNullableFilter<"Patient"> | $Enums.PatientType | null
+    patientStatus?: EnumPatientStatusNullableFilter<"Patient"> | $Enums.PatientStatus | null
+    isActive?: BoolFilter<"Patient"> | boolean
+    createdAt?: DateTimeFilter<"Patient"> | Date | string
+    userId?: IntNullableFilter<"Patient"> | number | null
+    legalGuardianId?: IntNullableFilter<"Patient"> | number | null
+    healthInsuranceProviderId?: IntNullableFilter<"Patient"> | number | null
+  }
+
+  export type LegalGuardianUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput = {
+    where: LegalGuardianWhereUniqueInput
+    update: XOR<LegalGuardianUpdateWithoutHealthInsuranceProviderInput, LegalGuardianUncheckedUpdateWithoutHealthInsuranceProviderInput>
+    create: XOR<LegalGuardianCreateWithoutHealthInsuranceProviderInput, LegalGuardianUncheckedCreateWithoutHealthInsuranceProviderInput>
+  }
+
+  export type LegalGuardianUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput = {
+    where: LegalGuardianWhereUniqueInput
+    data: XOR<LegalGuardianUpdateWithoutHealthInsuranceProviderInput, LegalGuardianUncheckedUpdateWithoutHealthInsuranceProviderInput>
+  }
+
+  export type LegalGuardianUpdateManyWithWhereWithoutHealthInsuranceProviderInput = {
+    where: LegalGuardianScalarWhereInput
+    data: XOR<LegalGuardianUpdateManyMutationInput, LegalGuardianUncheckedUpdateManyWithoutHealthInsuranceProviderInput>
+  }
+
+  export type LegalGuardianScalarWhereInput = {
+    AND?: LegalGuardianScalarWhereInput | LegalGuardianScalarWhereInput[]
+    OR?: LegalGuardianScalarWhereInput[]
+    NOT?: LegalGuardianScalarWhereInput | LegalGuardianScalarWhereInput[]
+    id?: IntFilter<"LegalGuardian"> | number
+    firstName?: StringFilter<"LegalGuardian"> | string
+    lastName?: StringFilter<"LegalGuardian"> | string
+    address?: StringFilter<"LegalGuardian"> | string
+    dni?: StringFilter<"LegalGuardian"> | string
+    cuil?: StringFilter<"LegalGuardian"> | string
+    dniProcessingNumber?: StringFilter<"LegalGuardian"> | string
+    birthday?: DateTimeFilter<"LegalGuardian"> | Date | string
+    phone?: StringFilter<"LegalGuardian"> | string
+    professionalActivity?: StringFilter<"LegalGuardian"> | string
+    legalGuardianType?: EnumLegalGuardianTypeNullableFilter<"LegalGuardian"> | $Enums.LegalGuardianType | null
+    legalGuardianStatus?: EnumLegalGuardianStatusNullableFilter<"LegalGuardian"> | $Enums.LegalGuardianStatus | null
+    isActive?: BoolFilter<"LegalGuardian"> | boolean
+    createdAt?: DateTimeFilter<"LegalGuardian"> | Date | string
+    userId?: IntNullableFilter<"LegalGuardian"> | number | null
+    healthInsuranceProviderId?: IntNullableFilter<"LegalGuardian"> | number | null
+  }
+
+  export type ProfessionalUpsertWithWhereUniqueWithoutHealthInsuranceProviderInput = {
+    where: ProfessionalWhereUniqueInput
+    update: XOR<ProfessionalUpdateWithoutHealthInsuranceProviderInput, ProfessionalUncheckedUpdateWithoutHealthInsuranceProviderInput>
+    create: XOR<ProfessionalCreateWithoutHealthInsuranceProviderInput, ProfessionalUncheckedCreateWithoutHealthInsuranceProviderInput>
+  }
+
+  export type ProfessionalUpdateWithWhereUniqueWithoutHealthInsuranceProviderInput = {
+    where: ProfessionalWhereUniqueInput
+    data: XOR<ProfessionalUpdateWithoutHealthInsuranceProviderInput, ProfessionalUncheckedUpdateWithoutHealthInsuranceProviderInput>
+  }
+
+  export type ProfessionalUpdateManyWithWhereWithoutHealthInsuranceProviderInput = {
+    where: ProfessionalScalarWhereInput
+    data: XOR<ProfessionalUpdateManyMutationInput, ProfessionalUncheckedUpdateManyWithoutHealthInsuranceProviderInput>
+  }
+
+  export type ProfessionalScalarWhereInput = {
+    AND?: ProfessionalScalarWhereInput | ProfessionalScalarWhereInput[]
+    OR?: ProfessionalScalarWhereInput[]
+    NOT?: ProfessionalScalarWhereInput | ProfessionalScalarWhereInput[]
+    id?: IntFilter<"Professional"> | number
+    firstName?: StringFilter<"Professional"> | string
+    lastName?: StringFilter<"Professional"> | string
+    address?: StringFilter<"Professional"> | string
+    dni?: StringFilter<"Professional"> | string
+    cuil?: StringFilter<"Professional"> | string
+    birthday?: DateTimeFilter<"Professional"> | Date | string
+    phone?: StringFilter<"Professional"> | string
+    professionalActivity?: StringFilter<"Professional"> | string
+    isActive?: BoolFilter<"Professional"> | boolean
+    profecionalType?: StringFilter<"Professional"> | string
+    userId?: IntNullableFilter<"Professional"> | number | null
+    healthInsuranceProviderId?: IntNullableFilter<"Professional"> | number | null
+  }
+
+  export type HealthInsuranceProviderCreateWithoutAuthorizationsInput = {
+    name: string
+    description: string
+    contractor?: string | null
+    subcontractor?: string | null
+    cuit: string
+    address: string
+    email: string
+    phone: string
+    contact: string
+    patients?: PatientCreateNestedManyWithoutHealthInsuranceProviderInput
+    legalGuardians?: LegalGuardianCreateNestedManyWithoutHealthInsuranceProviderInput
+    professionals?: ProfessionalCreateNestedManyWithoutHealthInsuranceProviderInput
+  }
+
+  export type HealthInsuranceProviderUncheckedCreateWithoutAuthorizationsInput = {
+    id?: number
+    name: string
+    description: string
+    contractor?: string | null
+    subcontractor?: string | null
+    cuit: string
+    address: string
+    email: string
+    phone: string
+    contact: string
+    patients?: PatientUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+    legalGuardians?: LegalGuardianUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+    professionals?: ProfessionalUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+  }
+
+  export type HealthInsuranceProviderCreateOrConnectWithoutAuthorizationsInput = {
+    where: HealthInsuranceProviderWhereUniqueInput
+    create: XOR<HealthInsuranceProviderCreateWithoutAuthorizationsInput, HealthInsuranceProviderUncheckedCreateWithoutAuthorizationsInput>
+  }
+
+  export type AdmissionCreateWithoutHealthInsuranceAuthorizationsInput = {
+    operationDate?: Date | string
+    admissionDate: Date | string
+    isSchoolEnrolled: boolean
+    schoolShift?: $Enums.SchoolShift | null
+    cud?: string | null
+    cudExpirationDate?: Date | string | null
+    status?: $Enums.AdmissionStatus | null
+    createdAt?: Date | string
+    admissionType: AdmissionTypeCreateNestedOneWithoutAdmissionsInput
+    patient: PatientCreateNestedOneWithoutAdmissionInput
+    legalGuardian?: LegalGuardianCreateNestedOneWithoutAdmissionsInput
+  }
+
+  export type AdmissionUncheckedCreateWithoutHealthInsuranceAuthorizationsInput = {
+    id?: number
+    operationDate?: Date | string
+    admissionDate: Date | string
+    admissionTypeId: number
+    isSchoolEnrolled: boolean
+    schoolShift?: $Enums.SchoolShift | null
+    patientId: number
+    cud?: string | null
+    cudExpirationDate?: Date | string | null
+    status?: $Enums.AdmissionStatus | null
+    legalGuardianId?: number | null
+    createdAt?: Date | string
+  }
+
+  export type AdmissionCreateOrConnectWithoutHealthInsuranceAuthorizationsInput = {
+    where: AdmissionWhereUniqueInput
+    create: XOR<AdmissionCreateWithoutHealthInsuranceAuthorizationsInput, AdmissionUncheckedCreateWithoutHealthInsuranceAuthorizationsInput>
+  }
+
+  export type HealthInsuranceProviderUpsertWithoutAuthorizationsInput = {
+    update: XOR<HealthInsuranceProviderUpdateWithoutAuthorizationsInput, HealthInsuranceProviderUncheckedUpdateWithoutAuthorizationsInput>
+    create: XOR<HealthInsuranceProviderCreateWithoutAuthorizationsInput, HealthInsuranceProviderUncheckedCreateWithoutAuthorizationsInput>
+    where?: HealthInsuranceProviderWhereInput
+  }
+
+  export type HealthInsuranceProviderUpdateToOneWithWhereWithoutAuthorizationsInput = {
+    where?: HealthInsuranceProviderWhereInput
+    data: XOR<HealthInsuranceProviderUpdateWithoutAuthorizationsInput, HealthInsuranceProviderUncheckedUpdateWithoutAuthorizationsInput>
+  }
+
+  export type HealthInsuranceProviderUpdateWithoutAuthorizationsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    contractor?: NullableStringFieldUpdateOperationsInput | string | null
+    subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
+    cuit?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    patients?: PatientUpdateManyWithoutHealthInsuranceProviderNestedInput
+    legalGuardians?: LegalGuardianUpdateManyWithoutHealthInsuranceProviderNestedInput
+    professionals?: ProfessionalUpdateManyWithoutHealthInsuranceProviderNestedInput
+  }
+
+  export type HealthInsuranceProviderUncheckedUpdateWithoutAuthorizationsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    contractor?: NullableStringFieldUpdateOperationsInput | string | null
+    subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
+    cuit?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    patients?: PatientUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+    legalGuardians?: LegalGuardianUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+    professionals?: ProfessionalUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+  }
+
+  export type AdmissionUpsertWithoutHealthInsuranceAuthorizationsInput = {
+    update: XOR<AdmissionUpdateWithoutHealthInsuranceAuthorizationsInput, AdmissionUncheckedUpdateWithoutHealthInsuranceAuthorizationsInput>
+    create: XOR<AdmissionCreateWithoutHealthInsuranceAuthorizationsInput, AdmissionUncheckedCreateWithoutHealthInsuranceAuthorizationsInput>
+    where?: AdmissionWhereInput
+  }
+
+  export type AdmissionUpdateToOneWithWhereWithoutHealthInsuranceAuthorizationsInput = {
+    where?: AdmissionWhereInput
+    data: XOR<AdmissionUpdateWithoutHealthInsuranceAuthorizationsInput, AdmissionUncheckedUpdateWithoutHealthInsuranceAuthorizationsInput>
+  }
+
+  export type AdmissionUpdateWithoutHealthInsuranceAuthorizationsInput = {
+    operationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSchoolEnrolled?: BoolFieldUpdateOperationsInput | boolean
+    schoolShift?: NullableEnumSchoolShiftFieldUpdateOperationsInput | $Enums.SchoolShift | null
+    cud?: NullableStringFieldUpdateOperationsInput | string | null
+    cudExpirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionType?: AdmissionTypeUpdateOneRequiredWithoutAdmissionsNestedInput
+    patient?: PatientUpdateOneRequiredWithoutAdmissionNestedInput
+    legalGuardian?: LegalGuardianUpdateOneWithoutAdmissionsNestedInput
+  }
+
+  export type AdmissionUncheckedUpdateWithoutHealthInsuranceAuthorizationsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    operationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionTypeId?: IntFieldUpdateOperationsInput | number
+    isSchoolEnrolled?: BoolFieldUpdateOperationsInput | boolean
+    schoolShift?: NullableEnumSchoolShiftFieldUpdateOperationsInput | $Enums.SchoolShift | null
+    patientId?: IntFieldUpdateOperationsInput | number
+    cud?: NullableStringFieldUpdateOperationsInput | string | null
+    cudExpirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    legalGuardianId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateWithoutLegalGuardianInput = {
@@ -19804,7 +24604,6 @@ export namespace Prisma {
     phone: string
     affiliateNumber: string
     professionalActivity?: string | null
-    healthInsuranceProvider?: string | null
     patientType?: $Enums.PatientType | null
     patientStatus?: $Enums.PatientStatus | null
     isActive?: boolean
@@ -19812,6 +24611,7 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutPatientInput
     events?: EventCreateNestedManyWithoutPatientInput
     admission?: AdmissionCreateNestedOneWithoutPatientInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutPatientsInput
   }
 
   export type PatientUncheckedCreateWithoutLegalGuardianInput = {
@@ -19826,12 +24626,12 @@ export namespace Prisma {
     phone: string
     affiliateNumber: string
     professionalActivity?: string | null
-    healthInsuranceProvider?: string | null
     patientType?: $Enums.PatientType | null
     patientStatus?: $Enums.PatientStatus | null
     isActive?: boolean
     createdAt?: Date | string
     userId?: number | null
+    healthInsuranceProviderId?: number | null
     events?: EventUncheckedCreateNestedManyWithoutPatientInput
     admission?: AdmissionUncheckedCreateNestedOneWithoutPatientInput
   }
@@ -19843,6 +24643,81 @@ export namespace Prisma {
 
   export type PatientCreateManyLegalGuardianInputEnvelope = {
     data: PatientCreateManyLegalGuardianInput | PatientCreateManyLegalGuardianInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type HealthInsuranceProviderCreateWithoutLegalGuardiansInput = {
+    name: string
+    description: string
+    contractor?: string | null
+    subcontractor?: string | null
+    cuit: string
+    address: string
+    email: string
+    phone: string
+    contact: string
+    authorizations?: HealthInsuranceAuthorizationCreateNestedManyWithoutHealthInsuranceProviderInput
+    patients?: PatientCreateNestedManyWithoutHealthInsuranceProviderInput
+    professionals?: ProfessionalCreateNestedManyWithoutHealthInsuranceProviderInput
+  }
+
+  export type HealthInsuranceProviderUncheckedCreateWithoutLegalGuardiansInput = {
+    id?: number
+    name: string
+    description: string
+    contractor?: string | null
+    subcontractor?: string | null
+    cuit: string
+    address: string
+    email: string
+    phone: string
+    contact: string
+    authorizations?: HealthInsuranceAuthorizationUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+    patients?: PatientUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+    professionals?: ProfessionalUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+  }
+
+  export type HealthInsuranceProviderCreateOrConnectWithoutLegalGuardiansInput = {
+    where: HealthInsuranceProviderWhereUniqueInput
+    create: XOR<HealthInsuranceProviderCreateWithoutLegalGuardiansInput, HealthInsuranceProviderUncheckedCreateWithoutLegalGuardiansInput>
+  }
+
+  export type AdmissionCreateWithoutLegalGuardianInput = {
+    operationDate?: Date | string
+    admissionDate: Date | string
+    isSchoolEnrolled: boolean
+    schoolShift?: $Enums.SchoolShift | null
+    cud?: string | null
+    cudExpirationDate?: Date | string | null
+    status?: $Enums.AdmissionStatus | null
+    createdAt?: Date | string
+    admissionType: AdmissionTypeCreateNestedOneWithoutAdmissionsInput
+    patient: PatientCreateNestedOneWithoutAdmissionInput
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationCreateNestedManyWithoutAdmissionInput
+  }
+
+  export type AdmissionUncheckedCreateWithoutLegalGuardianInput = {
+    id?: number
+    operationDate?: Date | string
+    admissionDate: Date | string
+    admissionTypeId: number
+    isSchoolEnrolled: boolean
+    schoolShift?: $Enums.SchoolShift | null
+    patientId: number
+    cud?: string | null
+    cudExpirationDate?: Date | string | null
+    status?: $Enums.AdmissionStatus | null
+    createdAt?: Date | string
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationUncheckedCreateNestedManyWithoutAdmissionInput
+  }
+
+  export type AdmissionCreateOrConnectWithoutLegalGuardianInput = {
+    where: AdmissionWhereUniqueInput
+    create: XOR<AdmissionCreateWithoutLegalGuardianInput, AdmissionUncheckedCreateWithoutLegalGuardianInput>
+  }
+
+  export type AdmissionCreateManyLegalGuardianInputEnvelope = {
+    data: AdmissionCreateManyLegalGuardianInput | AdmissionCreateManyLegalGuardianInput[]
     skipDuplicates?: boolean
   }
 
@@ -19900,28 +24775,80 @@ export namespace Prisma {
     data: XOR<PatientUpdateManyMutationInput, PatientUncheckedUpdateManyWithoutLegalGuardianInput>
   }
 
-  export type PatientScalarWhereInput = {
-    AND?: PatientScalarWhereInput | PatientScalarWhereInput[]
-    OR?: PatientScalarWhereInput[]
-    NOT?: PatientScalarWhereInput | PatientScalarWhereInput[]
-    id?: IntFilter<"Patient"> | number
-    firstName?: StringFilter<"Patient"> | string
-    lastName?: StringFilter<"Patient"> | string
-    address?: StringFilter<"Patient"> | string
-    dni?: StringFilter<"Patient"> | string
-    cuil?: StringFilter<"Patient"> | string
-    dniProcessingNumber?: StringFilter<"Patient"> | string
-    birthday?: DateTimeFilter<"Patient"> | Date | string
-    phone?: StringFilter<"Patient"> | string
-    affiliateNumber?: StringFilter<"Patient"> | string
-    professionalActivity?: StringNullableFilter<"Patient"> | string | null
-    healthInsuranceProvider?: StringNullableFilter<"Patient"> | string | null
-    patientType?: EnumPatientTypeNullableFilter<"Patient"> | $Enums.PatientType | null
-    patientStatus?: EnumPatientStatusNullableFilter<"Patient"> | $Enums.PatientStatus | null
-    isActive?: BoolFilter<"Patient"> | boolean
-    createdAt?: DateTimeFilter<"Patient"> | Date | string
-    userId?: IntNullableFilter<"Patient"> | number | null
-    legalGuardianId?: IntNullableFilter<"Patient"> | number | null
+  export type HealthInsuranceProviderUpsertWithoutLegalGuardiansInput = {
+    update: XOR<HealthInsuranceProviderUpdateWithoutLegalGuardiansInput, HealthInsuranceProviderUncheckedUpdateWithoutLegalGuardiansInput>
+    create: XOR<HealthInsuranceProviderCreateWithoutLegalGuardiansInput, HealthInsuranceProviderUncheckedCreateWithoutLegalGuardiansInput>
+    where?: HealthInsuranceProviderWhereInput
+  }
+
+  export type HealthInsuranceProviderUpdateToOneWithWhereWithoutLegalGuardiansInput = {
+    where?: HealthInsuranceProviderWhereInput
+    data: XOR<HealthInsuranceProviderUpdateWithoutLegalGuardiansInput, HealthInsuranceProviderUncheckedUpdateWithoutLegalGuardiansInput>
+  }
+
+  export type HealthInsuranceProviderUpdateWithoutLegalGuardiansInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    contractor?: NullableStringFieldUpdateOperationsInput | string | null
+    subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
+    cuit?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    authorizations?: HealthInsuranceAuthorizationUpdateManyWithoutHealthInsuranceProviderNestedInput
+    patients?: PatientUpdateManyWithoutHealthInsuranceProviderNestedInput
+    professionals?: ProfessionalUpdateManyWithoutHealthInsuranceProviderNestedInput
+  }
+
+  export type HealthInsuranceProviderUncheckedUpdateWithoutLegalGuardiansInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    contractor?: NullableStringFieldUpdateOperationsInput | string | null
+    subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
+    cuit?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    authorizations?: HealthInsuranceAuthorizationUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+    patients?: PatientUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+    professionals?: ProfessionalUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+  }
+
+  export type AdmissionUpsertWithWhereUniqueWithoutLegalGuardianInput = {
+    where: AdmissionWhereUniqueInput
+    update: XOR<AdmissionUpdateWithoutLegalGuardianInput, AdmissionUncheckedUpdateWithoutLegalGuardianInput>
+    create: XOR<AdmissionCreateWithoutLegalGuardianInput, AdmissionUncheckedCreateWithoutLegalGuardianInput>
+  }
+
+  export type AdmissionUpdateWithWhereUniqueWithoutLegalGuardianInput = {
+    where: AdmissionWhereUniqueInput
+    data: XOR<AdmissionUpdateWithoutLegalGuardianInput, AdmissionUncheckedUpdateWithoutLegalGuardianInput>
+  }
+
+  export type AdmissionUpdateManyWithWhereWithoutLegalGuardianInput = {
+    where: AdmissionScalarWhereInput
+    data: XOR<AdmissionUpdateManyMutationInput, AdmissionUncheckedUpdateManyWithoutLegalGuardianInput>
+  }
+
+  export type AdmissionScalarWhereInput = {
+    AND?: AdmissionScalarWhereInput | AdmissionScalarWhereInput[]
+    OR?: AdmissionScalarWhereInput[]
+    NOT?: AdmissionScalarWhereInput | AdmissionScalarWhereInput[]
+    id?: IntFilter<"Admission"> | number
+    operationDate?: DateTimeFilter<"Admission"> | Date | string
+    admissionDate?: DateTimeFilter<"Admission"> | Date | string
+    admissionTypeId?: IntFilter<"Admission"> | number
+    isSchoolEnrolled?: BoolFilter<"Admission"> | boolean
+    schoolShift?: EnumSchoolShiftNullableFilter<"Admission"> | $Enums.SchoolShift | null
+    patientId?: IntFilter<"Admission"> | number
+    cud?: StringNullableFilter<"Admission"> | string | null
+    cudExpirationDate?: DateTimeNullableFilter<"Admission"> | Date | string | null
+    status?: EnumAdmissionStatusNullableFilter<"Admission"> | $Enums.AdmissionStatus | null
+    legalGuardianId?: IntNullableFilter<"Admission"> | number | null
+    createdAt?: DateTimeFilter<"Admission"> | Date | string
   }
 
   export type UserCreateWithoutProfessionalInput = {
@@ -20022,6 +24949,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type HealthInsuranceProviderCreateWithoutProfessionalsInput = {
+    name: string
+    description: string
+    contractor?: string | null
+    subcontractor?: string | null
+    cuit: string
+    address: string
+    email: string
+    phone: string
+    contact: string
+    authorizations?: HealthInsuranceAuthorizationCreateNestedManyWithoutHealthInsuranceProviderInput
+    patients?: PatientCreateNestedManyWithoutHealthInsuranceProviderInput
+    legalGuardians?: LegalGuardianCreateNestedManyWithoutHealthInsuranceProviderInput
+  }
+
+  export type HealthInsuranceProviderUncheckedCreateWithoutProfessionalsInput = {
+    id?: number
+    name: string
+    description: string
+    contractor?: string | null
+    subcontractor?: string | null
+    cuit: string
+    address: string
+    email: string
+    phone: string
+    contact: string
+    authorizations?: HealthInsuranceAuthorizationUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+    patients?: PatientUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+    legalGuardians?: LegalGuardianUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
+  }
+
+  export type HealthInsuranceProviderCreateOrConnectWithoutProfessionalsInput = {
+    where: HealthInsuranceProviderWhereUniqueInput
+    create: XOR<HealthInsuranceProviderCreateWithoutProfessionalsInput, HealthInsuranceProviderUncheckedCreateWithoutProfessionalsInput>
+  }
+
   export type UserUpsertWithoutProfessionalInput = {
     update: XOR<UserUpdateWithoutProfessionalInput, UserUncheckedUpdateWithoutProfessionalInput>
     create: XOR<UserCreateWithoutProfessionalInput, UserUncheckedCreateWithoutProfessionalInput>
@@ -20107,6 +25070,62 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Schedule"> | Date | string
   }
 
+  export type HealthInsuranceProviderUpsertWithoutProfessionalsInput = {
+    update: XOR<HealthInsuranceProviderUpdateWithoutProfessionalsInput, HealthInsuranceProviderUncheckedUpdateWithoutProfessionalsInput>
+    create: XOR<HealthInsuranceProviderCreateWithoutProfessionalsInput, HealthInsuranceProviderUncheckedCreateWithoutProfessionalsInput>
+    where?: HealthInsuranceProviderWhereInput
+  }
+
+  export type HealthInsuranceProviderUpdateToOneWithWhereWithoutProfessionalsInput = {
+    where?: HealthInsuranceProviderWhereInput
+    data: XOR<HealthInsuranceProviderUpdateWithoutProfessionalsInput, HealthInsuranceProviderUncheckedUpdateWithoutProfessionalsInput>
+  }
+
+  export type HealthInsuranceProviderUpdateWithoutProfessionalsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    contractor?: NullableStringFieldUpdateOperationsInput | string | null
+    subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
+    cuit?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    authorizations?: HealthInsuranceAuthorizationUpdateManyWithoutHealthInsuranceProviderNestedInput
+    patients?: PatientUpdateManyWithoutHealthInsuranceProviderNestedInput
+    legalGuardians?: LegalGuardianUpdateManyWithoutHealthInsuranceProviderNestedInput
+  }
+
+  export type HealthInsuranceProviderUncheckedUpdateWithoutProfessionalsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    contractor?: NullableStringFieldUpdateOperationsInput | string | null
+    subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
+    cuit?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    contact?: StringFieldUpdateOperationsInput | string
+    authorizations?: HealthInsuranceAuthorizationUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+    patients?: PatientUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+    legalGuardians?: LegalGuardianUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+  }
+
+  export type AdmissionTypeCreateWithoutAdmissionsInput = {
+    name: string
+  }
+
+  export type AdmissionTypeUncheckedCreateWithoutAdmissionsInput = {
+    id?: number
+    name: string
+  }
+
+  export type AdmissionTypeCreateOrConnectWithoutAdmissionsInput = {
+    where: AdmissionTypeWhereUniqueInput
+    create: XOR<AdmissionTypeCreateWithoutAdmissionsInput, AdmissionTypeUncheckedCreateWithoutAdmissionsInput>
+  }
+
   export type PatientCreateWithoutAdmissionInput = {
     firstName: string
     lastName: string
@@ -20118,7 +25137,6 @@ export namespace Prisma {
     phone: string
     affiliateNumber: string
     professionalActivity?: string | null
-    healthInsuranceProvider?: string | null
     patientType?: $Enums.PatientType | null
     patientStatus?: $Enums.PatientStatus | null
     isActive?: boolean
@@ -20126,6 +25144,7 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutPatientInput
     legalGuardian?: LegalGuardianCreateNestedOneWithoutPatientsInput
     events?: EventCreateNestedManyWithoutPatientInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutPatientsInput
   }
 
   export type PatientUncheckedCreateWithoutAdmissionInput = {
@@ -20140,19 +25159,110 @@ export namespace Prisma {
     phone: string
     affiliateNumber: string
     professionalActivity?: string | null
-    healthInsuranceProvider?: string | null
     patientType?: $Enums.PatientType | null
     patientStatus?: $Enums.PatientStatus | null
     isActive?: boolean
     createdAt?: Date | string
     userId?: number | null
     legalGuardianId?: number | null
+    healthInsuranceProviderId?: number | null
     events?: EventUncheckedCreateNestedManyWithoutPatientInput
   }
 
   export type PatientCreateOrConnectWithoutAdmissionInput = {
     where: PatientWhereUniqueInput
     create: XOR<PatientCreateWithoutAdmissionInput, PatientUncheckedCreateWithoutAdmissionInput>
+  }
+
+  export type LegalGuardianCreateWithoutAdmissionsInput = {
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    dniProcessingNumber: string
+    birthday: Date | string
+    phone: string
+    professionalActivity: string
+    legalGuardianType?: $Enums.LegalGuardianType | null
+    legalGuardianStatus?: $Enums.LegalGuardianStatus | null
+    isActive?: boolean
+    createdAt?: Date | string
+    user?: UserCreateNestedOneWithoutLegalGuardianInput
+    patients?: PatientCreateNestedManyWithoutLegalGuardianInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutLegalGuardiansInput
+  }
+
+  export type LegalGuardianUncheckedCreateWithoutAdmissionsInput = {
+    id?: number
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    dniProcessingNumber: string
+    birthday: Date | string
+    phone: string
+    professionalActivity: string
+    legalGuardianType?: $Enums.LegalGuardianType | null
+    legalGuardianStatus?: $Enums.LegalGuardianStatus | null
+    isActive?: boolean
+    createdAt?: Date | string
+    userId?: number | null
+    healthInsuranceProviderId?: number | null
+    patients?: PatientUncheckedCreateNestedManyWithoutLegalGuardianInput
+  }
+
+  export type LegalGuardianCreateOrConnectWithoutAdmissionsInput = {
+    where: LegalGuardianWhereUniqueInput
+    create: XOR<LegalGuardianCreateWithoutAdmissionsInput, LegalGuardianUncheckedCreateWithoutAdmissionsInput>
+  }
+
+  export type HealthInsuranceAuthorizationCreateWithoutAdmissionInput = {
+    service: $Enums.CoverageService
+    periodFrom: Date | string
+    periodTo: Date | string
+    authorizedAt: Date | string
+    healthInsuranceProvider: HealthInsuranceProviderCreateNestedOneWithoutAuthorizationsInput
+  }
+
+  export type HealthInsuranceAuthorizationUncheckedCreateWithoutAdmissionInput = {
+    id?: number
+    healthInsuranceProviderId: number
+    service: $Enums.CoverageService
+    periodFrom: Date | string
+    periodTo: Date | string
+    authorizedAt: Date | string
+  }
+
+  export type HealthInsuranceAuthorizationCreateOrConnectWithoutAdmissionInput = {
+    where: HealthInsuranceAuthorizationWhereUniqueInput
+    create: XOR<HealthInsuranceAuthorizationCreateWithoutAdmissionInput, HealthInsuranceAuthorizationUncheckedCreateWithoutAdmissionInput>
+  }
+
+  export type HealthInsuranceAuthorizationCreateManyAdmissionInputEnvelope = {
+    data: HealthInsuranceAuthorizationCreateManyAdmissionInput | HealthInsuranceAuthorizationCreateManyAdmissionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AdmissionTypeUpsertWithoutAdmissionsInput = {
+    update: XOR<AdmissionTypeUpdateWithoutAdmissionsInput, AdmissionTypeUncheckedUpdateWithoutAdmissionsInput>
+    create: XOR<AdmissionTypeCreateWithoutAdmissionsInput, AdmissionTypeUncheckedCreateWithoutAdmissionsInput>
+    where?: AdmissionTypeWhereInput
+  }
+
+  export type AdmissionTypeUpdateToOneWithWhereWithoutAdmissionsInput = {
+    where?: AdmissionTypeWhereInput
+    data: XOR<AdmissionTypeUpdateWithoutAdmissionsInput, AdmissionTypeUncheckedUpdateWithoutAdmissionsInput>
+  }
+
+  export type AdmissionTypeUpdateWithoutAdmissionsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AdmissionTypeUncheckedUpdateWithoutAdmissionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
   }
 
   export type PatientUpsertWithoutAdmissionInput = {
@@ -20177,7 +25287,6 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     affiliateNumber?: StringFieldUpdateOperationsInput | string
     professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
     patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -20185,6 +25294,7 @@ export namespace Prisma {
     user?: UserUpdateOneWithoutPatientNestedInput
     legalGuardian?: LegalGuardianUpdateOneWithoutPatientsNestedInput
     events?: EventUpdateManyWithoutPatientNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutPatientsNestedInput
   }
 
   export type PatientUncheckedUpdateWithoutAdmissionInput = {
@@ -20199,14 +25309,80 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     affiliateNumber?: StringFieldUpdateOperationsInput | string
     professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
     patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     legalGuardianId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     events?: EventUncheckedUpdateManyWithoutPatientNestedInput
+  }
+
+  export type LegalGuardianUpsertWithoutAdmissionsInput = {
+    update: XOR<LegalGuardianUpdateWithoutAdmissionsInput, LegalGuardianUncheckedUpdateWithoutAdmissionsInput>
+    create: XOR<LegalGuardianCreateWithoutAdmissionsInput, LegalGuardianUncheckedCreateWithoutAdmissionsInput>
+    where?: LegalGuardianWhereInput
+  }
+
+  export type LegalGuardianUpdateToOneWithWhereWithoutAdmissionsInput = {
+    where?: LegalGuardianWhereInput
+    data: XOR<LegalGuardianUpdateWithoutAdmissionsInput, LegalGuardianUncheckedUpdateWithoutAdmissionsInput>
+  }
+
+  export type LegalGuardianUpdateWithoutAdmissionsInput = {
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    dniProcessingNumber?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: StringFieldUpdateOperationsInput | string
+    legalGuardianType?: NullableEnumLegalGuardianTypeFieldUpdateOperationsInput | $Enums.LegalGuardianType | null
+    legalGuardianStatus?: NullableEnumLegalGuardianStatusFieldUpdateOperationsInput | $Enums.LegalGuardianStatus | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutLegalGuardianNestedInput
+    patients?: PatientUpdateManyWithoutLegalGuardianNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutLegalGuardiansNestedInput
+  }
+
+  export type LegalGuardianUncheckedUpdateWithoutAdmissionsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    dniProcessingNumber?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: StringFieldUpdateOperationsInput | string
+    legalGuardianType?: NullableEnumLegalGuardianTypeFieldUpdateOperationsInput | $Enums.LegalGuardianType | null
+    legalGuardianStatus?: NullableEnumLegalGuardianStatusFieldUpdateOperationsInput | $Enums.LegalGuardianStatus | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
+    patients?: PatientUncheckedUpdateManyWithoutLegalGuardianNestedInput
+  }
+
+  export type HealthInsuranceAuthorizationUpsertWithWhereUniqueWithoutAdmissionInput = {
+    where: HealthInsuranceAuthorizationWhereUniqueInput
+    update: XOR<HealthInsuranceAuthorizationUpdateWithoutAdmissionInput, HealthInsuranceAuthorizationUncheckedUpdateWithoutAdmissionInput>
+    create: XOR<HealthInsuranceAuthorizationCreateWithoutAdmissionInput, HealthInsuranceAuthorizationUncheckedCreateWithoutAdmissionInput>
+  }
+
+  export type HealthInsuranceAuthorizationUpdateWithWhereUniqueWithoutAdmissionInput = {
+    where: HealthInsuranceAuthorizationWhereUniqueInput
+    data: XOR<HealthInsuranceAuthorizationUpdateWithoutAdmissionInput, HealthInsuranceAuthorizationUncheckedUpdateWithoutAdmissionInput>
+  }
+
+  export type HealthInsuranceAuthorizationUpdateManyWithWhereWithoutAdmissionInput = {
+    where: HealthInsuranceAuthorizationScalarWhereInput
+    data: XOR<HealthInsuranceAuthorizationUpdateManyMutationInput, HealthInsuranceAuthorizationUncheckedUpdateManyWithoutAdmissionInput>
   }
 
   export type UserCreateWithoutCreatedEventsInput = {
@@ -20250,11 +25426,11 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     isActive?: boolean
     profecionalType: string
     user?: UserCreateNestedOneWithoutProfessionalInput
     schedules?: ScheduleCreateNestedManyWithoutProfessionalInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutProfessionalsInput
   }
 
   export type ProfessionalUncheckedCreateWithoutEventsInput = {
@@ -20267,10 +25443,10 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     isActive?: boolean
     profecionalType: string
     userId?: number | null
+    healthInsuranceProviderId?: number | null
     schedules?: ScheduleUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
@@ -20290,7 +25466,6 @@ export namespace Prisma {
     phone: string
     affiliateNumber: string
     professionalActivity?: string | null
-    healthInsuranceProvider?: string | null
     patientType?: $Enums.PatientType | null
     patientStatus?: $Enums.PatientStatus | null
     isActive?: boolean
@@ -20298,6 +25473,7 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutPatientInput
     legalGuardian?: LegalGuardianCreateNestedOneWithoutPatientsInput
     admission?: AdmissionCreateNestedOneWithoutPatientInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutPatientsInput
   }
 
   export type PatientUncheckedCreateWithoutEventsInput = {
@@ -20312,13 +25488,13 @@ export namespace Prisma {
     phone: string
     affiliateNumber: string
     professionalActivity?: string | null
-    healthInsuranceProvider?: string | null
     patientType?: $Enums.PatientType | null
     patientStatus?: $Enums.PatientStatus | null
     isActive?: boolean
     createdAt?: Date | string
     userId?: number | null
     legalGuardianId?: number | null
+    healthInsuranceProviderId?: number | null
     admission?: AdmissionUncheckedCreateNestedOneWithoutPatientInput
   }
 
@@ -20385,11 +25561,11 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     profecionalType?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneWithoutProfessionalNestedInput
     schedules?: ScheduleUpdateManyWithoutProfessionalNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutProfessionalsNestedInput
   }
 
   export type ProfessionalUncheckedUpdateWithoutEventsInput = {
@@ -20402,10 +25578,10 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     profecionalType?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     schedules?: ScheduleUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
@@ -20431,7 +25607,6 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     affiliateNumber?: StringFieldUpdateOperationsInput | string
     professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
     patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -20439,6 +25614,7 @@ export namespace Prisma {
     user?: UserUpdateOneWithoutPatientNestedInput
     legalGuardian?: LegalGuardianUpdateOneWithoutPatientsNestedInput
     admission?: AdmissionUpdateOneWithoutPatientNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutPatientsNestedInput
   }
 
   export type PatientUncheckedUpdateWithoutEventsInput = {
@@ -20453,13 +25629,13 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     affiliateNumber?: StringFieldUpdateOperationsInput | string
     professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
     patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     legalGuardianId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     admission?: AdmissionUncheckedUpdateOneWithoutPatientNestedInput
   }
 
@@ -20542,11 +25718,11 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     isActive?: boolean
     profecionalType: string
     user?: UserCreateNestedOneWithoutProfessionalInput
     events?: EventCreateNestedManyWithoutProfessionalInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutProfessionalsInput
   }
 
   export type ProfessionalUncheckedCreateWithoutSchedulesInput = {
@@ -20559,10 +25735,10 @@ export namespace Prisma {
     birthday: Date | string
     phone: string
     professionalActivity: string
-    healthInsuranceProvider?: string | null
     isActive?: boolean
     profecionalType: string
     userId?: number | null
+    healthInsuranceProviderId?: number | null
     events?: EventUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
@@ -20591,11 +25767,11 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     profecionalType?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneWithoutProfessionalNestedInput
     events?: EventUpdateManyWithoutProfessionalNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutProfessionalsNestedInput
   }
 
   export type ProfessionalUncheckedUpdateWithoutSchedulesInput = {
@@ -20608,11 +25784,66 @@ export namespace Prisma {
     birthday?: DateTimeFieldUpdateOperationsInput | Date | string
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     profecionalType?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     events?: EventUncheckedUpdateManyWithoutProfessionalNestedInput
+  }
+
+  export type AdmissionCreateWithoutAdmissionTypeInput = {
+    operationDate?: Date | string
+    admissionDate: Date | string
+    isSchoolEnrolled: boolean
+    schoolShift?: $Enums.SchoolShift | null
+    cud?: string | null
+    cudExpirationDate?: Date | string | null
+    status?: $Enums.AdmissionStatus | null
+    createdAt?: Date | string
+    patient: PatientCreateNestedOneWithoutAdmissionInput
+    legalGuardian?: LegalGuardianCreateNestedOneWithoutAdmissionsInput
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationCreateNestedManyWithoutAdmissionInput
+  }
+
+  export type AdmissionUncheckedCreateWithoutAdmissionTypeInput = {
+    id?: number
+    operationDate?: Date | string
+    admissionDate: Date | string
+    isSchoolEnrolled: boolean
+    schoolShift?: $Enums.SchoolShift | null
+    patientId: number
+    cud?: string | null
+    cudExpirationDate?: Date | string | null
+    status?: $Enums.AdmissionStatus | null
+    legalGuardianId?: number | null
+    createdAt?: Date | string
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationUncheckedCreateNestedManyWithoutAdmissionInput
+  }
+
+  export type AdmissionCreateOrConnectWithoutAdmissionTypeInput = {
+    where: AdmissionWhereUniqueInput
+    create: XOR<AdmissionCreateWithoutAdmissionTypeInput, AdmissionUncheckedCreateWithoutAdmissionTypeInput>
+  }
+
+  export type AdmissionCreateManyAdmissionTypeInputEnvelope = {
+    data: AdmissionCreateManyAdmissionTypeInput | AdmissionCreateManyAdmissionTypeInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AdmissionUpsertWithWhereUniqueWithoutAdmissionTypeInput = {
+    where: AdmissionWhereUniqueInput
+    update: XOR<AdmissionUpdateWithoutAdmissionTypeInput, AdmissionUncheckedUpdateWithoutAdmissionTypeInput>
+    create: XOR<AdmissionCreateWithoutAdmissionTypeInput, AdmissionUncheckedCreateWithoutAdmissionTypeInput>
+  }
+
+  export type AdmissionUpdateWithWhereUniqueWithoutAdmissionTypeInput = {
+    where: AdmissionWhereUniqueInput
+    data: XOR<AdmissionUpdateWithoutAdmissionTypeInput, AdmissionUncheckedUpdateWithoutAdmissionTypeInput>
+  }
+
+  export type AdmissionUpdateManyWithWhereWithoutAdmissionTypeInput = {
+    where: AdmissionScalarWhereInput
+    data: XOR<AdmissionUpdateManyMutationInput, AdmissionUncheckedUpdateManyWithoutAdmissionTypeInput>
   }
 
   export type EventCreateManyCreatedByInput = {
@@ -20752,6 +25983,262 @@ export namespace Prisma {
     professionalId?: IntFieldUpdateOperationsInput | number
   }
 
+  export type HealthInsuranceAuthorizationCreateManyHealthInsuranceProviderInput = {
+    id?: number
+    admissionId: number
+    service: $Enums.CoverageService
+    periodFrom: Date | string
+    periodTo: Date | string
+    authorizedAt: Date | string
+  }
+
+  export type PatientCreateManyHealthInsuranceProviderInput = {
+    id?: number
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    dniProcessingNumber: string
+    birthday: Date | string
+    phone: string
+    affiliateNumber: string
+    professionalActivity?: string | null
+    patientType?: $Enums.PatientType | null
+    patientStatus?: $Enums.PatientStatus | null
+    isActive?: boolean
+    createdAt?: Date | string
+    userId?: number | null
+    legalGuardianId?: number | null
+  }
+
+  export type LegalGuardianCreateManyHealthInsuranceProviderInput = {
+    id?: number
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    dniProcessingNumber: string
+    birthday: Date | string
+    phone: string
+    professionalActivity: string
+    legalGuardianType?: $Enums.LegalGuardianType | null
+    legalGuardianStatus?: $Enums.LegalGuardianStatus | null
+    isActive?: boolean
+    createdAt?: Date | string
+    userId?: number | null
+  }
+
+  export type ProfessionalCreateManyHealthInsuranceProviderInput = {
+    id?: number
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    birthday: Date | string
+    phone: string
+    professionalActivity: string
+    isActive?: boolean
+    profecionalType: string
+    userId?: number | null
+  }
+
+  export type HealthInsuranceAuthorizationUpdateWithoutHealthInsuranceProviderInput = {
+    service?: EnumCoverageServiceFieldUpdateOperationsInput | $Enums.CoverageService
+    periodFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodTo?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorizedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    admission?: AdmissionUpdateOneRequiredWithoutHealthInsuranceAuthorizationsNestedInput
+  }
+
+  export type HealthInsuranceAuthorizationUncheckedUpdateWithoutHealthInsuranceProviderInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    admissionId?: IntFieldUpdateOperationsInput | number
+    service?: EnumCoverageServiceFieldUpdateOperationsInput | $Enums.CoverageService
+    periodFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodTo?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorizedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HealthInsuranceAuthorizationUncheckedUpdateManyWithoutHealthInsuranceProviderInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    admissionId?: IntFieldUpdateOperationsInput | number
+    service?: EnumCoverageServiceFieldUpdateOperationsInput | $Enums.CoverageService
+    periodFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodTo?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorizedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PatientUpdateWithoutHealthInsuranceProviderInput = {
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    dniProcessingNumber?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    affiliateNumber?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
+    patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
+    patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutPatientNestedInput
+    legalGuardian?: LegalGuardianUpdateOneWithoutPatientsNestedInput
+    events?: EventUpdateManyWithoutPatientNestedInput
+    admission?: AdmissionUpdateOneWithoutPatientNestedInput
+  }
+
+  export type PatientUncheckedUpdateWithoutHealthInsuranceProviderInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    dniProcessingNumber?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    affiliateNumber?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
+    patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
+    patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    legalGuardianId?: NullableIntFieldUpdateOperationsInput | number | null
+    events?: EventUncheckedUpdateManyWithoutPatientNestedInput
+    admission?: AdmissionUncheckedUpdateOneWithoutPatientNestedInput
+  }
+
+  export type PatientUncheckedUpdateManyWithoutHealthInsuranceProviderInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    dniProcessingNumber?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    affiliateNumber?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
+    patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
+    patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    legalGuardianId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type LegalGuardianUpdateWithoutHealthInsuranceProviderInput = {
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    dniProcessingNumber?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: StringFieldUpdateOperationsInput | string
+    legalGuardianType?: NullableEnumLegalGuardianTypeFieldUpdateOperationsInput | $Enums.LegalGuardianType | null
+    legalGuardianStatus?: NullableEnumLegalGuardianStatusFieldUpdateOperationsInput | $Enums.LegalGuardianStatus | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneWithoutLegalGuardianNestedInput
+    patients?: PatientUpdateManyWithoutLegalGuardianNestedInput
+    admissions?: AdmissionUpdateManyWithoutLegalGuardianNestedInput
+  }
+
+  export type LegalGuardianUncheckedUpdateWithoutHealthInsuranceProviderInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    dniProcessingNumber?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: StringFieldUpdateOperationsInput | string
+    legalGuardianType?: NullableEnumLegalGuardianTypeFieldUpdateOperationsInput | $Enums.LegalGuardianType | null
+    legalGuardianStatus?: NullableEnumLegalGuardianStatusFieldUpdateOperationsInput | $Enums.LegalGuardianStatus | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    patients?: PatientUncheckedUpdateManyWithoutLegalGuardianNestedInput
+    admissions?: AdmissionUncheckedUpdateManyWithoutLegalGuardianNestedInput
+  }
+
+  export type LegalGuardianUncheckedUpdateManyWithoutHealthInsuranceProviderInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    dniProcessingNumber?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: StringFieldUpdateOperationsInput | string
+    legalGuardianType?: NullableEnumLegalGuardianTypeFieldUpdateOperationsInput | $Enums.LegalGuardianType | null
+    legalGuardianStatus?: NullableEnumLegalGuardianStatusFieldUpdateOperationsInput | $Enums.LegalGuardianStatus | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ProfessionalUpdateWithoutHealthInsuranceProviderInput = {
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profecionalType?: StringFieldUpdateOperationsInput | string
+    user?: UserUpdateOneWithoutProfessionalNestedInput
+    events?: EventUpdateManyWithoutProfessionalNestedInput
+    schedules?: ScheduleUpdateManyWithoutProfessionalNestedInput
+  }
+
+  export type ProfessionalUncheckedUpdateWithoutHealthInsuranceProviderInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profecionalType?: StringFieldUpdateOperationsInput | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    events?: EventUncheckedUpdateManyWithoutProfessionalNestedInput
+    schedules?: ScheduleUncheckedUpdateManyWithoutProfessionalNestedInput
+  }
+
+  export type ProfessionalUncheckedUpdateManyWithoutHealthInsuranceProviderInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    profecionalType?: StringFieldUpdateOperationsInput | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
   export type PatientCreateManyLegalGuardianInput = {
     id?: number
     firstName: string
@@ -20764,12 +26251,26 @@ export namespace Prisma {
     phone: string
     affiliateNumber: string
     professionalActivity?: string | null
-    healthInsuranceProvider?: string | null
     patientType?: $Enums.PatientType | null
     patientStatus?: $Enums.PatientStatus | null
     isActive?: boolean
     createdAt?: Date | string
     userId?: number | null
+    healthInsuranceProviderId?: number | null
+  }
+
+  export type AdmissionCreateManyLegalGuardianInput = {
+    id?: number
+    operationDate?: Date | string
+    admissionDate: Date | string
+    admissionTypeId: number
+    isSchoolEnrolled: boolean
+    schoolShift?: $Enums.SchoolShift | null
+    patientId: number
+    cud?: string | null
+    cudExpirationDate?: Date | string | null
+    status?: $Enums.AdmissionStatus | null
+    createdAt?: Date | string
   }
 
   export type PatientUpdateWithoutLegalGuardianInput = {
@@ -20783,7 +26284,6 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     affiliateNumber?: StringFieldUpdateOperationsInput | string
     professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
     patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -20791,6 +26291,7 @@ export namespace Prisma {
     user?: UserUpdateOneWithoutPatientNestedInput
     events?: EventUpdateManyWithoutPatientNestedInput
     admission?: AdmissionUpdateOneWithoutPatientNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutPatientsNestedInput
   }
 
   export type PatientUncheckedUpdateWithoutLegalGuardianInput = {
@@ -20805,12 +26306,12 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     affiliateNumber?: StringFieldUpdateOperationsInput | string
     professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
     patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     events?: EventUncheckedUpdateManyWithoutPatientNestedInput
     admission?: AdmissionUncheckedUpdateOneWithoutPatientNestedInput
   }
@@ -20827,12 +26328,55 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     affiliateNumber?: StringFieldUpdateOperationsInput | string
     professionalActivity?: NullableStringFieldUpdateOperationsInput | string | null
-    healthInsuranceProvider?: NullableStringFieldUpdateOperationsInput | string | null
     patientType?: NullableEnumPatientTypeFieldUpdateOperationsInput | $Enums.PatientType | null
     patientStatus?: NullableEnumPatientStatusFieldUpdateOperationsInput | $Enums.PatientStatus | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type AdmissionUpdateWithoutLegalGuardianInput = {
+    operationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSchoolEnrolled?: BoolFieldUpdateOperationsInput | boolean
+    schoolShift?: NullableEnumSchoolShiftFieldUpdateOperationsInput | $Enums.SchoolShift | null
+    cud?: NullableStringFieldUpdateOperationsInput | string | null
+    cudExpirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionType?: AdmissionTypeUpdateOneRequiredWithoutAdmissionsNestedInput
+    patient?: PatientUpdateOneRequiredWithoutAdmissionNestedInput
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationUpdateManyWithoutAdmissionNestedInput
+  }
+
+  export type AdmissionUncheckedUpdateWithoutLegalGuardianInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    operationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionTypeId?: IntFieldUpdateOperationsInput | number
+    isSchoolEnrolled?: BoolFieldUpdateOperationsInput | boolean
+    schoolShift?: NullableEnumSchoolShiftFieldUpdateOperationsInput | $Enums.SchoolShift | null
+    patientId?: IntFieldUpdateOperationsInput | number
+    cud?: NullableStringFieldUpdateOperationsInput | string | null
+    cudExpirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationUncheckedUpdateManyWithoutAdmissionNestedInput
+  }
+
+  export type AdmissionUncheckedUpdateManyWithoutLegalGuardianInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    operationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionTypeId?: IntFieldUpdateOperationsInput | number
+    isSchoolEnrolled?: BoolFieldUpdateOperationsInput | boolean
+    schoolShift?: NullableEnumSchoolShiftFieldUpdateOperationsInput | $Enums.SchoolShift | null
+    patientId?: IntFieldUpdateOperationsInput | number
+    cud?: NullableStringFieldUpdateOperationsInput | string | null
+    cudExpirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type EventCreateManyProfessionalInput = {
@@ -20926,6 +26470,98 @@ export namespace Prisma {
     sessionTime?: IntFieldUpdateOperationsInput | number
     repeatsWeekly?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HealthInsuranceAuthorizationCreateManyAdmissionInput = {
+    id?: number
+    healthInsuranceProviderId: number
+    service: $Enums.CoverageService
+    periodFrom: Date | string
+    periodTo: Date | string
+    authorizedAt: Date | string
+  }
+
+  export type HealthInsuranceAuthorizationUpdateWithoutAdmissionInput = {
+    service?: EnumCoverageServiceFieldUpdateOperationsInput | $Enums.CoverageService
+    periodFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodTo?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorizedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneRequiredWithoutAuthorizationsNestedInput
+  }
+
+  export type HealthInsuranceAuthorizationUncheckedUpdateWithoutAdmissionInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    healthInsuranceProviderId?: IntFieldUpdateOperationsInput | number
+    service?: EnumCoverageServiceFieldUpdateOperationsInput | $Enums.CoverageService
+    periodFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodTo?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorizedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type HealthInsuranceAuthorizationUncheckedUpdateManyWithoutAdmissionInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    healthInsuranceProviderId?: IntFieldUpdateOperationsInput | number
+    service?: EnumCoverageServiceFieldUpdateOperationsInput | $Enums.CoverageService
+    periodFrom?: DateTimeFieldUpdateOperationsInput | Date | string
+    periodTo?: DateTimeFieldUpdateOperationsInput | Date | string
+    authorizedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdmissionCreateManyAdmissionTypeInput = {
+    id?: number
+    operationDate?: Date | string
+    admissionDate: Date | string
+    isSchoolEnrolled: boolean
+    schoolShift?: $Enums.SchoolShift | null
+    patientId: number
+    cud?: string | null
+    cudExpirationDate?: Date | string | null
+    status?: $Enums.AdmissionStatus | null
+    legalGuardianId?: number | null
+    createdAt?: Date | string
+  }
+
+  export type AdmissionUpdateWithoutAdmissionTypeInput = {
+    operationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSchoolEnrolled?: BoolFieldUpdateOperationsInput | boolean
+    schoolShift?: NullableEnumSchoolShiftFieldUpdateOperationsInput | $Enums.SchoolShift | null
+    cud?: NullableStringFieldUpdateOperationsInput | string | null
+    cudExpirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    patient?: PatientUpdateOneRequiredWithoutAdmissionNestedInput
+    legalGuardian?: LegalGuardianUpdateOneWithoutAdmissionsNestedInput
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationUpdateManyWithoutAdmissionNestedInput
+  }
+
+  export type AdmissionUncheckedUpdateWithoutAdmissionTypeInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    operationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSchoolEnrolled?: BoolFieldUpdateOperationsInput | boolean
+    schoolShift?: NullableEnumSchoolShiftFieldUpdateOperationsInput | $Enums.SchoolShift | null
+    patientId?: IntFieldUpdateOperationsInput | number
+    cud?: NullableStringFieldUpdateOperationsInput | string | null
+    cudExpirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    legalGuardianId?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    healthInsuranceAuthorizations?: HealthInsuranceAuthorizationUncheckedUpdateManyWithoutAdmissionNestedInput
+  }
+
+  export type AdmissionUncheckedUpdateManyWithoutAdmissionTypeInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    operationDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    admissionDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    isSchoolEnrolled?: BoolFieldUpdateOperationsInput | boolean
+    schoolShift?: NullableEnumSchoolShiftFieldUpdateOperationsInput | $Enums.SchoolShift | null
+    patientId?: IntFieldUpdateOperationsInput | number
+    cud?: NullableStringFieldUpdateOperationsInput | string | null
+    cudExpirationDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: NullableEnumAdmissionStatusFieldUpdateOperationsInput | $Enums.AdmissionStatus | null
+    legalGuardianId?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
