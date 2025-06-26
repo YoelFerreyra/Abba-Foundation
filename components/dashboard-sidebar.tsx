@@ -79,7 +79,7 @@ export function DashboardSidebar() {
 
   return (
     <>
-      <div className="hidden md:flex h-screen w-64 flex-col border-r bg-muted/40">
+      <div className="hidden md:flex sticky top-0 h-screen w-64 flex-col border-r bg-muted/40">
         <div className="flex h-14 items-center border-b px-4">
           <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
             <span className="text-teal-600">Consultorio Médico</span>
@@ -136,7 +136,6 @@ export function DashboardSidebar() {
                 <span className="text-teal-600">Consultorio Médico</span>
               </Link>
               <Button variant="ghost" size="icon" className="ml-auto" onClick={() => setOpen(false)}>
-                <X className="h-4 w-4" />
                 <span className="sr-only">Cerrar menú</span>
               </Button>
             </div>

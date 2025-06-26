@@ -65,7 +65,7 @@ export default function RegisterPage() {
     <div className="min-h-screen flex flex-col md:flex-row">
       <div className="hidden md:flex md:w-1/2 bg-green-600 items-center justify-center">
         <Image
-          src="/background2.jpg"
+          src="/background3.png"
           alt="Login Illustration"
           className="object-cover h-full w-full"
           width={800}

@@ -72,17 +72,6 @@ export default function DashboardPage() {
           <CardContent>
             <AppointmentList />
 
-            {/* Dialog */}
-            <dialog ref={dialogRef} className="vt-element-animation rounded-md p-4 shadow-xl h-40 w-40">
-              <button
-                onClick={() => toggleDialog(false)}
-                className="text-sm text-red-500 absolute top-2 right-3"
-              >
-                X
-              </button>
-              <p>Hola mundo</p>
-            </dialog>
-
             {/* Trigger button */}
             <button
               onClick={(e) => toggleDialog(true, e.currentTarget)}
