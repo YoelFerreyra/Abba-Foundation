@@ -67,6 +67,8 @@ export default function ProfessionalPage() {
             <TableHead>Teléfono</TableHead>
             <TableHead>Dirección</TableHead>
             <TableHead>Fecha de nacimiento</TableHead>
+            <TableHead>Actividad profecional</TableHead>
+            <TableHead>Activo</TableHead>
             <TableHead className="text-right">Acciones</TableHead>
           </TableRow>
         </TableHeader>
@@ -80,6 +82,8 @@ export default function ProfessionalPage() {
               <TableCell>{p.phone}</TableCell>
               <TableCell>{p.address}</TableCell>
               <TableCell>{new Date(p.birthday).toLocaleDateString()}</TableCell>
+              <TableCell>{p.professionalActivity}</TableCell>
+              <TableCell>{p.isActive ? "🟢 activo": "🔴 inactivo"}</TableCell>
               <TableCell className="text-right">
                 <Button variant="outline" size="sm" onClick={() => handleEdit(p)}>Editar</Button>
               </TableCell>
