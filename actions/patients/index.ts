@@ -175,3 +175,25 @@ export async function createHealthInsuranceProvider(data: unknown) {
     return { error: { message: "Ocurrió un error al crear el prestador." } };
   }
 }
+
+export async function deletePatientByIdAction(id?: string | number) {
+  try {
+    if (!id) {
+      return { error: { message: "Ocurrió un error al crear el prestador." } };
+    }
+    await prisma.admission.deleteMany({
+      where: { patientId: Number(id) }
+    });
+    
+    const newProvider = await prisma.patient.delete({
+      where: {
+        id: Number(id)
+      }
+    });
+
+    return { data: newProvider };
+  } catch (error) {
+    console.error("Error creating HealthInsuranceProvider:", error);
+    return { error: { message: "Ocurrió un error al crear el prestador." } };
+  }
+}

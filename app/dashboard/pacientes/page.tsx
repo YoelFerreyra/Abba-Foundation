@@ -16,6 +16,7 @@ import HealthInsuranceProviderForm from "./components/HealthInsuranceProviderFor
 import {
   createHealthInsuranceProvider,
   createPatientWithAdmission,
+  deletePatientByIdAction,
   getAllPatientsAction,
 } from "@/actions/patients";
 import { PatientFormData } from "./schemas/patient-schema";
@@ -28,6 +29,7 @@ import {
 import { Eye, MoreVertical, Pencil, Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { HealthInsuranceProviderFormValues } from "./schemas/healthInsuranceProviderSchema";
+import { toast } from "sonner";
 
 export default function PatientsPage() {
   const [patients, setPatients] = useState<PatientFormData[]>([]);
@@ -36,7 +38,6 @@ export default function PatientsPage() {
   );
   const [isOpen, setIsOpen] = useState(false);
   const [isProviderFormOpen, setIsProviderFormOpen] = useState(false);
-  const [isProviderDrawerOpen, setIsProviderDrawerOpen] = useState(false);
   const router = useRouter();
 
   const fetchPatients = async () => {
@@ -65,6 +66,12 @@ export default function PatientsPage() {
   const handleCreate = () => {
     setEditingPatient(null);
     setIsOpen(true);
+  };
+
+  const handleDelete = async (id?: string | number) => {
+    await deletePatientByIdAction(id)
+    fetchPatients()
+    toast.success("Paciente eliminado correctamente")
   };
 
   const handleEdit = (patient: PatientFormData) => {
@@ -155,7 +162,7 @@ export default function PatientsPage() {
                       Editar
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => alert(`Eliminar paciente ${p.firstName}`)}
+                      onClick={() => handleDelete(p?.id)}
                       className="flex items-center gap-2 text-red-600 focus:text-red-600"
                     >
                       <Trash className="w-4 h-4" />
