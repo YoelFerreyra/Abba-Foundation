@@ -42,25 +42,30 @@ export async function createEvent(data: {
   patientId: number;
   status?: "AVAILABLE" | "SCHEDULED" | "CANCELLED" | "COMPLETED";
 }) {
-  if (!data.professionalId) return { error: "Professional ID is required" };
-
-  if (!data.createdById) {
-    return { error: "Created By ID is required" };
+  try {
+    
+    if (!data.professionalId) return { error: "Professional ID is required" };
+  
+    if (!data.createdById) {
+      return { error: "Created By ID is required" };
+    }
+    const user = await prisma.user.findUnique({
+      where: { firebaseUid: data.createdById },
+    });
+  
+    if (!user) {
+      return { error: "User not found" };
+    }
+  
+    return await prisma.event.create({
+      data: {
+        ...data,
+        createdById: user?.id,
+      },
+    });
+  } catch (error) {
+    throw error
   }
-  const user = await prisma.user.findUnique({
-    where: { firebaseUid: data.createdById },
-  });
-
-  if (!user) {
-    return { error: "User not found" };
-  }
-
-  return await prisma.event.create({
-    data: {
-      ...data,
-      createdById: user?.id,
-    },
-  });
 }
 
 export async function updateEvent(
@@ -149,6 +154,18 @@ export async function getWeeklySchedule(professionalId: number) {
     return schedule;
   } catch (error) {
     console.error("Error fetching weekly schedule:", error);
+    throw error;
+  }
+}
+
+export async function deleteCalendarEvent(id: string){
+  try {
+    if (!id) throw "Id is required"
+    const event = await prisma.event.delete({where: {
+      id: Number(id)
+    }})
+  } catch (error) {
+    console.error("Error deleting event", error);
     throw error;
   }
 }

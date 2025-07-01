@@ -1,0 +1,141 @@
+/* === General Calendar === */
+.rbc-calendar {
+    font-family: 'Inter', sans-serif;
+    border-radius: 16px;
+  }
+  
+  /* === Eliminar bordes internos === */
+  .rbc-month-view,
+  .rbc-month-row,
+  .rbc-date-cell,
+  .rbc-day-bg,
+  .rbc-header {
+    border: none !important;
+  }
+  
+  /* === Toolbar === */
+  .rbc-toolbar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    align-items: center;
+  }
+  .rbc-toolbar-label {
+    font-size: 1.25rem;
+    color: #222;
+    font-weight: bold;
+  }
+  .rbc-btn-group button {
+    background-color: transparent;
+    border: none;
+    color: #444;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .rbc-btn-group button:hover {
+    background-color: #dcdcdc;
+  }
+  
+  /* === Encabezados (Dom, Lun, etc.) === */
+  .rbc-header {
+    background: transparent;
+    color: #606060;
+    font-weight: 600;
+    padding: 10px 0;
+    text-align: center;
+  }
+  
+  /* === Día de mes actual (el número del día) === */
+  .rbc-date-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 4px;
+    text-align: left;
+    font-weight: 500;
+    color: #2c2c2c;
+  }
+  
+  /* El número del día dentro de la celda */
+  .rbc-date-cell > .rbc-button-link {
+    align-self: flex-start;
+    font-weight: bold;
+    margin: 0.5rem;
+  }
+  
+  /* === Día actual (estilo corregido y más sutil) === */
+  .rbc-date-cell.rbc-now {
+    position: relative;
+  }
+  .rbc-date-cell.rbc-now > .rbc-button-link {
+    background-color: #14B8A5;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+  .rbc-today {
+    background-color: #e0e0ff !important;
+    border-radius: 6px;
+    box-shadow: inset 0 0 0 2px #14B8A5;
+  }
+  
+  /* === Celdas de días === */
+  .rbc-day-bg {
+    background: #f0f0f2;
+    border-radius: 20px;
+    margin: 2px;
+    padding: 2px;
+    transition: background 0.2s;
+    min-height: 100px;
+    position: relative;
+  }
+
+  .rbc-day-bg:hover {
+    background: #14B8A5
+  }
+  
+  /* === Fila del mes (ajustable dinámicamente) === */
+  .rbc-month-row {
+    min-height: 100px;
+  }
+  .rbc-month-view {
+    table-layout: auto !important;
+  }
+  
+  /* === Eventos === */
+  .rbc-event {
+    background-color: #14B8A5;
+    color: white;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    margin-bottom: 4px;
+  }
+  
+  
+  /* Evento de horario semanal */
+  .rbc-event.schedule-event {
+    background-color: #10b981; /* verde */
+    color: white;
+    border: none;
+  }
+  
+  /* Evento agendado */
+  .rbc-event.scheduled-event {
+    background-color: #6366f1; /* violeta */
+    color: white;
+    border: none;
+  }

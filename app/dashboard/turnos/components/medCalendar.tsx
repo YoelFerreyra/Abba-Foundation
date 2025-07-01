@@ -16,7 +16,6 @@ import {
   addWeeks,
 } from "date-fns";
 import { es } from "date-fns/locale/es";
-import { CustomEvent } from "./customEvent";
 import {
   Dialog,
   DialogTrigger,
@@ -31,6 +30,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import {
   createEvent,
+  deleteCalendarEvent,
   getAllEvents,
   getWeeklySchedule,
 } from "@/actions/calendar/profesional-events";
@@ -44,6 +44,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import "./calendar.css"; // <- este es tu archivo personalizado
+import { toast } from "sonner";
 
 const localizer = dateFnsLocalizer({
   format,
@@ -61,6 +64,25 @@ const weekDaysMap: Record<string, number> = {
   thursday: 4,
   friday: 5,
   saturday: 6,
+};
+
+const messagesEs = {
+  date: "Fecha",
+  time: "Hora",
+  event: "Evento",
+  allDay: "Todo el día",
+  week: "Semana",
+  work_week: "Semana laboral",
+  day: "Día",
+  month: "Mes",
+  previous: "Anterior",
+  next: "Siguiente",
+  yesterday: "Ayer",
+  tomorrow: "Mañana",
+  today: "Hoy",
+  agenda: "Agenda",
+  noEventsInRange: "No hay eventos en este rango.",
+  showMore: (total: number) => `+ Ver más (${total})`,
 };
 
 export type CalendarEvent = {
@@ -99,6 +121,10 @@ export default function MedCalendar() {
   const [dateRange, setDateRange] = useState<{ start: Date; end: Date } | null>(
     null
   );
+  const [selectedEvent, setSelectedEvent] = useState<CalendarEvent | null>(
+    null
+  );
+  const [isEventModalOpen, setIsEventModalOpen] = useState(false);
 
   const generateEventsFromSchedule = (
     schedule: Record<string, { enabled: boolean; timeRanges: TimeRange[] }>,
@@ -140,7 +166,11 @@ export default function MedCalendar() {
             if (next <= rangeEnd) {
               events.push({
                 id: `schedule-${dayKey}-${current.toISOString()}`,
-                title: "Disponible (Horario semanal)",
+                title: `Turno con el profesional ${professionals.map((p) => {
+                  if (p.id === selectedProfessionalId) {
+                    return `${p.firstName} ${p.lastName}`;
+                  }
+                })}`,
                 start: current,
                 end: next,
                 allDay: false,
@@ -264,65 +294,51 @@ export default function MedCalendar() {
     }
   }, [selectedProfessionalId]);
 
+  const handleCreateEventFromSelected = async () => {
+    if (!selectedEvent || !selectedProfessionalId) return;
+
+    try {
+      await createEvent({
+        title: selectedEvent.title,
+        description: selectedEvent.description ?? "",
+        startEvent: selectedEvent.start,
+        endEvent: selectedEvent.end,
+        eventType: "CONSULTATION",
+        createdById: user?.uid,
+        professionalId: selectedProfessionalId,
+        patientId: 1,
+        status: "SCHEDULED",
+      });
+
+      setIsEventModalOpen(false);
+      toast.success("Evento crear exitosamente");
+      await loadEvents();
+      await loadSchedule(selectedProfessionalId);
+    } catch (err) {
+      console.error("Error al crear evento desde evento seleccionado:", err);
+    }
+  };
+
+  const handleDeleteSelectedEvent = async () => {
+    if (!selectedEvent) return;
+    try {
+      await deleteCalendarEvent(String(selectedEvent.id));
+      toast.success("Cita cancelada");
+      await loadEvents();
+
+      if (selectedProfessionalId !== null) {
+        await loadSchedule(selectedProfessionalId);
+      }
+
+      setSelectedEvent(null);
+      setIsEventModalOpen(false);
+    } catch (error) {
+      console.error("Error deleting event:", error);
+    }
+  };
+
   return (
-    <div style={{ margin: "50px" }}>
-      <div className="mb-4 max-w-sm">
-        <label className="block mb-1 font-medium">
-          Seleccionar profesional
-        </label>
-        <Select
-          value={selectedProfessionalId?.toString() ?? ""}
-          onValueChange={(value) => {
-            console.log("Selected professional ID:", value);
-            setSelectedProfessionalId(Number(value));
-          }}
-        >
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Seleccionar profesional" />
-          </SelectTrigger>
-          <SelectContent>
-            {professionals.map((prof) => (
-              <SelectItem key={prof.id} value={prof.id.toString()}>
-                {prof.firstName} {prof.lastName}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <Calendar
-        localizer={localizer}
-        events={[...allEvents, ...scheduleEvents]}
-        startAccessor="start"
-        endAccessor="end"
-        culture="es"
-        step={15}
-        selectable={true}
-        timeslots={2}
-        onRangeChange={(range) => {
-          console.log("Selected range:", range);
-          if (Array.isArray(range)) {
-            setDateRange({ start: range[0], end: range[range.length - 1] });
-          } else {
-            setDateRange(range);
-          }
-        }}
-        //components={{ event: CustomEvent }}
-        date={date}
-        onNavigate={onNavigate}
-        view={view}
-        onView={onView}
-        style={{
-          height: 600,
-          borderRadius: 8,
-          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-        }}
-        onSelectSlot={({ start }) => {
-          setDate(start);
-          setView("day");
-        }}
-      />
-
+    <div style={{ marginBottom: "150px" }}>
       <WeeklyScheduleModal />
       <div className="mb-4">
         <Dialog>
@@ -389,6 +405,124 @@ export default function MedCalendar() {
           </DialogContent>
         </Dialog>
       </div>
+      <div className="mb-4 max-w-sm">
+        <label className="block mb-1 font-medium">
+          Seleccionar profesional
+        </label>
+        <Select
+          value={selectedProfessionalId?.toString() ?? ""}
+          onValueChange={(value) => {
+            setSelectedProfessionalId(Number(value));
+          }}
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Seleccionar profesional" />
+          </SelectTrigger>
+          <SelectContent>
+            {professionals.map((prof) => (
+              <SelectItem key={prof.id} value={prof.id.toString()}>
+                {prof.firstName} {prof.lastName}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      <Calendar
+        localizer={localizer}
+        events={[...allEvents, ...scheduleEvents]}
+        startAccessor="start"
+        endAccessor="end"
+        culture="es"
+        step={15}
+        selectable={true}
+        timeslots={2}
+        messages={messagesEs}
+        onRangeChange={(range) => {
+          if (Array.isArray(range)) {
+            setDateRange({ start: range[0], end: range[range.length - 1] });
+          } else {
+            setDateRange(range);
+          }
+        }}
+        eventPropGetter={(event) => {
+          let className = "";
+          if (
+            typeof event.id === "string" &&
+            event.id.startsWith("schedule-")
+          ) {
+            className = "schedule-event";
+          } else {
+            className = "scheduled-event";
+          }
+
+          return {
+            className: `rbc-event ${className}`,
+            style: {},
+          };
+        }}
+        onSelectEvent={(event) => {
+          setSelectedEvent(event);
+          setIsEventModalOpen(true);
+        }}
+        date={date}
+        onNavigate={onNavigate}
+        view={view}
+        onView={onView}
+        style={{
+          height: 600,
+          borderRadius: 8,
+          boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+        }}
+        onSelectSlot={({ start }) => {
+          setDate(start);
+          setView("day");
+        }}
+      />
+      <Dialog open={isEventModalOpen} onOpenChange={setIsEventModalOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>Detalle del evento</DialogTitle>
+          </DialogHeader>
+          {selectedEvent && (
+            <div className="space-y-2">
+              <p>
+                <strong>Título:</strong> {selectedEvent.title}
+              </p>
+              <p>
+                <strong>Inicio:</strong>{" "}
+                {selectedEvent.start.toLocaleString("es-AR")}
+              </p>
+              <p>
+                <strong>Fin:</strong>{" "}
+                {selectedEvent.end.toLocaleString("es-AR")}
+              </p>
+              {selectedEvent.description && (
+                <p>
+                  <strong>Descripción:</strong> {selectedEvent.description}
+                </p>
+              )}
+            </div>
+          )}
+          <DialogFooter className="flex justify-between">
+            <DialogClose asChild>
+              <Button variant="secondary">Cerrar</Button>
+            </DialogClose>
+
+            {selectedEvent &&
+            typeof selectedEvent.id === "string" &&
+            selectedEvent.id.startsWith("schedule-") ? (
+              <Button onClick={handleCreateEventFromSelected}>
+                Confirmar cita
+              </Button>
+            ) : (
+              <Button variant="destructive" onClick={handleDeleteSelectedEvent}>
+                Cancelar cita
+              </Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
