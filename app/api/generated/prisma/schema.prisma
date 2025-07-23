@@ -137,7 +137,9 @@ model Professional {
   phone                String
   professionalActivity String
   isActive             Boolean  @default(false)
-  profecionalType      String
+
+  professionalTypeId         Int?
+  professionalType           ProfessionalType?          @relation(fields: [professionalTypeId], references: [id])
 
   userId Int?  @unique
   user   User? @relation(fields: [userId], references: [id])
@@ -147,6 +149,13 @@ model Professional {
 
   healthInsuranceProviderId Int?
   healthInsuranceProvider   HealthInsuranceProvider? @relation(fields: [healthInsuranceProviderId], references: [id])
+}
+
+model professionalType {
+  id          Int         @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime    @default(now())
 }
 
 model Admission {

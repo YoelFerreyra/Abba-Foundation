@@ -46,7 +46,7 @@ export default function ProfessionalForm({
       birthday: new Date(),
       phone: "",
       professionalActivity: "",
-      profecionalType: "",
+      professionalType: "",
       healthInsuranceProviderId: null,
       isActive: false,
     },
@@ -124,10 +124,10 @@ export default function ProfessionalForm({
           </div>
 
           <div>
-            <Label htmlFor="profecionalType">Tipo de profesional</Label>
-            <Input id="profecionalType" {...register("profecionalType")} />
-            {errors.profecionalType && (
-              <p className="text-red-500 text-sm">{errors.profecionalType.message}</p>
+            <Label htmlFor="professionalType">Tipo de profesional</Label>
+            <Input id="professionalType" {...register("professionalType")} />
+            {errors.professionalType && (
+              <p className="text-red-500 text-sm">{errors.professionalType.message}</p>
             )}
           </div>
 
