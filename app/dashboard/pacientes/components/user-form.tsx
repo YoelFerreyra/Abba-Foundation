@@ -66,6 +66,7 @@ export default function PatientForm({
 
   const isActive = watch("isActive");
   const hasLegalGuardian = watch("hasLegalGuardian");
+  const hasAdmission = watch("hasAdmission");
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -171,96 +172,6 @@ export default function PatientForm({
             )}
           </div>
 
-          {/* Fecha de ingreso */}
-          <div>
-            <Label htmlFor="admissionDate">Fecha de ingreso</Label>
-            <Input
-              id="admissionDate"
-              type="date"
-              {...register("admissionDate", { valueAsDate: true })}
-            />
-            {errors.admissionDate && (
-              <p className="text-red-500 text-sm">
-                {errors.admissionDate.message}
-              </p>
-            )}
-          </div>
-
-          {/* Tipo de ingreso */}
-          <div>
-            <Label htmlFor="admissionTypeId">Tipo de ingreso</Label>
-            <select
-              id="admissionTypeId"
-              {...register("admissionTypeId")}
-              className="w-full border p-2 rounded"
-            >
-              <option value="">Seleccionar</option>
-              <option value="1">Obra Social</option>
-              <option value="2">Particular</option>
-              <option value="3">Empleado</option>
-              <option value="4">Familiar</option>
-              {/* Puedes cargar estos valores dinámicamente desde la BD */}
-            </select>
-            {errors.admissionTypeId && (
-              <p className="text-red-500 text-sm">
-                {errors.admissionTypeId.message}
-              </p>
-            )}
-          </div>
-
-          {/* Escolarizado */}
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="isSchoolEnrolled"
-              checked={watch("isSchoolEnrolled")}
-              onCheckedChange={(checked) =>
-                setValue("isSchoolEnrolled", Boolean(checked))
-              }
-            />
-            <Label htmlFor="isSchoolEnrolled">¿Está escolarizado?</Label>
-          </div>
-
-          {/* Turno colegio */}
-          <div>
-            <Label htmlFor="schoolShift">Turno colegio</Label>
-            <select
-              id="schoolShift"
-              {...register("schoolShift")}
-              className="w-full border p-2 rounded"
-            >
-              <option value="">Seleccionar</option>
-              <option value="MORNING">Mañana</option>
-              <option value="AFTERNOON">Tarde</option>
-              <option value="FULL_DAY">Jornada Completa</option>
-            </select>
-          </div>
-
-          {/* Diagnóstico / CUD */}
-          <div>
-            <Label htmlFor="cud">Diagnóstico / CUD</Label>
-            <Input id="cud" {...register("cud")} />
-            {errors.cud && (
-              <p className="text-red-500 text-sm">{errors.cud.message}</p>
-            )}
-          </div>
-
-          {/* Fecha de vencimiento del CUD */}
-          <div>
-            <Label htmlFor="cudExpirationDate">
-              Fecha de vencimiento del CUD
-            </Label>
-            <Input
-              id="cudExpirationDate"
-              type="date"
-              {...register("cudExpirationDate", { valueAsDate: true })}
-            />
-            {errors.cudExpirationDate && (
-              <p className="text-red-500 text-sm">
-                {errors.cudExpirationDate.message}
-              </p>
-            )}
-          </div>
-
           <div className="flex items-center space-x-2">
             <Checkbox
               id="isActive"
@@ -271,6 +182,108 @@ export default function PatientForm({
             />
             <Label htmlFor="isActive">Paciente activo</Label>
           </div>
+
+          <div className="flex items-center space-x-2">
+            <Checkbox
+              id="hasAdmission"
+              checked={hasAdmission}
+              onCheckedChange={(checked) =>
+                setValue("hasAdmission", Boolean(checked))
+              }
+            />
+            <Label htmlFor="hasAdmission">¿Agregar datos de ingreso?</Label>
+          </div>
+
+          {hasAdmission && (
+            <div className="space-y-4 border p-4 rounded-lg bg-gray-50">
+              <h3 className="text-lg font-semibold">Datos de Ingreso</h3>
+
+              <div>
+                <Label htmlFor="admission.admissionDate">
+                  Fecha de ingreso
+                </Label>
+                <Input
+                  id="admission.admissionDate"
+                  type="date"
+                  {...register("admission.admissionDate", {
+                    valueAsDate: true,
+                  })}
+                />
+                {errors.admission?.admissionDate && (
+                  <p className="text-red-500 text-sm">
+                    {errors.admission.admissionDate.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="admission.admissionTypeId">
+                  Tipo de ingreso
+                </Label>
+                <select
+                  id="admission.admissionTypeId"
+                  {...register("admission.admissionTypeId")}
+                  className="w-full border p-2 rounded"
+                >
+                  <option value="">Seleccionar</option>
+                  <option value="1">Obra Social</option>
+                  <option value="2">Particular</option>
+                  <option value="3">Empleado</option>
+                  <option value="4">Familiar</option>
+                </select>
+                {errors.admission?.admissionTypeId && (
+                  <p className="text-red-500 text-sm">
+                    {errors.admission.admissionTypeId.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="admission.isSchoolEnrolled"
+                  checked={watch("admission.isSchoolEnrolled")}
+                  onCheckedChange={(checked) =>
+                    setValue("admission.isSchoolEnrolled", Boolean(checked))
+                  }
+                />
+                <Label htmlFor="admission.isSchoolEnrolled">
+                  ¿Está escolarizado?
+                </Label>
+              </div>
+
+              <div>
+                <Label htmlFor="admission.schoolShift">Turno colegio</Label>
+                <select
+                  id="admission.schoolShift"
+                  {...register("admission.schoolShift")}
+                  className="w-full border p-2 rounded"
+                >
+                  <option value="">Seleccionar</option>
+                  <option value="MORNING">Mañana</option>
+                  <option value="AFTERNOON">Tarde</option>
+                  <option value="FULL_DAY">Jornada Completa</option>
+                </select>
+              </div>
+
+              <div>
+                <Label htmlFor="admission.cud">Diagnóstico / CUD</Label>
+                <Input id="admission.cud" {...register("admission.cud")} />
+              </div>
+
+              <div>
+                <Label htmlFor="admission.cudExpirationDate">
+                  Vencimiento del CUD
+                </Label>
+                <Input
+                  id="admission.cudExpirationDate"
+                  type="date"
+                  {...register("admission.cudExpirationDate", {
+                    valueAsDate: true,
+                  })}
+                />
+              </div>
+            </div>
+          )}
 
           <div className="flex items-center space-x-2">
             <Checkbox

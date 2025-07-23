@@ -18,11 +18,7 @@ export default function ProfessionalPage() {
   const fetchPatients = async () => {
     const data = await getAllProfessionalsAction()
 
-    const parsed = data.map((p: any) => ({
-      ...p,
-      birthday: new Date(p.birthday),
-    }))
-    setProfessional(data)
+    setProfessional(data || [])
   }
 
   useEffect(() => {
@@ -52,8 +48,8 @@ export default function ProfessionalPage() {
   return (
     <div className="flex flex-col gap-5">
       <DashboardHeader
-        title="Gestión de Profecionales"
-        description="Administra los profecionales del consultorio"
+        title="Gestión de Profesionales"
+        description="Administra los profesionales del consultorio"
       />
 
       <div className="flex justify-end">
@@ -67,7 +63,7 @@ export default function ProfessionalPage() {
             <TableHead>Teléfono</TableHead>
             <TableHead>Dirección</TableHead>
             <TableHead>Fecha de nacimiento</TableHead>
-            <TableHead>Actividad profecional</TableHead>
+            <TableHead>Actividad profesional</TableHead>
             <TableHead>Activo</TableHead>
             <TableHead className="text-right">Acciones</TableHead>
           </TableRow>

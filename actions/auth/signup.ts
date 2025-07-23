@@ -7,7 +7,7 @@ type RegisterUserData = {
   password: string;
   confirmPassword: string;
   dni: string;
-  dniTramite: string;
+  dniProcessingNumber: string;
 };
 
 export async function registerUserAction(data: RegisterUserData) {
@@ -20,7 +20,7 @@ export async function registerUserAction(data: RegisterUserData) {
         dni: data.dni,
         isActive: true,
         patientStatus: "ACTIVE",
-        dniProcessingNumber: data.dniTramite,
+        dniProcessingNumber: data.dniProcessingNumber,
       },
     });
 

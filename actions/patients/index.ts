@@ -147,12 +147,12 @@ export async function createPatientWithAdmission(data: PatientFormData) {
 
       admission: {
         create: {
-          admissionDate: data.admissionDate,
+          admissionDate: data.admission?.admissionDate,
           admissionTypeId: 1,
-          isSchoolEnrolled: data.isSchoolEnrolled,
+          isSchoolEnrolled: data.admission?.isSchoolEnrolled,
           schoolShift: "MORNING",
-          cud: data.cud,
-          cudExpirationDate: data.cudExpirationDate,
+          cud: data.admission?.cud,
+          cudExpirationDate: data.admission?.cudExpirationDate,
         },
       },
     },

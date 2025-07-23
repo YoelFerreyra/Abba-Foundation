@@ -32,7 +32,7 @@ import { HealthInsuranceProviderFormValues } from "./schemas/healthInsuranceProv
 import { toast } from "sonner";
 
 export default function PatientsPage() {
-  const [patients, setPatients] = useState<PatientFormData[]>([]);
+  const [patients, setPatients] = useState<PatientFormData[] | undefined>([]);
   const [editingPatient, setEditingPatient] = useState<PatientFormData | null>(
     null
   );
@@ -125,7 +125,7 @@ export default function PatientsPage() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {patients.map((p, i) => (
+          {patients?.map((p, i) => (
             <TableRow
               key={`${p.dni}-${i}`}
               className="cursor-pointer hover:bg-muted/50"

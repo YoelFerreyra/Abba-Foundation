@@ -44,7 +44,7 @@ export default function RegisterPage() {
         password: data.password,
         confirmPassword: data.confirmPassword,
         dni: data.dni,
-        dniTramite: data.dniTramite
+        dniProcessingNumber: data.dniProcessingNumber
       });
 
       if (response?.error) {
@@ -146,12 +146,12 @@ export default function RegisterPage() {
               <input
                 type="text"
                 placeholder="123456789"
-                {...register("dniTramite")}
+                {...register("dniProcessingNumber")}
                 className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
               />
-              {errors.dniTramite && (
+              {errors.dniProcessingNumber && (
                 <p className="text-red-500 text-sm">
-                  {errors.dniTramite.message}
+                  {errors.dniProcessingNumber.message}
                 </p>
               )}
             </div>

@@ -57,7 +57,8 @@ model Patient {
 
 model HealthInsuranceProvider {
   id              Int                              @id @default(autoincrement())
-  name            String
+  nickName        String?
+  name            String  @unique
   description     String
   contractor      String?
   subcontractor   String?
@@ -66,6 +67,10 @@ model HealthInsuranceProvider {
   email           String
   phone           String
   contact         String
+  webside         String?
+  email           String?
+  email2          String?
+  email3          String?
 
   authorizations  HealthInsuranceAuthorization[]
   patients Patient[]
@@ -137,7 +142,8 @@ model Professional {
   phone                   String
   professionalActivity    String
   isActive                Boolean   @default(false)
-  profecionalType         String
+  professionalType        String
+  licenseNumber           String  @unique
 
   userId                  Int? @unique
   user                    User?     @relation(fields: [userId], references: [id])
@@ -158,14 +164,12 @@ model Admission {
   isSchoolEnrolled      Boolean                                           // Escolarizado
   schoolShift           SchoolShift?                                     // Turno colegio
 
-  // Datos del concurrente (vinculado a Patient)
   patientId             Int               @unique
   patient               Patient           @relation(fields: [patientId], references: [id])
   cud                   String?                                           
   cudExpirationDate     DateTime?                                         
   status                AdmissionStatus?
 
-  // Datos del titular
   legalGuardianId              Int?
   legalGuardian                LegalGuardian?            @relation(fields: [legalGuardianId], references: [id])
 
