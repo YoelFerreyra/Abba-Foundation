@@ -13,7 +13,7 @@ export const registerSchema = z
       .string()
       .min(7, { message: "El DNI debe tener al menos 7 dígitos" })
       .max(10, { message: "El DNI no puede tener más de 10 dígitos" }),
-      dniProcessingNumber: z
+    dniProcessingNumber: z
       .string()
       .min(7, { message: "El número de trámite debe tener al menos 7 dígitos" })
       .max(12, { message: "El número de trámite no puede tener más de 12 dígitos" }),

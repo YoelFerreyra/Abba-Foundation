@@ -36,63 +36,63 @@ export function DashboardSidebar() {
       icon: Home,
       href: "/dashboard",
       active: pathname === "/dashboard",
-      roles: ["admin", "player", "superadmin", "doctor", "CLIENT"],
+      roles: ["PROFESSIONAL", "CLIENT", "ROOT", "ADMIN"],
     },
     {
       label: "Turnos",
       icon: CalendarDays,
       href: "/dashboard/turnos",
       active: pathname === "/dashboard/turnos",
-      roles: ["player", "admin", "doctor", "CLIENT"],
+      roles: ["CLIENT", "PROFESSIONAL", "ROOT", "ADMIN"],
     },
     {
       label: "Mis Trámites",
       icon: FileText,
       href: "/dashboard/tramites",
       active: pathname === "/dashboard/tramites",
-      roles: ["player", "CLIENT"],
+      roles: ["CLIENT", "ROOT", "ADMIN"],
     },
     {
       label: "Perfil",
       icon: User,
       href: "/dashboard/perfil",
       active: pathname === "/dashboard/perfil",
-      roles: ["player", "admin", "doctor", "superadmin", "CLIENT"],
+      roles: ["CLIENT", "PROFESSIONAL", "ROOT", "ADMIN"],
     },
     {
       label: "Finanzas",
       icon: ChartColumn,
       href: "/dashboard/finanzas",
       active: pathname === "/dashboard/finanzas",
-      roles: ["admin", "superadmin", "CLIENT"],
+      roles: ["ADMIN", "ROOT"],
     },
     {
       label: "Historial Médico",
       icon: ClipboardList,
       href: "/dashboard/historial",
       active: pathname === "/dashboard/historial",
-      roles: ["player", "doctor", "CLIENT"],
+      roles: ["CLIENT", "ROOT", "ADMIN"],
     },
     {
       label: "Usuarios",
       icon: User2,
       href: "/dashboard/usuarios",
       active: pathname === "/dashboard/usuarios",
-      roles: ["admin", "superadmin", "CLIENT"],
+      roles: ["ADMIN", "ROOT"],
     },
     {
       label: "Pacientes",
       icon: Smile,
       href: "/dashboard/pacientes",
       active: pathname === "/dashboard/pacientes",
-      roles: ["doctor", "admin", "CLIENT"],
+      roles: ["ADMIN", "ROOT"],
     },
     {
       label: "Profesionales",
       icon: Smile,
       href: "/dashboard/profesionales",
       active: pathname === "/dashboard/profesionales",
-      roles: ["admin", "superadmin", "CLIENT"],
+      roles: ["ADMIN", "ROOT"],
     },
   ];
 
@@ -100,13 +100,10 @@ export function DashboardSidebar() {
     if (isLoading) return;
     if (user?.claims?.role) {
       setFilteredRoutes(
-        routes.filter((route) =>
-          route.roles.includes(user?.claims?.role)
-        )
+        routes.filter((route) => route.roles.includes(user?.claims?.role))
       );
     }
   }, [user, isLoading]);
-
 
   const logout = async () => {
     await signOut(authClient);

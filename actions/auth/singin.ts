@@ -18,6 +18,13 @@ export async function signInWithFirebase(uid: string) {
             lastName: true,
           },
         },
+        professional: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+        }
+      },
       },
     });
 
@@ -28,7 +35,6 @@ export async function signInWithFirebase(uid: string) {
     const customClaims = {
       role: user?.role,
       name: `${user?.patient?.firstName} ${user?.patient?.lastName}`,
-      patientId: user?.patient?.id,
     };
 
     const currentUser = await authServer.getUserByEmail(user?.email || "");

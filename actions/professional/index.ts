@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 export const getAllProfessionalsAction = async() => {
   try {
     const professionals = await prisma.professional.findMany();
+    
     return professionals;
   } catch (error) {
     console.log(error);

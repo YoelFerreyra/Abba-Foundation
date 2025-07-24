@@ -64,9 +64,8 @@ model HealthInsuranceProvider {
   subcontractor   String?
   cuit            String
   address         String
-  email           String
   phone           String
-  contact         String
+  contact         String?
   webside         String?
   email           String?
   email2          String?
@@ -132,28 +131,52 @@ model LegalGuardian {
 }
 
 model Professional {
-  id                      Int       @id @default(autoincrement())
-  firstName               String
-  lastName                String
-  address                 String
-  dni                     String  @unique
-  cuil                    String  @unique
-  birthday                DateTime
-  phone                   String
-  professionalActivity    String
-  isActive                Boolean   @default(false)
-  professionalType        String
-  licenseNumber           String  @unique
+  id                        Int       @id @default(autoincrement())
+  firstName                 String
+  lastName                  String
+  address                   String
+  dni                       String    @unique
+  cuil                      String    @unique
+  birthday                  DateTime
+  phone                     String
+  professionalActivity      String
+  isActive                  Boolean   @default(false)
+  licenseNumber             String    @unique // Matricula
 
-  userId                  Int? @unique
-  user                    User?     @relation(fields: [userId], references: [id])
+  userId                    Int?      @unique
+  user                      User?     @relation(fields: [userId], references: [id])
 
-  events                  Event[]
-  schedules               Schedule[]
+  events                    Event[]
+  schedules                 Schedule[]
+
+  professionalTypes         ProfessionalType[] @relation("ProfessionalToType")
 
   healthInsuranceProviderId Int?
   healthInsuranceProvider   HealthInsuranceProvider? @relation(fields: [healthInsuranceProviderId], references: [id])
+
+  consultationPrices        ConsultationPrice[]
 }
+
+model ProfessionalType {
+  id            Int            @id @default(autoincrement()) 
+  name          String
+  description   String?
+
+  professionals Professional[] @relation("ProfessionalToType")
+}
+
+model ConsultationPrice {
+  id             Int          @id @default(autoincrement())
+  price          Float
+  currency       String       @default("ARS")
+  sessionType    String       // ej: "online", "presencial", "terapia grupal"
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  professionalId Int
+  professional   Professional @relation(fields: [professionalId], references: [id])
+}
+
 
 model Admission {
   id                    Int                @id @default(autoincrement()) // Nro. de ingreso
@@ -217,6 +240,7 @@ model Budget {
 
 model Payment {
   id             Int       @id @default(autoincrement())
+  amount         Int
   paymentType    PaymentType
   description    String?
   createdAt      DateTime  @default(now())
@@ -240,7 +264,6 @@ enum UserRoles {
   ADMIN
   CLIENT
   PROFESSIONAL
-  ACCOUNTANT
 }
 
 enum PatientType {

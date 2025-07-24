@@ -13,6 +13,7 @@ type Claims = {
   name: string;
   role: string;
   patientId: number;
+  professionalId: number;
 };
 
 export type User = FirebaseUser & {
