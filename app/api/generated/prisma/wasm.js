@@ -153,15 +153,19 @@ exports.Prisma.PatientScalarFieldEnum = {
 
 exports.Prisma.HealthInsuranceProviderScalarFieldEnum = {
   id: 'id',
+  nickName: 'nickName',
   name: 'name',
   description: 'description',
   contractor: 'contractor',
   subcontractor: 'subcontractor',
   cuit: 'cuit',
   address: 'address',
-  email: 'email',
   phone: 'phone',
-  contact: 'contact'
+  contact: 'contact',
+  webside: 'webside',
+  email: 'email',
+  email2: 'email2',
+  email3: 'email3'
 };
 
 exports.Prisma.HealthInsuranceAuthorizationScalarFieldEnum = {
@@ -204,9 +208,25 @@ exports.Prisma.ProfessionalScalarFieldEnum = {
   phone: 'phone',
   professionalActivity: 'professionalActivity',
   isActive: 'isActive',
-  profecionalType: 'profecionalType',
+  licenseNumber: 'licenseNumber',
   userId: 'userId',
   healthInsuranceProviderId: 'healthInsuranceProviderId'
+};
+
+exports.Prisma.ProfessionalTypeScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description'
+};
+
+exports.Prisma.ConsultationPriceScalarFieldEnum = {
+  id: 'id',
+  price: 'price',
+  currency: 'currency',
+  sessionType: 'sessionType',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  professionalId: 'professionalId'
 };
 
 exports.Prisma.AdmissionScalarFieldEnum = {
@@ -255,6 +275,7 @@ exports.Prisma.BudgetScalarFieldEnum = {
 
 exports.Prisma.PaymentScalarFieldEnum = {
   id: 'id',
+  amount: 'amount',
   paymentType: 'paymentType',
   description: 'description',
   createdAt: 'createdAt'
@@ -295,8 +316,7 @@ exports.UserRoles = exports.$Enums.UserRoles = {
   ROOT: 'ROOT',
   ADMIN: 'ADMIN',
   CLIENT: 'CLIENT',
-  PROFESSIONAL: 'PROFESSIONAL',
-  ACCOUNTANT: 'ACCOUNTANT'
+  PROFESSIONAL: 'PROFESSIONAL'
 };
 
 exports.PatientType = exports.$Enums.PatientType = {
@@ -409,6 +429,8 @@ exports.Prisma.ModelName = {
   HealthInsuranceAuthorization: 'HealthInsuranceAuthorization',
   LegalGuardian: 'LegalGuardian',
   Professional: 'Professional',
+  ProfessionalType: 'ProfessionalType',
+  ConsultationPrice: 'ConsultationPrice',
   Admission: 'Admission',
   Event: 'Event',
   Process: 'Process',

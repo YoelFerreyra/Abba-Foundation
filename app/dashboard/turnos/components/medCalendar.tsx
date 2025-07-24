@@ -238,7 +238,7 @@ export default function MedCalendar() {
       try {
         const data = await getAllProfessionalsAction();
         setProfessionals(data);
-        if (data.length > 0) setSelectedProfessionalId(data[0].id);
+        if (data?.length > 0) setSelectedProfessionalId(data[0].id);
       } catch (error) {
         console.error("Error fetching professionals:", error);
       }
@@ -360,7 +360,7 @@ export default function MedCalendar() {
                   <SelectValue placeholder="Seleccionar profesional" />
                 </SelectTrigger>
                 <SelectContent>
-                  {professionals.map((prof) => (
+                  {professionals?.map((prof) => (
                     <SelectItem key={prof.id} value={prof.id.toString()}>
                       {prof.firstName} {prof.lastName}
                     </SelectItem>
@@ -419,7 +419,7 @@ export default function MedCalendar() {
             <SelectValue placeholder="Seleccionar profesional" />
           </SelectTrigger>
           <SelectContent>
-            {professionals.map((prof) => (
+            {professionals?.map((prof) => (
               <SelectItem key={prof.id} value={prof.id.toString()}>
                 {prof.firstName} {prof.lastName}
               </SelectItem>

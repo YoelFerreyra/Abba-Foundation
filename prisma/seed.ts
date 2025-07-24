@@ -17,6 +17,20 @@ async function main() {
     });
   }
 
+  const professionalTypes = [
+    { name: 'PSICOPEDAGOGIA' },
+    { name: 'PSICOLOGIA' },
+    { name: 'FONOAUDIOLOGIA' },
+  ];
+
+  for (const type of professionalTypes) {
+    await prisma.professionalType.create({
+      data: {
+        name: type.name
+      }
+    });
+  }
+
   const provider = await prisma.healthInsuranceProvider.create({
     data: {
       name: "Obra Social Ejemplo",

@@ -13,10 +13,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { Plus } from "lucide-react";
+import { Plus, Trash } from "lucide-react";
 import {
-  createWeeklySchedule,
   getWeeklySchedule,
+  upsertWeeklySchedule,
 } from "@/actions/calendar/profesional-events";
 import { getAllProfessionalsAction } from "@/actions/professional";
 import {
@@ -50,6 +50,11 @@ type Professional = {
   lastName: string;
 };
 
+const isTimeRangeValid = (start: string, end: string) => {
+  return start < end;
+};
+
+
 export default function WeeklyScheduleModal() {
   const [schedule, setSchedule] = useState<WeeklySchedule>(() =>
     Object.fromEntries(
@@ -64,13 +69,13 @@ export default function WeeklyScheduleModal() {
   const [selectedProfessionalId, setSelectedProfessionalId] = useState<
     number | null
   >(null);
-
+  
   useEffect(() => {
     const fetchProfessionals = async () => {
       try {
         const data = await getAllProfessionalsAction();
         setProfessionals(data);
-        if (data.length > 0) setSelectedProfessionalId(data[0].id);
+        if (data?.length > 0) setSelectedProfessionalId(data[0].id);
       } catch (error) {
         console.error("Error fetching professionals:", error);
       }
@@ -135,6 +140,32 @@ export default function WeeklyScheduleModal() {
     }));
   };
 
+  const handleRemoveRange = (day: string, index: number) => {
+    setSchedule((prev) => {
+      const updatedRanges = prev[day].timeRanges.filter((_, i) => i !== index);
+      return {
+        ...prev,
+        [day]: {
+          ...prev[day],
+          timeRanges:
+            updatedRanges.length > 0
+              ? updatedRanges
+              : [{ startTime: "", endTime: "" }],
+        },
+      };
+    });
+  };
+
+  const handleClearDay = (day: string) => {
+    setSchedule((prev) => ({
+      ...prev,
+      [day]: {
+        enabled: false,
+        timeRanges: [{ startTime: "", endTime: "" }],
+      },
+    }));
+  };
+
   const handleToggleDay = (day: string, enabled: boolean) => {
     setSchedule((prev) => ({
       ...prev,
@@ -142,26 +173,39 @@ export default function WeeklyScheduleModal() {
     }));
   };
 
-  const handleSubmit = async () => {
-    try {
-      const result = await createWeeklySchedule({
-        professionalId: selectedProfessionalId!,
-        availability: schedule,
-      });
-      console.log("Schedule saved", result);
-    } catch (error) {
-      console.error("Error saving schedule:", error);
+const handleSubmit = async () => {
+  try {
+    for (const day of Object.keys(schedule)) {
+      if (schedule[day].enabled) {
+        for (const { startTime, endTime } of schedule[day].timeRanges) {
+          if (!startTime || !endTime || !isTimeRangeValid(startTime, endTime)) {
+            alert(
+              `El horario en ${day.charAt(0).toUpperCase() + day.slice(1)} es inválido: la hora de inicio debe ser anterior a la de fin.`
+            );
+            return;
+          }
+        }
+      }
     }
-  };
+
+    const result = await upsertWeeklySchedule({
+      professionalId: selectedProfessionalId!,
+      availability: schedule,
+    });
+  } catch (error) {
+    console.error("Error saving schedule:", error);
+  }
+};
+
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Configure Weekly Schedule</Button>
+        <Button>Horarios de atención</Button>
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Weekly Availability</DialogTitle>
+          <DialogTitle>Semana habilitada</DialogTitle>
         </DialogHeader>
         <div className="mb-4">
           <label className="block mb-1 font-medium">
@@ -177,7 +221,7 @@ export default function WeeklyScheduleModal() {
               <SelectValue placeholder="Seleccionar profesional" />
             </SelectTrigger>
             <SelectContent>
-              {professionals.map((prof) => (
+              {professionals?.map((prof) => (
                 <SelectItem key={prof.id} value={prof.id.toString()}>
                   {prof.firstName} {prof.lastName}
                 </SelectItem>
@@ -194,10 +238,22 @@ export default function WeeklyScheduleModal() {
             >
               <div className="flex items-center justify-between">
                 <h4 className="text-md font-semibold">{label}</h4>
-                <Switch
-                  checked={schedule[key].enabled}
-                  onCheckedChange={(val) => handleToggleDay(key, val)}
-                />
+                <div className="flex items-center gap-2">
+                  {schedule[key].enabled && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleClearDay(key)}
+                      title="Clear all time ranges"
+                    >
+                      <Trash />
+                    </Button>
+                  )}
+                  <Switch
+                    checked={schedule[key].enabled}
+                    onCheckedChange={(val) => handleToggleDay(key, val)}
+                  />
+                </div>
               </div>
 
               {schedule[key].enabled && (
@@ -219,6 +275,14 @@ export default function WeeklyScheduleModal() {
                           handleChange(key, index, "endTime", e.target.value)
                         }
                       />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleRemoveRange(key, index)}
+                        title="Remove this time range"
+                      >
+                        ✕
+                      </Button>
                     </div>
                   ))}
                   <Button

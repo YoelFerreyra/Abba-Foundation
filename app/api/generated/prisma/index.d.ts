@@ -44,6 +44,16 @@ export type LegalGuardian = $Result.DefaultSelection<Prisma.$LegalGuardianPayloa
  */
 export type Professional = $Result.DefaultSelection<Prisma.$ProfessionalPayload>
 /**
+ * Model ProfessionalType
+ * 
+ */
+export type ProfessionalType = $Result.DefaultSelection<Prisma.$ProfessionalTypePayload>
+/**
+ * Model ConsultationPrice
+ * 
+ */
+export type ConsultationPrice = $Result.DefaultSelection<Prisma.$ConsultationPricePayload>
+/**
  * Model Admission
  * 
  */
@@ -104,8 +114,7 @@ export const UserRoles: {
   ROOT: 'ROOT',
   ADMIN: 'ADMIN',
   CLIENT: 'CLIENT',
-  PROFESSIONAL: 'PROFESSIONAL',
-  ACCOUNTANT: 'ACCOUNTANT'
+  PROFESSIONAL: 'PROFESSIONAL'
 };
 
 export type UserRoles = (typeof UserRoles)[keyof typeof UserRoles]
@@ -497,6 +506,26 @@ export class PrismaClient<
     * ```
     */
   get professional(): Prisma.ProfessionalDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.professionalType`: Exposes CRUD operations for the **ProfessionalType** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProfessionalTypes
+    * const professionalTypes = await prisma.professionalType.findMany()
+    * ```
+    */
+  get professionalType(): Prisma.ProfessionalTypeDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.consultationPrice`: Exposes CRUD operations for the **ConsultationPrice** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ConsultationPrices
+    * const consultationPrices = await prisma.consultationPrice.findMany()
+    * ```
+    */
+  get consultationPrice(): Prisma.ConsultationPriceDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.admission`: Exposes CRUD operations for the **Admission** model.
@@ -1013,6 +1042,8 @@ export namespace Prisma {
     HealthInsuranceAuthorization: 'HealthInsuranceAuthorization',
     LegalGuardian: 'LegalGuardian',
     Professional: 'Professional',
+    ProfessionalType: 'ProfessionalType',
+    ConsultationPrice: 'ConsultationPrice',
     Admission: 'Admission',
     Event: 'Event',
     Process: 'Process',
@@ -1038,7 +1069,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "patient" | "healthInsuranceProvider" | "healthInsuranceAuthorization" | "legalGuardian" | "professional" | "admission" | "event" | "process" | "budget" | "payment" | "schedule" | "admissionType"
+      modelProps: "user" | "patient" | "healthInsuranceProvider" | "healthInsuranceAuthorization" | "legalGuardian" | "professional" | "professionalType" | "consultationPrice" | "admission" | "event" | "process" | "budget" | "payment" | "schedule" | "admissionType"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1483,6 +1514,154 @@ export namespace Prisma {
           count: {
             args: Prisma.ProfessionalCountArgs<ExtArgs>
             result: $Utils.Optional<ProfessionalCountAggregateOutputType> | number
+          }
+        }
+      }
+      ProfessionalType: {
+        payload: Prisma.$ProfessionalTypePayload<ExtArgs>
+        fields: Prisma.ProfessionalTypeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProfessionalTypeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfessionalTypePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProfessionalTypeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfessionalTypePayload>
+          }
+          findFirst: {
+            args: Prisma.ProfessionalTypeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfessionalTypePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProfessionalTypeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfessionalTypePayload>
+          }
+          findMany: {
+            args: Prisma.ProfessionalTypeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfessionalTypePayload>[]
+          }
+          create: {
+            args: Prisma.ProfessionalTypeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfessionalTypePayload>
+          }
+          createMany: {
+            args: Prisma.ProfessionalTypeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProfessionalTypeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfessionalTypePayload>[]
+          }
+          delete: {
+            args: Prisma.ProfessionalTypeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfessionalTypePayload>
+          }
+          update: {
+            args: Prisma.ProfessionalTypeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfessionalTypePayload>
+          }
+          deleteMany: {
+            args: Prisma.ProfessionalTypeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProfessionalTypeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProfessionalTypeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfessionalTypePayload>[]
+          }
+          upsert: {
+            args: Prisma.ProfessionalTypeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProfessionalTypePayload>
+          }
+          aggregate: {
+            args: Prisma.ProfessionalTypeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProfessionalType>
+          }
+          groupBy: {
+            args: Prisma.ProfessionalTypeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProfessionalTypeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProfessionalTypeCountArgs<ExtArgs>
+            result: $Utils.Optional<ProfessionalTypeCountAggregateOutputType> | number
+          }
+        }
+      }
+      ConsultationPrice: {
+        payload: Prisma.$ConsultationPricePayload<ExtArgs>
+        fields: Prisma.ConsultationPriceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ConsultationPriceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsultationPricePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ConsultationPriceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsultationPricePayload>
+          }
+          findFirst: {
+            args: Prisma.ConsultationPriceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsultationPricePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ConsultationPriceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsultationPricePayload>
+          }
+          findMany: {
+            args: Prisma.ConsultationPriceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsultationPricePayload>[]
+          }
+          create: {
+            args: Prisma.ConsultationPriceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsultationPricePayload>
+          }
+          createMany: {
+            args: Prisma.ConsultationPriceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ConsultationPriceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsultationPricePayload>[]
+          }
+          delete: {
+            args: Prisma.ConsultationPriceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsultationPricePayload>
+          }
+          update: {
+            args: Prisma.ConsultationPriceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsultationPricePayload>
+          }
+          deleteMany: {
+            args: Prisma.ConsultationPriceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ConsultationPriceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ConsultationPriceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsultationPricePayload>[]
+          }
+          upsert: {
+            args: Prisma.ConsultationPriceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ConsultationPricePayload>
+          }
+          aggregate: {
+            args: Prisma.ConsultationPriceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateConsultationPrice>
+          }
+          groupBy: {
+            args: Prisma.ConsultationPriceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ConsultationPriceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ConsultationPriceCountArgs<ExtArgs>
+            result: $Utils.Optional<ConsultationPriceCountAggregateOutputType> | number
           }
         }
       }
@@ -2094,6 +2273,8 @@ export namespace Prisma {
     healthInsuranceAuthorization?: HealthInsuranceAuthorizationOmit
     legalGuardian?: LegalGuardianOmit
     professional?: ProfessionalOmit
+    professionalType?: ProfessionalTypeOmit
+    consultationPrice?: ConsultationPriceOmit
     admission?: AdmissionOmit
     event?: EventOmit
     process?: ProcessOmit
@@ -2366,11 +2547,15 @@ export namespace Prisma {
   export type ProfessionalCountOutputType = {
     events: number
     schedules: number
+    professionalTypes: number
+    consultationPrices: number
   }
 
   export type ProfessionalCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     events?: boolean | ProfessionalCountOutputTypeCountEventsArgs
     schedules?: boolean | ProfessionalCountOutputTypeCountSchedulesArgs
+    professionalTypes?: boolean | ProfessionalCountOutputTypeCountProfessionalTypesArgs
+    consultationPrices?: boolean | ProfessionalCountOutputTypeCountConsultationPricesArgs
   }
 
   // Custom InputTypes
@@ -2396,6 +2581,51 @@ export namespace Prisma {
    */
   export type ProfessionalCountOutputTypeCountSchedulesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ScheduleWhereInput
+  }
+
+  /**
+   * ProfessionalCountOutputType without action
+   */
+  export type ProfessionalCountOutputTypeCountProfessionalTypesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProfessionalTypeWhereInput
+  }
+
+  /**
+   * ProfessionalCountOutputType without action
+   */
+  export type ProfessionalCountOutputTypeCountConsultationPricesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConsultationPriceWhereInput
+  }
+
+
+  /**
+   * Count Type ProfessionalTypeCountOutputType
+   */
+
+  export type ProfessionalTypeCountOutputType = {
+    professionals: number
+  }
+
+  export type ProfessionalTypeCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    professionals?: boolean | ProfessionalTypeCountOutputTypeCountProfessionalsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ProfessionalTypeCountOutputType without action
+   */
+  export type ProfessionalTypeCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalTypeCountOutputType
+     */
+    select?: ProfessionalTypeCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ProfessionalTypeCountOutputType without action
+   */
+  export type ProfessionalTypeCountOutputTypeCountProfessionalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProfessionalWhereInput
   }
 
 
@@ -5113,41 +5343,53 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderMinAggregateOutputType = {
     id: number | null
+    nickName: string | null
     name: string | null
     description: string | null
     contractor: string | null
     subcontractor: string | null
     cuit: string | null
     address: string | null
-    email: string | null
     phone: string | null
     contact: string | null
+    webside: string | null
+    email: string | null
+    email2: string | null
+    email3: string | null
   }
 
   export type HealthInsuranceProviderMaxAggregateOutputType = {
     id: number | null
+    nickName: string | null
     name: string | null
     description: string | null
     contractor: string | null
     subcontractor: string | null
     cuit: string | null
     address: string | null
-    email: string | null
     phone: string | null
     contact: string | null
+    webside: string | null
+    email: string | null
+    email2: string | null
+    email3: string | null
   }
 
   export type HealthInsuranceProviderCountAggregateOutputType = {
     id: number
+    nickName: number
     name: number
     description: number
     contractor: number
     subcontractor: number
     cuit: number
     address: number
-    email: number
     phone: number
     contact: number
+    webside: number
+    email: number
+    email2: number
+    email3: number
     _all: number
   }
 
@@ -5162,41 +5404,53 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderMinAggregateInputType = {
     id?: true
+    nickName?: true
     name?: true
     description?: true
     contractor?: true
     subcontractor?: true
     cuit?: true
     address?: true
-    email?: true
     phone?: true
     contact?: true
+    webside?: true
+    email?: true
+    email2?: true
+    email3?: true
   }
 
   export type HealthInsuranceProviderMaxAggregateInputType = {
     id?: true
+    nickName?: true
     name?: true
     description?: true
     contractor?: true
     subcontractor?: true
     cuit?: true
     address?: true
-    email?: true
     phone?: true
     contact?: true
+    webside?: true
+    email?: true
+    email2?: true
+    email3?: true
   }
 
   export type HealthInsuranceProviderCountAggregateInputType = {
     id?: true
+    nickName?: true
     name?: true
     description?: true
     contractor?: true
     subcontractor?: true
     cuit?: true
     address?: true
-    email?: true
     phone?: true
     contact?: true
+    webside?: true
+    email?: true
+    email2?: true
+    email3?: true
     _all?: true
   }
 
@@ -5288,15 +5542,19 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderGroupByOutputType = {
     id: number
+    nickName: string | null
     name: string
     description: string
     contractor: string | null
     subcontractor: string | null
     cuit: string
     address: string
-    email: string
     phone: string
-    contact: string
+    contact: string | null
+    webside: string | null
+    email: string | null
+    email2: string | null
+    email3: string | null
     _count: HealthInsuranceProviderCountAggregateOutputType | null
     _avg: HealthInsuranceProviderAvgAggregateOutputType | null
     _sum: HealthInsuranceProviderSumAggregateOutputType | null
@@ -5320,15 +5578,19 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    nickName?: boolean
     name?: boolean
     description?: boolean
     contractor?: boolean
     subcontractor?: boolean
     cuit?: boolean
     address?: boolean
-    email?: boolean
     phone?: boolean
     contact?: boolean
+    webside?: boolean
+    email?: boolean
+    email2?: boolean
+    email3?: boolean
     authorizations?: boolean | HealthInsuranceProvider$authorizationsArgs<ExtArgs>
     patients?: boolean | HealthInsuranceProvider$patientsArgs<ExtArgs>
     legalGuardians?: boolean | HealthInsuranceProvider$legalGuardiansArgs<ExtArgs>
@@ -5338,44 +5600,56 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    nickName?: boolean
     name?: boolean
     description?: boolean
     contractor?: boolean
     subcontractor?: boolean
     cuit?: boolean
     address?: boolean
-    email?: boolean
     phone?: boolean
     contact?: boolean
+    webside?: boolean
+    email?: boolean
+    email2?: boolean
+    email3?: boolean
   }, ExtArgs["result"]["healthInsuranceProvider"]>
 
   export type HealthInsuranceProviderSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    nickName?: boolean
     name?: boolean
     description?: boolean
     contractor?: boolean
     subcontractor?: boolean
     cuit?: boolean
     address?: boolean
-    email?: boolean
     phone?: boolean
     contact?: boolean
+    webside?: boolean
+    email?: boolean
+    email2?: boolean
+    email3?: boolean
   }, ExtArgs["result"]["healthInsuranceProvider"]>
 
   export type HealthInsuranceProviderSelectScalar = {
     id?: boolean
+    nickName?: boolean
     name?: boolean
     description?: boolean
     contractor?: boolean
     subcontractor?: boolean
     cuit?: boolean
     address?: boolean
-    email?: boolean
     phone?: boolean
     contact?: boolean
+    webside?: boolean
+    email?: boolean
+    email2?: boolean
+    email3?: boolean
   }
 
-  export type HealthInsuranceProviderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "contractor" | "subcontractor" | "cuit" | "address" | "email" | "phone" | "contact", ExtArgs["result"]["healthInsuranceProvider"]>
+  export type HealthInsuranceProviderOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nickName" | "name" | "description" | "contractor" | "subcontractor" | "cuit" | "address" | "phone" | "contact" | "webside" | "email" | "email2" | "email3", ExtArgs["result"]["healthInsuranceProvider"]>
   export type HealthInsuranceProviderInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     authorizations?: boolean | HealthInsuranceProvider$authorizationsArgs<ExtArgs>
     patients?: boolean | HealthInsuranceProvider$patientsArgs<ExtArgs>
@@ -5396,15 +5670,19 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      nickName: string | null
       name: string
       description: string
       contractor: string | null
       subcontractor: string | null
       cuit: string
       address: string
-      email: string
       phone: string
-      contact: string
+      contact: string | null
+      webside: string | null
+      email: string | null
+      email2: string | null
+      email3: string | null
     }, ExtArgs["result"]["healthInsuranceProvider"]>
     composites: {}
   }
@@ -5833,15 +6111,19 @@ export namespace Prisma {
    */
   interface HealthInsuranceProviderFieldRefs {
     readonly id: FieldRef<"HealthInsuranceProvider", 'Int'>
+    readonly nickName: FieldRef<"HealthInsuranceProvider", 'String'>
     readonly name: FieldRef<"HealthInsuranceProvider", 'String'>
     readonly description: FieldRef<"HealthInsuranceProvider", 'String'>
     readonly contractor: FieldRef<"HealthInsuranceProvider", 'String'>
     readonly subcontractor: FieldRef<"HealthInsuranceProvider", 'String'>
     readonly cuit: FieldRef<"HealthInsuranceProvider", 'String'>
     readonly address: FieldRef<"HealthInsuranceProvider", 'String'>
-    readonly email: FieldRef<"HealthInsuranceProvider", 'String'>
     readonly phone: FieldRef<"HealthInsuranceProvider", 'String'>
     readonly contact: FieldRef<"HealthInsuranceProvider", 'String'>
+    readonly webside: FieldRef<"HealthInsuranceProvider", 'String'>
+    readonly email: FieldRef<"HealthInsuranceProvider", 'String'>
+    readonly email2: FieldRef<"HealthInsuranceProvider", 'String'>
+    readonly email3: FieldRef<"HealthInsuranceProvider", 'String'>
   }
     
 
@@ -8860,7 +9142,7 @@ export namespace Prisma {
     phone: string | null
     professionalActivity: string | null
     isActive: boolean | null
-    profecionalType: string | null
+    licenseNumber: string | null
     userId: number | null
     healthInsuranceProviderId: number | null
   }
@@ -8876,7 +9158,7 @@ export namespace Prisma {
     phone: string | null
     professionalActivity: string | null
     isActive: boolean | null
-    profecionalType: string | null
+    licenseNumber: string | null
     userId: number | null
     healthInsuranceProviderId: number | null
   }
@@ -8892,7 +9174,7 @@ export namespace Prisma {
     phone: number
     professionalActivity: number
     isActive: number
-    profecionalType: number
+    licenseNumber: number
     userId: number
     healthInsuranceProviderId: number
     _all: number
@@ -8922,7 +9204,7 @@ export namespace Prisma {
     phone?: true
     professionalActivity?: true
     isActive?: true
-    profecionalType?: true
+    licenseNumber?: true
     userId?: true
     healthInsuranceProviderId?: true
   }
@@ -8938,7 +9220,7 @@ export namespace Prisma {
     phone?: true
     professionalActivity?: true
     isActive?: true
-    profecionalType?: true
+    licenseNumber?: true
     userId?: true
     healthInsuranceProviderId?: true
   }
@@ -8954,7 +9236,7 @@ export namespace Prisma {
     phone?: true
     professionalActivity?: true
     isActive?: true
-    profecionalType?: true
+    licenseNumber?: true
     userId?: true
     healthInsuranceProviderId?: true
     _all?: true
@@ -9057,7 +9339,7 @@ export namespace Prisma {
     phone: string
     professionalActivity: string
     isActive: boolean
-    profecionalType: string
+    licenseNumber: string
     userId: number | null
     healthInsuranceProviderId: number | null
     _count: ProfessionalCountAggregateOutputType | null
@@ -9092,13 +9374,15 @@ export namespace Prisma {
     phone?: boolean
     professionalActivity?: boolean
     isActive?: boolean
-    profecionalType?: boolean
+    licenseNumber?: boolean
     userId?: boolean
     healthInsuranceProviderId?: boolean
     user?: boolean | Professional$userArgs<ExtArgs>
     events?: boolean | Professional$eventsArgs<ExtArgs>
     schedules?: boolean | Professional$schedulesArgs<ExtArgs>
+    professionalTypes?: boolean | Professional$professionalTypesArgs<ExtArgs>
     healthInsuranceProvider?: boolean | Professional$healthInsuranceProviderArgs<ExtArgs>
+    consultationPrices?: boolean | Professional$consultationPricesArgs<ExtArgs>
     _count?: boolean | ProfessionalCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["professional"]>
 
@@ -9113,7 +9397,7 @@ export namespace Prisma {
     phone?: boolean
     professionalActivity?: boolean
     isActive?: boolean
-    profecionalType?: boolean
+    licenseNumber?: boolean
     userId?: boolean
     healthInsuranceProviderId?: boolean
     user?: boolean | Professional$userArgs<ExtArgs>
@@ -9131,7 +9415,7 @@ export namespace Prisma {
     phone?: boolean
     professionalActivity?: boolean
     isActive?: boolean
-    profecionalType?: boolean
+    licenseNumber?: boolean
     userId?: boolean
     healthInsuranceProviderId?: boolean
     user?: boolean | Professional$userArgs<ExtArgs>
@@ -9149,17 +9433,19 @@ export namespace Prisma {
     phone?: boolean
     professionalActivity?: boolean
     isActive?: boolean
-    profecionalType?: boolean
+    licenseNumber?: boolean
     userId?: boolean
     healthInsuranceProviderId?: boolean
   }
 
-  export type ProfessionalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "address" | "dni" | "cuil" | "birthday" | "phone" | "professionalActivity" | "isActive" | "profecionalType" | "userId" | "healthInsuranceProviderId", ExtArgs["result"]["professional"]>
+  export type ProfessionalOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "address" | "dni" | "cuil" | "birthday" | "phone" | "professionalActivity" | "isActive" | "licenseNumber" | "userId" | "healthInsuranceProviderId", ExtArgs["result"]["professional"]>
   export type ProfessionalInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Professional$userArgs<ExtArgs>
     events?: boolean | Professional$eventsArgs<ExtArgs>
     schedules?: boolean | Professional$schedulesArgs<ExtArgs>
+    professionalTypes?: boolean | Professional$professionalTypesArgs<ExtArgs>
     healthInsuranceProvider?: boolean | Professional$healthInsuranceProviderArgs<ExtArgs>
+    consultationPrices?: boolean | Professional$consultationPricesArgs<ExtArgs>
     _count?: boolean | ProfessionalCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProfessionalIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9177,7 +9463,9 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs> | null
       events: Prisma.$EventPayload<ExtArgs>[]
       schedules: Prisma.$SchedulePayload<ExtArgs>[]
+      professionalTypes: Prisma.$ProfessionalTypePayload<ExtArgs>[]
       healthInsuranceProvider: Prisma.$HealthInsuranceProviderPayload<ExtArgs> | null
+      consultationPrices: Prisma.$ConsultationPricePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: number
@@ -9190,7 +9478,7 @@ export namespace Prisma {
       phone: string
       professionalActivity: string
       isActive: boolean
-      profecionalType: string
+      licenseNumber: string
       userId: number | null
       healthInsuranceProviderId: number | null
     }, ExtArgs["result"]["professional"]>
@@ -9590,7 +9878,9 @@ export namespace Prisma {
     user<T extends Professional$userArgs<ExtArgs> = {}>(args?: Subset<T, Professional$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     events<T extends Professional$eventsArgs<ExtArgs> = {}>(args?: Subset<T, Professional$eventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     schedules<T extends Professional$schedulesArgs<ExtArgs> = {}>(args?: Subset<T, Professional$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    professionalTypes<T extends Professional$professionalTypesArgs<ExtArgs> = {}>(args?: Subset<T, Professional$professionalTypesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfessionalTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     healthInsuranceProvider<T extends Professional$healthInsuranceProviderArgs<ExtArgs> = {}>(args?: Subset<T, Professional$healthInsuranceProviderArgs<ExtArgs>>): Prisma__HealthInsuranceProviderClient<$Result.GetResult<Prisma.$HealthInsuranceProviderPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    consultationPrices<T extends Professional$consultationPricesArgs<ExtArgs> = {}>(args?: Subset<T, Professional$consultationPricesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsultationPricePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9630,7 +9920,7 @@ export namespace Prisma {
     readonly phone: FieldRef<"Professional", 'String'>
     readonly professionalActivity: FieldRef<"Professional", 'String'>
     readonly isActive: FieldRef<"Professional", 'Boolean'>
-    readonly profecionalType: FieldRef<"Professional", 'String'>
+    readonly licenseNumber: FieldRef<"Professional", 'String'>
     readonly userId: FieldRef<"Professional", 'Int'>
     readonly healthInsuranceProviderId: FieldRef<"Professional", 'Int'>
   }
@@ -10096,6 +10386,30 @@ export namespace Prisma {
   }
 
   /**
+   * Professional.professionalTypes
+   */
+  export type Professional$professionalTypesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalType
+     */
+    select?: ProfessionalTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalType
+     */
+    omit?: ProfessionalTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalTypeInclude<ExtArgs> | null
+    where?: ProfessionalTypeWhereInput
+    orderBy?: ProfessionalTypeOrderByWithRelationInput | ProfessionalTypeOrderByWithRelationInput[]
+    cursor?: ProfessionalTypeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProfessionalTypeScalarFieldEnum | ProfessionalTypeScalarFieldEnum[]
+  }
+
+  /**
    * Professional.healthInsuranceProvider
    */
   export type Professional$healthInsuranceProviderArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10115,6 +10429,30 @@ export namespace Prisma {
   }
 
   /**
+   * Professional.consultationPrices
+   */
+  export type Professional$consultationPricesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsultationPrice
+     */
+    select?: ConsultationPriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsultationPrice
+     */
+    omit?: ConsultationPriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsultationPriceInclude<ExtArgs> | null
+    where?: ConsultationPriceWhereInput
+    orderBy?: ConsultationPriceOrderByWithRelationInput | ConsultationPriceOrderByWithRelationInput[]
+    cursor?: ConsultationPriceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ConsultationPriceScalarFieldEnum | ConsultationPriceScalarFieldEnum[]
+  }
+
+  /**
    * Professional without action
    */
   export type ProfessionalDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10130,6 +10468,2210 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: ProfessionalInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ProfessionalType
+   */
+
+  export type AggregateProfessionalType = {
+    _count: ProfessionalTypeCountAggregateOutputType | null
+    _avg: ProfessionalTypeAvgAggregateOutputType | null
+    _sum: ProfessionalTypeSumAggregateOutputType | null
+    _min: ProfessionalTypeMinAggregateOutputType | null
+    _max: ProfessionalTypeMaxAggregateOutputType | null
+  }
+
+  export type ProfessionalTypeAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ProfessionalTypeSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type ProfessionalTypeMinAggregateOutputType = {
+    id: number | null
+    name: string | null
+    description: string | null
+  }
+
+  export type ProfessionalTypeMaxAggregateOutputType = {
+    id: number | null
+    name: string | null
+    description: string | null
+  }
+
+  export type ProfessionalTypeCountAggregateOutputType = {
+    id: number
+    name: number
+    description: number
+    _all: number
+  }
+
+
+  export type ProfessionalTypeAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type ProfessionalTypeSumAggregateInputType = {
+    id?: true
+  }
+
+  export type ProfessionalTypeMinAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+  }
+
+  export type ProfessionalTypeMaxAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+  }
+
+  export type ProfessionalTypeCountAggregateInputType = {
+    id?: true
+    name?: true
+    description?: true
+    _all?: true
+  }
+
+  export type ProfessionalTypeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProfessionalType to aggregate.
+     */
+    where?: ProfessionalTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProfessionalTypes to fetch.
+     */
+    orderBy?: ProfessionalTypeOrderByWithRelationInput | ProfessionalTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProfessionalTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProfessionalTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProfessionalTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProfessionalTypes
+    **/
+    _count?: true | ProfessionalTypeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ProfessionalTypeAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProfessionalTypeSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProfessionalTypeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProfessionalTypeMaxAggregateInputType
+  }
+
+  export type GetProfessionalTypeAggregateType<T extends ProfessionalTypeAggregateArgs> = {
+        [P in keyof T & keyof AggregateProfessionalType]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProfessionalType[P]>
+      : GetScalarType<T[P], AggregateProfessionalType[P]>
+  }
+
+
+
+
+  export type ProfessionalTypeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProfessionalTypeWhereInput
+    orderBy?: ProfessionalTypeOrderByWithAggregationInput | ProfessionalTypeOrderByWithAggregationInput[]
+    by: ProfessionalTypeScalarFieldEnum[] | ProfessionalTypeScalarFieldEnum
+    having?: ProfessionalTypeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProfessionalTypeCountAggregateInputType | true
+    _avg?: ProfessionalTypeAvgAggregateInputType
+    _sum?: ProfessionalTypeSumAggregateInputType
+    _min?: ProfessionalTypeMinAggregateInputType
+    _max?: ProfessionalTypeMaxAggregateInputType
+  }
+
+  export type ProfessionalTypeGroupByOutputType = {
+    id: number
+    name: string
+    description: string | null
+    _count: ProfessionalTypeCountAggregateOutputType | null
+    _avg: ProfessionalTypeAvgAggregateOutputType | null
+    _sum: ProfessionalTypeSumAggregateOutputType | null
+    _min: ProfessionalTypeMinAggregateOutputType | null
+    _max: ProfessionalTypeMaxAggregateOutputType | null
+  }
+
+  type GetProfessionalTypeGroupByPayload<T extends ProfessionalTypeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProfessionalTypeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProfessionalTypeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProfessionalTypeGroupByOutputType[P]>
+            : GetScalarType<T[P], ProfessionalTypeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProfessionalTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+    professionals?: boolean | ProfessionalType$professionalsArgs<ExtArgs>
+    _count?: boolean | ProfessionalTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["professionalType"]>
+
+  export type ProfessionalTypeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+  }, ExtArgs["result"]["professionalType"]>
+
+  export type ProfessionalTypeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    description?: boolean
+  }, ExtArgs["result"]["professionalType"]>
+
+  export type ProfessionalTypeSelectScalar = {
+    id?: boolean
+    name?: boolean
+    description?: boolean
+  }
+
+  export type ProfessionalTypeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description", ExtArgs["result"]["professionalType"]>
+  export type ProfessionalTypeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    professionals?: boolean | ProfessionalType$professionalsArgs<ExtArgs>
+    _count?: boolean | ProfessionalTypeCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ProfessionalTypeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ProfessionalTypeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $ProfessionalTypePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProfessionalType"
+    objects: {
+      professionals: Prisma.$ProfessionalPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      name: string
+      description: string | null
+    }, ExtArgs["result"]["professionalType"]>
+    composites: {}
+  }
+
+  type ProfessionalTypeGetPayload<S extends boolean | null | undefined | ProfessionalTypeDefaultArgs> = $Result.GetResult<Prisma.$ProfessionalTypePayload, S>
+
+  type ProfessionalTypeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProfessionalTypeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProfessionalTypeCountAggregateInputType | true
+    }
+
+  export interface ProfessionalTypeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProfessionalType'], meta: { name: 'ProfessionalType' } }
+    /**
+     * Find zero or one ProfessionalType that matches the filter.
+     * @param {ProfessionalTypeFindUniqueArgs} args - Arguments to find a ProfessionalType
+     * @example
+     * // Get one ProfessionalType
+     * const professionalType = await prisma.professionalType.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProfessionalTypeFindUniqueArgs>(args: SelectSubset<T, ProfessionalTypeFindUniqueArgs<ExtArgs>>): Prisma__ProfessionalTypeClient<$Result.GetResult<Prisma.$ProfessionalTypePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProfessionalType that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProfessionalTypeFindUniqueOrThrowArgs} args - Arguments to find a ProfessionalType
+     * @example
+     * // Get one ProfessionalType
+     * const professionalType = await prisma.professionalType.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProfessionalTypeFindUniqueOrThrowArgs>(args: SelectSubset<T, ProfessionalTypeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProfessionalTypeClient<$Result.GetResult<Prisma.$ProfessionalTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProfessionalType that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProfessionalTypeFindFirstArgs} args - Arguments to find a ProfessionalType
+     * @example
+     * // Get one ProfessionalType
+     * const professionalType = await prisma.professionalType.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProfessionalTypeFindFirstArgs>(args?: SelectSubset<T, ProfessionalTypeFindFirstArgs<ExtArgs>>): Prisma__ProfessionalTypeClient<$Result.GetResult<Prisma.$ProfessionalTypePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProfessionalType that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProfessionalTypeFindFirstOrThrowArgs} args - Arguments to find a ProfessionalType
+     * @example
+     * // Get one ProfessionalType
+     * const professionalType = await prisma.professionalType.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProfessionalTypeFindFirstOrThrowArgs>(args?: SelectSubset<T, ProfessionalTypeFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProfessionalTypeClient<$Result.GetResult<Prisma.$ProfessionalTypePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProfessionalTypes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProfessionalTypeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProfessionalTypes
+     * const professionalTypes = await prisma.professionalType.findMany()
+     * 
+     * // Get first 10 ProfessionalTypes
+     * const professionalTypes = await prisma.professionalType.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const professionalTypeWithIdOnly = await prisma.professionalType.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProfessionalTypeFindManyArgs>(args?: SelectSubset<T, ProfessionalTypeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfessionalTypePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProfessionalType.
+     * @param {ProfessionalTypeCreateArgs} args - Arguments to create a ProfessionalType.
+     * @example
+     * // Create one ProfessionalType
+     * const ProfessionalType = await prisma.professionalType.create({
+     *   data: {
+     *     // ... data to create a ProfessionalType
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProfessionalTypeCreateArgs>(args: SelectSubset<T, ProfessionalTypeCreateArgs<ExtArgs>>): Prisma__ProfessionalTypeClient<$Result.GetResult<Prisma.$ProfessionalTypePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProfessionalTypes.
+     * @param {ProfessionalTypeCreateManyArgs} args - Arguments to create many ProfessionalTypes.
+     * @example
+     * // Create many ProfessionalTypes
+     * const professionalType = await prisma.professionalType.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProfessionalTypeCreateManyArgs>(args?: SelectSubset<T, ProfessionalTypeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProfessionalTypes and returns the data saved in the database.
+     * @param {ProfessionalTypeCreateManyAndReturnArgs} args - Arguments to create many ProfessionalTypes.
+     * @example
+     * // Create many ProfessionalTypes
+     * const professionalType = await prisma.professionalType.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProfessionalTypes and only return the `id`
+     * const professionalTypeWithIdOnly = await prisma.professionalType.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProfessionalTypeCreateManyAndReturnArgs>(args?: SelectSubset<T, ProfessionalTypeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfessionalTypePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProfessionalType.
+     * @param {ProfessionalTypeDeleteArgs} args - Arguments to delete one ProfessionalType.
+     * @example
+     * // Delete one ProfessionalType
+     * const ProfessionalType = await prisma.professionalType.delete({
+     *   where: {
+     *     // ... filter to delete one ProfessionalType
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProfessionalTypeDeleteArgs>(args: SelectSubset<T, ProfessionalTypeDeleteArgs<ExtArgs>>): Prisma__ProfessionalTypeClient<$Result.GetResult<Prisma.$ProfessionalTypePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProfessionalType.
+     * @param {ProfessionalTypeUpdateArgs} args - Arguments to update one ProfessionalType.
+     * @example
+     * // Update one ProfessionalType
+     * const professionalType = await prisma.professionalType.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProfessionalTypeUpdateArgs>(args: SelectSubset<T, ProfessionalTypeUpdateArgs<ExtArgs>>): Prisma__ProfessionalTypeClient<$Result.GetResult<Prisma.$ProfessionalTypePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProfessionalTypes.
+     * @param {ProfessionalTypeDeleteManyArgs} args - Arguments to filter ProfessionalTypes to delete.
+     * @example
+     * // Delete a few ProfessionalTypes
+     * const { count } = await prisma.professionalType.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProfessionalTypeDeleteManyArgs>(args?: SelectSubset<T, ProfessionalTypeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProfessionalTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProfessionalTypeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProfessionalTypes
+     * const professionalType = await prisma.professionalType.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProfessionalTypeUpdateManyArgs>(args: SelectSubset<T, ProfessionalTypeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProfessionalTypes and returns the data updated in the database.
+     * @param {ProfessionalTypeUpdateManyAndReturnArgs} args - Arguments to update many ProfessionalTypes.
+     * @example
+     * // Update many ProfessionalTypes
+     * const professionalType = await prisma.professionalType.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProfessionalTypes and only return the `id`
+     * const professionalTypeWithIdOnly = await prisma.professionalType.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProfessionalTypeUpdateManyAndReturnArgs>(args: SelectSubset<T, ProfessionalTypeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfessionalTypePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProfessionalType.
+     * @param {ProfessionalTypeUpsertArgs} args - Arguments to update or create a ProfessionalType.
+     * @example
+     * // Update or create a ProfessionalType
+     * const professionalType = await prisma.professionalType.upsert({
+     *   create: {
+     *     // ... data to create a ProfessionalType
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProfessionalType we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProfessionalTypeUpsertArgs>(args: SelectSubset<T, ProfessionalTypeUpsertArgs<ExtArgs>>): Prisma__ProfessionalTypeClient<$Result.GetResult<Prisma.$ProfessionalTypePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProfessionalTypes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProfessionalTypeCountArgs} args - Arguments to filter ProfessionalTypes to count.
+     * @example
+     * // Count the number of ProfessionalTypes
+     * const count = await prisma.professionalType.count({
+     *   where: {
+     *     // ... the filter for the ProfessionalTypes we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProfessionalTypeCountArgs>(
+      args?: Subset<T, ProfessionalTypeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProfessionalTypeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProfessionalType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProfessionalTypeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProfessionalTypeAggregateArgs>(args: Subset<T, ProfessionalTypeAggregateArgs>): Prisma.PrismaPromise<GetProfessionalTypeAggregateType<T>>
+
+    /**
+     * Group by ProfessionalType.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProfessionalTypeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProfessionalTypeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProfessionalTypeGroupByArgs['orderBy'] }
+        : { orderBy?: ProfessionalTypeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProfessionalTypeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProfessionalTypeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProfessionalType model
+   */
+  readonly fields: ProfessionalTypeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProfessionalType.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProfessionalTypeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    professionals<T extends ProfessionalType$professionalsArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalType$professionalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProfessionalPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProfessionalType model
+   */
+  interface ProfessionalTypeFieldRefs {
+    readonly id: FieldRef<"ProfessionalType", 'Int'>
+    readonly name: FieldRef<"ProfessionalType", 'String'>
+    readonly description: FieldRef<"ProfessionalType", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProfessionalType findUnique
+   */
+  export type ProfessionalTypeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalType
+     */
+    select?: ProfessionalTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalType
+     */
+    omit?: ProfessionalTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ProfessionalType to fetch.
+     */
+    where: ProfessionalTypeWhereUniqueInput
+  }
+
+  /**
+   * ProfessionalType findUniqueOrThrow
+   */
+  export type ProfessionalTypeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalType
+     */
+    select?: ProfessionalTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalType
+     */
+    omit?: ProfessionalTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ProfessionalType to fetch.
+     */
+    where: ProfessionalTypeWhereUniqueInput
+  }
+
+  /**
+   * ProfessionalType findFirst
+   */
+  export type ProfessionalTypeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalType
+     */
+    select?: ProfessionalTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalType
+     */
+    omit?: ProfessionalTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ProfessionalType to fetch.
+     */
+    where?: ProfessionalTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProfessionalTypes to fetch.
+     */
+    orderBy?: ProfessionalTypeOrderByWithRelationInput | ProfessionalTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProfessionalTypes.
+     */
+    cursor?: ProfessionalTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProfessionalTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProfessionalTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProfessionalTypes.
+     */
+    distinct?: ProfessionalTypeScalarFieldEnum | ProfessionalTypeScalarFieldEnum[]
+  }
+
+  /**
+   * ProfessionalType findFirstOrThrow
+   */
+  export type ProfessionalTypeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalType
+     */
+    select?: ProfessionalTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalType
+     */
+    omit?: ProfessionalTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ProfessionalType to fetch.
+     */
+    where?: ProfessionalTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProfessionalTypes to fetch.
+     */
+    orderBy?: ProfessionalTypeOrderByWithRelationInput | ProfessionalTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProfessionalTypes.
+     */
+    cursor?: ProfessionalTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProfessionalTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProfessionalTypes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProfessionalTypes.
+     */
+    distinct?: ProfessionalTypeScalarFieldEnum | ProfessionalTypeScalarFieldEnum[]
+  }
+
+  /**
+   * ProfessionalType findMany
+   */
+  export type ProfessionalTypeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalType
+     */
+    select?: ProfessionalTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalType
+     */
+    omit?: ProfessionalTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalTypeInclude<ExtArgs> | null
+    /**
+     * Filter, which ProfessionalTypes to fetch.
+     */
+    where?: ProfessionalTypeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProfessionalTypes to fetch.
+     */
+    orderBy?: ProfessionalTypeOrderByWithRelationInput | ProfessionalTypeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProfessionalTypes.
+     */
+    cursor?: ProfessionalTypeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProfessionalTypes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProfessionalTypes.
+     */
+    skip?: number
+    distinct?: ProfessionalTypeScalarFieldEnum | ProfessionalTypeScalarFieldEnum[]
+  }
+
+  /**
+   * ProfessionalType create
+   */
+  export type ProfessionalTypeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalType
+     */
+    select?: ProfessionalTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalType
+     */
+    omit?: ProfessionalTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ProfessionalType.
+     */
+    data: XOR<ProfessionalTypeCreateInput, ProfessionalTypeUncheckedCreateInput>
+  }
+
+  /**
+   * ProfessionalType createMany
+   */
+  export type ProfessionalTypeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProfessionalTypes.
+     */
+    data: ProfessionalTypeCreateManyInput | ProfessionalTypeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProfessionalType createManyAndReturn
+   */
+  export type ProfessionalTypeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalType
+     */
+    select?: ProfessionalTypeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalType
+     */
+    omit?: ProfessionalTypeOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProfessionalTypes.
+     */
+    data: ProfessionalTypeCreateManyInput | ProfessionalTypeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProfessionalType update
+   */
+  export type ProfessionalTypeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalType
+     */
+    select?: ProfessionalTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalType
+     */
+    omit?: ProfessionalTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalTypeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ProfessionalType.
+     */
+    data: XOR<ProfessionalTypeUpdateInput, ProfessionalTypeUncheckedUpdateInput>
+    /**
+     * Choose, which ProfessionalType to update.
+     */
+    where: ProfessionalTypeWhereUniqueInput
+  }
+
+  /**
+   * ProfessionalType updateMany
+   */
+  export type ProfessionalTypeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProfessionalTypes.
+     */
+    data: XOR<ProfessionalTypeUpdateManyMutationInput, ProfessionalTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which ProfessionalTypes to update
+     */
+    where?: ProfessionalTypeWhereInput
+    /**
+     * Limit how many ProfessionalTypes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProfessionalType updateManyAndReturn
+   */
+  export type ProfessionalTypeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalType
+     */
+    select?: ProfessionalTypeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalType
+     */
+    omit?: ProfessionalTypeOmit<ExtArgs> | null
+    /**
+     * The data used to update ProfessionalTypes.
+     */
+    data: XOR<ProfessionalTypeUpdateManyMutationInput, ProfessionalTypeUncheckedUpdateManyInput>
+    /**
+     * Filter which ProfessionalTypes to update
+     */
+    where?: ProfessionalTypeWhereInput
+    /**
+     * Limit how many ProfessionalTypes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProfessionalType upsert
+   */
+  export type ProfessionalTypeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalType
+     */
+    select?: ProfessionalTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalType
+     */
+    omit?: ProfessionalTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalTypeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ProfessionalType to update in case it exists.
+     */
+    where: ProfessionalTypeWhereUniqueInput
+    /**
+     * In case the ProfessionalType found by the `where` argument doesn't exist, create a new ProfessionalType with this data.
+     */
+    create: XOR<ProfessionalTypeCreateInput, ProfessionalTypeUncheckedCreateInput>
+    /**
+     * In case the ProfessionalType was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProfessionalTypeUpdateInput, ProfessionalTypeUncheckedUpdateInput>
+  }
+
+  /**
+   * ProfessionalType delete
+   */
+  export type ProfessionalTypeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalType
+     */
+    select?: ProfessionalTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalType
+     */
+    omit?: ProfessionalTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalTypeInclude<ExtArgs> | null
+    /**
+     * Filter which ProfessionalType to delete.
+     */
+    where: ProfessionalTypeWhereUniqueInput
+  }
+
+  /**
+   * ProfessionalType deleteMany
+   */
+  export type ProfessionalTypeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProfessionalTypes to delete
+     */
+    where?: ProfessionalTypeWhereInput
+    /**
+     * Limit how many ProfessionalTypes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProfessionalType.professionals
+   */
+  export type ProfessionalType$professionalsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Professional
+     */
+    select?: ProfessionalSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Professional
+     */
+    omit?: ProfessionalOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalInclude<ExtArgs> | null
+    where?: ProfessionalWhereInput
+    orderBy?: ProfessionalOrderByWithRelationInput | ProfessionalOrderByWithRelationInput[]
+    cursor?: ProfessionalWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ProfessionalScalarFieldEnum | ProfessionalScalarFieldEnum[]
+  }
+
+  /**
+   * ProfessionalType without action
+   */
+  export type ProfessionalTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProfessionalType
+     */
+    select?: ProfessionalTypeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProfessionalType
+     */
+    omit?: ProfessionalTypeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ProfessionalTypeInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ConsultationPrice
+   */
+
+  export type AggregateConsultationPrice = {
+    _count: ConsultationPriceCountAggregateOutputType | null
+    _avg: ConsultationPriceAvgAggregateOutputType | null
+    _sum: ConsultationPriceSumAggregateOutputType | null
+    _min: ConsultationPriceMinAggregateOutputType | null
+    _max: ConsultationPriceMaxAggregateOutputType | null
+  }
+
+  export type ConsultationPriceAvgAggregateOutputType = {
+    id: number | null
+    price: number | null
+    professionalId: number | null
+  }
+
+  export type ConsultationPriceSumAggregateOutputType = {
+    id: number | null
+    price: number | null
+    professionalId: number | null
+  }
+
+  export type ConsultationPriceMinAggregateOutputType = {
+    id: number | null
+    price: number | null
+    currency: string | null
+    sessionType: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    professionalId: number | null
+  }
+
+  export type ConsultationPriceMaxAggregateOutputType = {
+    id: number | null
+    price: number | null
+    currency: string | null
+    sessionType: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+    professionalId: number | null
+  }
+
+  export type ConsultationPriceCountAggregateOutputType = {
+    id: number
+    price: number
+    currency: number
+    sessionType: number
+    createdAt: number
+    updatedAt: number
+    professionalId: number
+    _all: number
+  }
+
+
+  export type ConsultationPriceAvgAggregateInputType = {
+    id?: true
+    price?: true
+    professionalId?: true
+  }
+
+  export type ConsultationPriceSumAggregateInputType = {
+    id?: true
+    price?: true
+    professionalId?: true
+  }
+
+  export type ConsultationPriceMinAggregateInputType = {
+    id?: true
+    price?: true
+    currency?: true
+    sessionType?: true
+    createdAt?: true
+    updatedAt?: true
+    professionalId?: true
+  }
+
+  export type ConsultationPriceMaxAggregateInputType = {
+    id?: true
+    price?: true
+    currency?: true
+    sessionType?: true
+    createdAt?: true
+    updatedAt?: true
+    professionalId?: true
+  }
+
+  export type ConsultationPriceCountAggregateInputType = {
+    id?: true
+    price?: true
+    currency?: true
+    sessionType?: true
+    createdAt?: true
+    updatedAt?: true
+    professionalId?: true
+    _all?: true
+  }
+
+  export type ConsultationPriceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConsultationPrice to aggregate.
+     */
+    where?: ConsultationPriceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConsultationPrices to fetch.
+     */
+    orderBy?: ConsultationPriceOrderByWithRelationInput | ConsultationPriceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ConsultationPriceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConsultationPrices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConsultationPrices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ConsultationPrices
+    **/
+    _count?: true | ConsultationPriceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ConsultationPriceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ConsultationPriceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ConsultationPriceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ConsultationPriceMaxAggregateInputType
+  }
+
+  export type GetConsultationPriceAggregateType<T extends ConsultationPriceAggregateArgs> = {
+        [P in keyof T & keyof AggregateConsultationPrice]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateConsultationPrice[P]>
+      : GetScalarType<T[P], AggregateConsultationPrice[P]>
+  }
+
+
+
+
+  export type ConsultationPriceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ConsultationPriceWhereInput
+    orderBy?: ConsultationPriceOrderByWithAggregationInput | ConsultationPriceOrderByWithAggregationInput[]
+    by: ConsultationPriceScalarFieldEnum[] | ConsultationPriceScalarFieldEnum
+    having?: ConsultationPriceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ConsultationPriceCountAggregateInputType | true
+    _avg?: ConsultationPriceAvgAggregateInputType
+    _sum?: ConsultationPriceSumAggregateInputType
+    _min?: ConsultationPriceMinAggregateInputType
+    _max?: ConsultationPriceMaxAggregateInputType
+  }
+
+  export type ConsultationPriceGroupByOutputType = {
+    id: number
+    price: number
+    currency: string
+    sessionType: string
+    createdAt: Date
+    updatedAt: Date
+    professionalId: number
+    _count: ConsultationPriceCountAggregateOutputType | null
+    _avg: ConsultationPriceAvgAggregateOutputType | null
+    _sum: ConsultationPriceSumAggregateOutputType | null
+    _min: ConsultationPriceMinAggregateOutputType | null
+    _max: ConsultationPriceMaxAggregateOutputType | null
+  }
+
+  type GetConsultationPriceGroupByPayload<T extends ConsultationPriceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ConsultationPriceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ConsultationPriceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ConsultationPriceGroupByOutputType[P]>
+            : GetScalarType<T[P], ConsultationPriceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ConsultationPriceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    price?: boolean
+    currency?: boolean
+    sessionType?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    professionalId?: boolean
+    professional?: boolean | ProfessionalDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["consultationPrice"]>
+
+  export type ConsultationPriceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    price?: boolean
+    currency?: boolean
+    sessionType?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    professionalId?: boolean
+    professional?: boolean | ProfessionalDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["consultationPrice"]>
+
+  export type ConsultationPriceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    price?: boolean
+    currency?: boolean
+    sessionType?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    professionalId?: boolean
+    professional?: boolean | ProfessionalDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["consultationPrice"]>
+
+  export type ConsultationPriceSelectScalar = {
+    id?: boolean
+    price?: boolean
+    currency?: boolean
+    sessionType?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    professionalId?: boolean
+  }
+
+  export type ConsultationPriceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "price" | "currency" | "sessionType" | "createdAt" | "updatedAt" | "professionalId", ExtArgs["result"]["consultationPrice"]>
+  export type ConsultationPriceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    professional?: boolean | ProfessionalDefaultArgs<ExtArgs>
+  }
+  export type ConsultationPriceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    professional?: boolean | ProfessionalDefaultArgs<ExtArgs>
+  }
+  export type ConsultationPriceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    professional?: boolean | ProfessionalDefaultArgs<ExtArgs>
+  }
+
+  export type $ConsultationPricePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ConsultationPrice"
+    objects: {
+      professional: Prisma.$ProfessionalPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      price: number
+      currency: string
+      sessionType: string
+      createdAt: Date
+      updatedAt: Date
+      professionalId: number
+    }, ExtArgs["result"]["consultationPrice"]>
+    composites: {}
+  }
+
+  type ConsultationPriceGetPayload<S extends boolean | null | undefined | ConsultationPriceDefaultArgs> = $Result.GetResult<Prisma.$ConsultationPricePayload, S>
+
+  type ConsultationPriceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ConsultationPriceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ConsultationPriceCountAggregateInputType | true
+    }
+
+  export interface ConsultationPriceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ConsultationPrice'], meta: { name: 'ConsultationPrice' } }
+    /**
+     * Find zero or one ConsultationPrice that matches the filter.
+     * @param {ConsultationPriceFindUniqueArgs} args - Arguments to find a ConsultationPrice
+     * @example
+     * // Get one ConsultationPrice
+     * const consultationPrice = await prisma.consultationPrice.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ConsultationPriceFindUniqueArgs>(args: SelectSubset<T, ConsultationPriceFindUniqueArgs<ExtArgs>>): Prisma__ConsultationPriceClient<$Result.GetResult<Prisma.$ConsultationPricePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ConsultationPrice that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ConsultationPriceFindUniqueOrThrowArgs} args - Arguments to find a ConsultationPrice
+     * @example
+     * // Get one ConsultationPrice
+     * const consultationPrice = await prisma.consultationPrice.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ConsultationPriceFindUniqueOrThrowArgs>(args: SelectSubset<T, ConsultationPriceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ConsultationPriceClient<$Result.GetResult<Prisma.$ConsultationPricePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConsultationPrice that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsultationPriceFindFirstArgs} args - Arguments to find a ConsultationPrice
+     * @example
+     * // Get one ConsultationPrice
+     * const consultationPrice = await prisma.consultationPrice.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ConsultationPriceFindFirstArgs>(args?: SelectSubset<T, ConsultationPriceFindFirstArgs<ExtArgs>>): Prisma__ConsultationPriceClient<$Result.GetResult<Prisma.$ConsultationPricePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ConsultationPrice that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsultationPriceFindFirstOrThrowArgs} args - Arguments to find a ConsultationPrice
+     * @example
+     * // Get one ConsultationPrice
+     * const consultationPrice = await prisma.consultationPrice.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ConsultationPriceFindFirstOrThrowArgs>(args?: SelectSubset<T, ConsultationPriceFindFirstOrThrowArgs<ExtArgs>>): Prisma__ConsultationPriceClient<$Result.GetResult<Prisma.$ConsultationPricePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ConsultationPrices that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsultationPriceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ConsultationPrices
+     * const consultationPrices = await prisma.consultationPrice.findMany()
+     * 
+     * // Get first 10 ConsultationPrices
+     * const consultationPrices = await prisma.consultationPrice.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const consultationPriceWithIdOnly = await prisma.consultationPrice.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ConsultationPriceFindManyArgs>(args?: SelectSubset<T, ConsultationPriceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsultationPricePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ConsultationPrice.
+     * @param {ConsultationPriceCreateArgs} args - Arguments to create a ConsultationPrice.
+     * @example
+     * // Create one ConsultationPrice
+     * const ConsultationPrice = await prisma.consultationPrice.create({
+     *   data: {
+     *     // ... data to create a ConsultationPrice
+     *   }
+     * })
+     * 
+     */
+    create<T extends ConsultationPriceCreateArgs>(args: SelectSubset<T, ConsultationPriceCreateArgs<ExtArgs>>): Prisma__ConsultationPriceClient<$Result.GetResult<Prisma.$ConsultationPricePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ConsultationPrices.
+     * @param {ConsultationPriceCreateManyArgs} args - Arguments to create many ConsultationPrices.
+     * @example
+     * // Create many ConsultationPrices
+     * const consultationPrice = await prisma.consultationPrice.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ConsultationPriceCreateManyArgs>(args?: SelectSubset<T, ConsultationPriceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ConsultationPrices and returns the data saved in the database.
+     * @param {ConsultationPriceCreateManyAndReturnArgs} args - Arguments to create many ConsultationPrices.
+     * @example
+     * // Create many ConsultationPrices
+     * const consultationPrice = await prisma.consultationPrice.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ConsultationPrices and only return the `id`
+     * const consultationPriceWithIdOnly = await prisma.consultationPrice.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ConsultationPriceCreateManyAndReturnArgs>(args?: SelectSubset<T, ConsultationPriceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsultationPricePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ConsultationPrice.
+     * @param {ConsultationPriceDeleteArgs} args - Arguments to delete one ConsultationPrice.
+     * @example
+     * // Delete one ConsultationPrice
+     * const ConsultationPrice = await prisma.consultationPrice.delete({
+     *   where: {
+     *     // ... filter to delete one ConsultationPrice
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ConsultationPriceDeleteArgs>(args: SelectSubset<T, ConsultationPriceDeleteArgs<ExtArgs>>): Prisma__ConsultationPriceClient<$Result.GetResult<Prisma.$ConsultationPricePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ConsultationPrice.
+     * @param {ConsultationPriceUpdateArgs} args - Arguments to update one ConsultationPrice.
+     * @example
+     * // Update one ConsultationPrice
+     * const consultationPrice = await prisma.consultationPrice.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ConsultationPriceUpdateArgs>(args: SelectSubset<T, ConsultationPriceUpdateArgs<ExtArgs>>): Prisma__ConsultationPriceClient<$Result.GetResult<Prisma.$ConsultationPricePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ConsultationPrices.
+     * @param {ConsultationPriceDeleteManyArgs} args - Arguments to filter ConsultationPrices to delete.
+     * @example
+     * // Delete a few ConsultationPrices
+     * const { count } = await prisma.consultationPrice.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ConsultationPriceDeleteManyArgs>(args?: SelectSubset<T, ConsultationPriceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConsultationPrices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsultationPriceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ConsultationPrices
+     * const consultationPrice = await prisma.consultationPrice.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ConsultationPriceUpdateManyArgs>(args: SelectSubset<T, ConsultationPriceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ConsultationPrices and returns the data updated in the database.
+     * @param {ConsultationPriceUpdateManyAndReturnArgs} args - Arguments to update many ConsultationPrices.
+     * @example
+     * // Update many ConsultationPrices
+     * const consultationPrice = await prisma.consultationPrice.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ConsultationPrices and only return the `id`
+     * const consultationPriceWithIdOnly = await prisma.consultationPrice.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ConsultationPriceUpdateManyAndReturnArgs>(args: SelectSubset<T, ConsultationPriceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConsultationPricePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ConsultationPrice.
+     * @param {ConsultationPriceUpsertArgs} args - Arguments to update or create a ConsultationPrice.
+     * @example
+     * // Update or create a ConsultationPrice
+     * const consultationPrice = await prisma.consultationPrice.upsert({
+     *   create: {
+     *     // ... data to create a ConsultationPrice
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ConsultationPrice we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ConsultationPriceUpsertArgs>(args: SelectSubset<T, ConsultationPriceUpsertArgs<ExtArgs>>): Prisma__ConsultationPriceClient<$Result.GetResult<Prisma.$ConsultationPricePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ConsultationPrices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsultationPriceCountArgs} args - Arguments to filter ConsultationPrices to count.
+     * @example
+     * // Count the number of ConsultationPrices
+     * const count = await prisma.consultationPrice.count({
+     *   where: {
+     *     // ... the filter for the ConsultationPrices we want to count
+     *   }
+     * })
+    **/
+    count<T extends ConsultationPriceCountArgs>(
+      args?: Subset<T, ConsultationPriceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ConsultationPriceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ConsultationPrice.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsultationPriceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ConsultationPriceAggregateArgs>(args: Subset<T, ConsultationPriceAggregateArgs>): Prisma.PrismaPromise<GetConsultationPriceAggregateType<T>>
+
+    /**
+     * Group by ConsultationPrice.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ConsultationPriceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ConsultationPriceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ConsultationPriceGroupByArgs['orderBy'] }
+        : { orderBy?: ConsultationPriceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ConsultationPriceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetConsultationPriceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ConsultationPrice model
+   */
+  readonly fields: ConsultationPriceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ConsultationPrice.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ConsultationPriceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    professional<T extends ProfessionalDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProfessionalDefaultArgs<ExtArgs>>): Prisma__ProfessionalClient<$Result.GetResult<Prisma.$ProfessionalPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ConsultationPrice model
+   */
+  interface ConsultationPriceFieldRefs {
+    readonly id: FieldRef<"ConsultationPrice", 'Int'>
+    readonly price: FieldRef<"ConsultationPrice", 'Float'>
+    readonly currency: FieldRef<"ConsultationPrice", 'String'>
+    readonly sessionType: FieldRef<"ConsultationPrice", 'String'>
+    readonly createdAt: FieldRef<"ConsultationPrice", 'DateTime'>
+    readonly updatedAt: FieldRef<"ConsultationPrice", 'DateTime'>
+    readonly professionalId: FieldRef<"ConsultationPrice", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ConsultationPrice findUnique
+   */
+  export type ConsultationPriceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsultationPrice
+     */
+    select?: ConsultationPriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsultationPrice
+     */
+    omit?: ConsultationPriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsultationPriceInclude<ExtArgs> | null
+    /**
+     * Filter, which ConsultationPrice to fetch.
+     */
+    where: ConsultationPriceWhereUniqueInput
+  }
+
+  /**
+   * ConsultationPrice findUniqueOrThrow
+   */
+  export type ConsultationPriceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsultationPrice
+     */
+    select?: ConsultationPriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsultationPrice
+     */
+    omit?: ConsultationPriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsultationPriceInclude<ExtArgs> | null
+    /**
+     * Filter, which ConsultationPrice to fetch.
+     */
+    where: ConsultationPriceWhereUniqueInput
+  }
+
+  /**
+   * ConsultationPrice findFirst
+   */
+  export type ConsultationPriceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsultationPrice
+     */
+    select?: ConsultationPriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsultationPrice
+     */
+    omit?: ConsultationPriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsultationPriceInclude<ExtArgs> | null
+    /**
+     * Filter, which ConsultationPrice to fetch.
+     */
+    where?: ConsultationPriceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConsultationPrices to fetch.
+     */
+    orderBy?: ConsultationPriceOrderByWithRelationInput | ConsultationPriceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConsultationPrices.
+     */
+    cursor?: ConsultationPriceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConsultationPrices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConsultationPrices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConsultationPrices.
+     */
+    distinct?: ConsultationPriceScalarFieldEnum | ConsultationPriceScalarFieldEnum[]
+  }
+
+  /**
+   * ConsultationPrice findFirstOrThrow
+   */
+  export type ConsultationPriceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsultationPrice
+     */
+    select?: ConsultationPriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsultationPrice
+     */
+    omit?: ConsultationPriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsultationPriceInclude<ExtArgs> | null
+    /**
+     * Filter, which ConsultationPrice to fetch.
+     */
+    where?: ConsultationPriceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConsultationPrices to fetch.
+     */
+    orderBy?: ConsultationPriceOrderByWithRelationInput | ConsultationPriceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ConsultationPrices.
+     */
+    cursor?: ConsultationPriceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConsultationPrices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConsultationPrices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ConsultationPrices.
+     */
+    distinct?: ConsultationPriceScalarFieldEnum | ConsultationPriceScalarFieldEnum[]
+  }
+
+  /**
+   * ConsultationPrice findMany
+   */
+  export type ConsultationPriceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsultationPrice
+     */
+    select?: ConsultationPriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsultationPrice
+     */
+    omit?: ConsultationPriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsultationPriceInclude<ExtArgs> | null
+    /**
+     * Filter, which ConsultationPrices to fetch.
+     */
+    where?: ConsultationPriceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ConsultationPrices to fetch.
+     */
+    orderBy?: ConsultationPriceOrderByWithRelationInput | ConsultationPriceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ConsultationPrices.
+     */
+    cursor?: ConsultationPriceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ConsultationPrices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ConsultationPrices.
+     */
+    skip?: number
+    distinct?: ConsultationPriceScalarFieldEnum | ConsultationPriceScalarFieldEnum[]
+  }
+
+  /**
+   * ConsultationPrice create
+   */
+  export type ConsultationPriceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsultationPrice
+     */
+    select?: ConsultationPriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsultationPrice
+     */
+    omit?: ConsultationPriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsultationPriceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ConsultationPrice.
+     */
+    data: XOR<ConsultationPriceCreateInput, ConsultationPriceUncheckedCreateInput>
+  }
+
+  /**
+   * ConsultationPrice createMany
+   */
+  export type ConsultationPriceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ConsultationPrices.
+     */
+    data: ConsultationPriceCreateManyInput | ConsultationPriceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ConsultationPrice createManyAndReturn
+   */
+  export type ConsultationPriceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsultationPrice
+     */
+    select?: ConsultationPriceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsultationPrice
+     */
+    omit?: ConsultationPriceOmit<ExtArgs> | null
+    /**
+     * The data used to create many ConsultationPrices.
+     */
+    data: ConsultationPriceCreateManyInput | ConsultationPriceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsultationPriceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ConsultationPrice update
+   */
+  export type ConsultationPriceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsultationPrice
+     */
+    select?: ConsultationPriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsultationPrice
+     */
+    omit?: ConsultationPriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsultationPriceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ConsultationPrice.
+     */
+    data: XOR<ConsultationPriceUpdateInput, ConsultationPriceUncheckedUpdateInput>
+    /**
+     * Choose, which ConsultationPrice to update.
+     */
+    where: ConsultationPriceWhereUniqueInput
+  }
+
+  /**
+   * ConsultationPrice updateMany
+   */
+  export type ConsultationPriceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ConsultationPrices.
+     */
+    data: XOR<ConsultationPriceUpdateManyMutationInput, ConsultationPriceUncheckedUpdateManyInput>
+    /**
+     * Filter which ConsultationPrices to update
+     */
+    where?: ConsultationPriceWhereInput
+    /**
+     * Limit how many ConsultationPrices to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConsultationPrice updateManyAndReturn
+   */
+  export type ConsultationPriceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsultationPrice
+     */
+    select?: ConsultationPriceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsultationPrice
+     */
+    omit?: ConsultationPriceOmit<ExtArgs> | null
+    /**
+     * The data used to update ConsultationPrices.
+     */
+    data: XOR<ConsultationPriceUpdateManyMutationInput, ConsultationPriceUncheckedUpdateManyInput>
+    /**
+     * Filter which ConsultationPrices to update
+     */
+    where?: ConsultationPriceWhereInput
+    /**
+     * Limit how many ConsultationPrices to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsultationPriceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ConsultationPrice upsert
+   */
+  export type ConsultationPriceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsultationPrice
+     */
+    select?: ConsultationPriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsultationPrice
+     */
+    omit?: ConsultationPriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsultationPriceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ConsultationPrice to update in case it exists.
+     */
+    where: ConsultationPriceWhereUniqueInput
+    /**
+     * In case the ConsultationPrice found by the `where` argument doesn't exist, create a new ConsultationPrice with this data.
+     */
+    create: XOR<ConsultationPriceCreateInput, ConsultationPriceUncheckedCreateInput>
+    /**
+     * In case the ConsultationPrice was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ConsultationPriceUpdateInput, ConsultationPriceUncheckedUpdateInput>
+  }
+
+  /**
+   * ConsultationPrice delete
+   */
+  export type ConsultationPriceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsultationPrice
+     */
+    select?: ConsultationPriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsultationPrice
+     */
+    omit?: ConsultationPriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsultationPriceInclude<ExtArgs> | null
+    /**
+     * Filter which ConsultationPrice to delete.
+     */
+    where: ConsultationPriceWhereUniqueInput
+  }
+
+  /**
+   * ConsultationPrice deleteMany
+   */
+  export type ConsultationPriceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ConsultationPrices to delete
+     */
+    where?: ConsultationPriceWhereInput
+    /**
+     * Limit how many ConsultationPrices to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ConsultationPrice without action
+   */
+  export type ConsultationPriceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ConsultationPrice
+     */
+    select?: ConsultationPriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ConsultationPrice
+     */
+    omit?: ConsultationPriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConsultationPriceInclude<ExtArgs> | null
   }
 
 
@@ -14736,14 +17278,17 @@ export namespace Prisma {
 
   export type PaymentAvgAggregateOutputType = {
     id: number | null
+    amount: number | null
   }
 
   export type PaymentSumAggregateOutputType = {
     id: number | null
+    amount: number | null
   }
 
   export type PaymentMinAggregateOutputType = {
     id: number | null
+    amount: number | null
     paymentType: $Enums.PaymentType | null
     description: string | null
     createdAt: Date | null
@@ -14751,6 +17296,7 @@ export namespace Prisma {
 
   export type PaymentMaxAggregateOutputType = {
     id: number | null
+    amount: number | null
     paymentType: $Enums.PaymentType | null
     description: string | null
     createdAt: Date | null
@@ -14758,6 +17304,7 @@ export namespace Prisma {
 
   export type PaymentCountAggregateOutputType = {
     id: number
+    amount: number
     paymentType: number
     description: number
     createdAt: number
@@ -14767,14 +17314,17 @@ export namespace Prisma {
 
   export type PaymentAvgAggregateInputType = {
     id?: true
+    amount?: true
   }
 
   export type PaymentSumAggregateInputType = {
     id?: true
+    amount?: true
   }
 
   export type PaymentMinAggregateInputType = {
     id?: true
+    amount?: true
     paymentType?: true
     description?: true
     createdAt?: true
@@ -14782,6 +17332,7 @@ export namespace Prisma {
 
   export type PaymentMaxAggregateInputType = {
     id?: true
+    amount?: true
     paymentType?: true
     description?: true
     createdAt?: true
@@ -14789,6 +17340,7 @@ export namespace Prisma {
 
   export type PaymentCountAggregateInputType = {
     id?: true
+    amount?: true
     paymentType?: true
     description?: true
     createdAt?: true
@@ -14883,6 +17435,7 @@ export namespace Prisma {
 
   export type PaymentGroupByOutputType = {
     id: number
+    amount: number
     paymentType: $Enums.PaymentType
     description: string | null
     createdAt: Date
@@ -14909,6 +17462,7 @@ export namespace Prisma {
 
   export type PaymentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    amount?: boolean
     paymentType?: boolean
     description?: boolean
     createdAt?: boolean
@@ -14916,6 +17470,7 @@ export namespace Prisma {
 
   export type PaymentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    amount?: boolean
     paymentType?: boolean
     description?: boolean
     createdAt?: boolean
@@ -14923,6 +17478,7 @@ export namespace Prisma {
 
   export type PaymentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    amount?: boolean
     paymentType?: boolean
     description?: boolean
     createdAt?: boolean
@@ -14930,18 +17486,20 @@ export namespace Prisma {
 
   export type PaymentSelectScalar = {
     id?: boolean
+    amount?: boolean
     paymentType?: boolean
     description?: boolean
     createdAt?: boolean
   }
 
-  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "paymentType" | "description" | "createdAt", ExtArgs["result"]["payment"]>
+  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "amount" | "paymentType" | "description" | "createdAt", ExtArgs["result"]["payment"]>
 
   export type $PaymentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Payment"
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: number
+      amount: number
       paymentType: $Enums.PaymentType
       description: string | null
       createdAt: Date
@@ -15369,6 +17927,7 @@ export namespace Prisma {
    */
   interface PaymentFieldRefs {
     readonly id: FieldRef<"Payment", 'Int'>
+    readonly amount: FieldRef<"Payment", 'Int'>
     readonly paymentType: FieldRef<"Payment", 'PaymentType'>
     readonly description: FieldRef<"Payment", 'String'>
     readonly createdAt: FieldRef<"Payment", 'DateTime'>
@@ -18008,15 +20567,19 @@ export namespace Prisma {
 
   export const HealthInsuranceProviderScalarFieldEnum: {
     id: 'id',
+    nickName: 'nickName',
     name: 'name',
     description: 'description',
     contractor: 'contractor',
     subcontractor: 'subcontractor',
     cuit: 'cuit',
     address: 'address',
-    email: 'email',
     phone: 'phone',
-    contact: 'contact'
+    contact: 'contact',
+    webside: 'webside',
+    email: 'email',
+    email2: 'email2',
+    email3: 'email3'
   };
 
   export type HealthInsuranceProviderScalarFieldEnum = (typeof HealthInsuranceProviderScalarFieldEnum)[keyof typeof HealthInsuranceProviderScalarFieldEnum]
@@ -18068,12 +20631,34 @@ export namespace Prisma {
     phone: 'phone',
     professionalActivity: 'professionalActivity',
     isActive: 'isActive',
-    profecionalType: 'profecionalType',
+    licenseNumber: 'licenseNumber',
     userId: 'userId',
     healthInsuranceProviderId: 'healthInsuranceProviderId'
   };
 
   export type ProfessionalScalarFieldEnum = (typeof ProfessionalScalarFieldEnum)[keyof typeof ProfessionalScalarFieldEnum]
+
+
+  export const ProfessionalTypeScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    description: 'description'
+  };
+
+  export type ProfessionalTypeScalarFieldEnum = (typeof ProfessionalTypeScalarFieldEnum)[keyof typeof ProfessionalTypeScalarFieldEnum]
+
+
+  export const ConsultationPriceScalarFieldEnum: {
+    id: 'id',
+    price: 'price',
+    currency: 'currency',
+    sessionType: 'sessionType',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt',
+    professionalId: 'professionalId'
+  };
+
+  export type ConsultationPriceScalarFieldEnum = (typeof ConsultationPriceScalarFieldEnum)[keyof typeof ConsultationPriceScalarFieldEnum]
 
 
   export const AdmissionScalarFieldEnum: {
@@ -18134,6 +20719,7 @@ export namespace Prisma {
 
   export const PaymentScalarFieldEnum: {
     id: 'id',
+    amount: 'amount',
     paymentType: 'paymentType',
     description: 'description',
     createdAt: 'createdAt'
@@ -18328,6 +20914,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
    * Reference to a field of type 'SchoolShift'
    */
   export type EnumSchoolShiftFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'SchoolShift'>
@@ -18450,20 +21050,6 @@ export namespace Prisma {
    * Reference to a field of type 'WeekDay[]'
    */
   export type ListEnumWeekDayFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WeekDay[]'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float'
-   */
-  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-  /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
   /**
    * Deep Input Types
@@ -18688,15 +21274,19 @@ export namespace Prisma {
     OR?: HealthInsuranceProviderWhereInput[]
     NOT?: HealthInsuranceProviderWhereInput | HealthInsuranceProviderWhereInput[]
     id?: IntFilter<"HealthInsuranceProvider"> | number
+    nickName?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
     name?: StringFilter<"HealthInsuranceProvider"> | string
     description?: StringFilter<"HealthInsuranceProvider"> | string
     contractor?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
     subcontractor?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
     cuit?: StringFilter<"HealthInsuranceProvider"> | string
     address?: StringFilter<"HealthInsuranceProvider"> | string
-    email?: StringFilter<"HealthInsuranceProvider"> | string
     phone?: StringFilter<"HealthInsuranceProvider"> | string
-    contact?: StringFilter<"HealthInsuranceProvider"> | string
+    contact?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
+    webside?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
+    email?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
+    email2?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
+    email3?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
     authorizations?: HealthInsuranceAuthorizationListRelationFilter
     patients?: PatientListRelationFilter
     legalGuardians?: LegalGuardianListRelationFilter
@@ -18705,15 +21295,19 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderOrderByWithRelationInput = {
     id?: SortOrder
+    nickName?: SortOrderInput | SortOrder
     name?: SortOrder
     description?: SortOrder
     contractor?: SortOrderInput | SortOrder
     subcontractor?: SortOrderInput | SortOrder
     cuit?: SortOrder
     address?: SortOrder
-    email?: SortOrder
     phone?: SortOrder
-    contact?: SortOrder
+    contact?: SortOrderInput | SortOrder
+    webside?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    email2?: SortOrderInput | SortOrder
+    email3?: SortOrderInput | SortOrder
     authorizations?: HealthInsuranceAuthorizationOrderByRelationAggregateInput
     patients?: PatientOrderByRelationAggregateInput
     legalGuardians?: LegalGuardianOrderByRelationAggregateInput
@@ -18722,35 +21316,43 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    name?: string
     AND?: HealthInsuranceProviderWhereInput | HealthInsuranceProviderWhereInput[]
     OR?: HealthInsuranceProviderWhereInput[]
     NOT?: HealthInsuranceProviderWhereInput | HealthInsuranceProviderWhereInput[]
-    name?: StringFilter<"HealthInsuranceProvider"> | string
+    nickName?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
     description?: StringFilter<"HealthInsuranceProvider"> | string
     contractor?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
     subcontractor?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
     cuit?: StringFilter<"HealthInsuranceProvider"> | string
     address?: StringFilter<"HealthInsuranceProvider"> | string
-    email?: StringFilter<"HealthInsuranceProvider"> | string
     phone?: StringFilter<"HealthInsuranceProvider"> | string
-    contact?: StringFilter<"HealthInsuranceProvider"> | string
+    contact?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
+    webside?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
+    email?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
+    email2?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
+    email3?: StringNullableFilter<"HealthInsuranceProvider"> | string | null
     authorizations?: HealthInsuranceAuthorizationListRelationFilter
     patients?: PatientListRelationFilter
     legalGuardians?: LegalGuardianListRelationFilter
     professionals?: ProfessionalListRelationFilter
-  }, "id">
+  }, "id" | "name">
 
   export type HealthInsuranceProviderOrderByWithAggregationInput = {
     id?: SortOrder
+    nickName?: SortOrderInput | SortOrder
     name?: SortOrder
     description?: SortOrder
     contractor?: SortOrderInput | SortOrder
     subcontractor?: SortOrderInput | SortOrder
     cuit?: SortOrder
     address?: SortOrder
-    email?: SortOrder
     phone?: SortOrder
-    contact?: SortOrder
+    contact?: SortOrderInput | SortOrder
+    webside?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    email2?: SortOrderInput | SortOrder
+    email3?: SortOrderInput | SortOrder
     _count?: HealthInsuranceProviderCountOrderByAggregateInput
     _avg?: HealthInsuranceProviderAvgOrderByAggregateInput
     _max?: HealthInsuranceProviderMaxOrderByAggregateInput
@@ -18763,15 +21365,19 @@ export namespace Prisma {
     OR?: HealthInsuranceProviderScalarWhereWithAggregatesInput[]
     NOT?: HealthInsuranceProviderScalarWhereWithAggregatesInput | HealthInsuranceProviderScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"HealthInsuranceProvider"> | number
+    nickName?: StringNullableWithAggregatesFilter<"HealthInsuranceProvider"> | string | null
     name?: StringWithAggregatesFilter<"HealthInsuranceProvider"> | string
     description?: StringWithAggregatesFilter<"HealthInsuranceProvider"> | string
     contractor?: StringNullableWithAggregatesFilter<"HealthInsuranceProvider"> | string | null
     subcontractor?: StringNullableWithAggregatesFilter<"HealthInsuranceProvider"> | string | null
     cuit?: StringWithAggregatesFilter<"HealthInsuranceProvider"> | string
     address?: StringWithAggregatesFilter<"HealthInsuranceProvider"> | string
-    email?: StringWithAggregatesFilter<"HealthInsuranceProvider"> | string
     phone?: StringWithAggregatesFilter<"HealthInsuranceProvider"> | string
-    contact?: StringWithAggregatesFilter<"HealthInsuranceProvider"> | string
+    contact?: StringNullableWithAggregatesFilter<"HealthInsuranceProvider"> | string | null
+    webside?: StringNullableWithAggregatesFilter<"HealthInsuranceProvider"> | string | null
+    email?: StringNullableWithAggregatesFilter<"HealthInsuranceProvider"> | string | null
+    email2?: StringNullableWithAggregatesFilter<"HealthInsuranceProvider"> | string | null
+    email3?: StringNullableWithAggregatesFilter<"HealthInsuranceProvider"> | string | null
   }
 
   export type HealthInsuranceAuthorizationWhereInput = {
@@ -18979,13 +21585,15 @@ export namespace Prisma {
     phone?: StringFilter<"Professional"> | string
     professionalActivity?: StringFilter<"Professional"> | string
     isActive?: BoolFilter<"Professional"> | boolean
-    profecionalType?: StringFilter<"Professional"> | string
+    licenseNumber?: StringFilter<"Professional"> | string
     userId?: IntNullableFilter<"Professional"> | number | null
     healthInsuranceProviderId?: IntNullableFilter<"Professional"> | number | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     events?: EventListRelationFilter
     schedules?: ScheduleListRelationFilter
+    professionalTypes?: ProfessionalTypeListRelationFilter
     healthInsuranceProvider?: XOR<HealthInsuranceProviderNullableScalarRelationFilter, HealthInsuranceProviderWhereInput> | null
+    consultationPrices?: ConsultationPriceListRelationFilter
   }
 
   export type ProfessionalOrderByWithRelationInput = {
@@ -18999,19 +21607,22 @@ export namespace Prisma {
     phone?: SortOrder
     professionalActivity?: SortOrder
     isActive?: SortOrder
-    profecionalType?: SortOrder
+    licenseNumber?: SortOrder
     userId?: SortOrderInput | SortOrder
     healthInsuranceProviderId?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     events?: EventOrderByRelationAggregateInput
     schedules?: ScheduleOrderByRelationAggregateInput
+    professionalTypes?: ProfessionalTypeOrderByRelationAggregateInput
     healthInsuranceProvider?: HealthInsuranceProviderOrderByWithRelationInput
+    consultationPrices?: ConsultationPriceOrderByRelationAggregateInput
   }
 
   export type ProfessionalWhereUniqueInput = Prisma.AtLeast<{
     id?: number
     dni?: string
     cuil?: string
+    licenseNumber?: string
     userId?: number
     AND?: ProfessionalWhereInput | ProfessionalWhereInput[]
     OR?: ProfessionalWhereInput[]
@@ -19023,13 +21634,14 @@ export namespace Prisma {
     phone?: StringFilter<"Professional"> | string
     professionalActivity?: StringFilter<"Professional"> | string
     isActive?: BoolFilter<"Professional"> | boolean
-    profecionalType?: StringFilter<"Professional"> | string
     healthInsuranceProviderId?: IntNullableFilter<"Professional"> | number | null
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     events?: EventListRelationFilter
     schedules?: ScheduleListRelationFilter
+    professionalTypes?: ProfessionalTypeListRelationFilter
     healthInsuranceProvider?: XOR<HealthInsuranceProviderNullableScalarRelationFilter, HealthInsuranceProviderWhereInput> | null
-  }, "id" | "dni" | "cuil" | "userId">
+    consultationPrices?: ConsultationPriceListRelationFilter
+  }, "id" | "dni" | "cuil" | "licenseNumber" | "userId">
 
   export type ProfessionalOrderByWithAggregationInput = {
     id?: SortOrder
@@ -19042,7 +21654,7 @@ export namespace Prisma {
     phone?: SortOrder
     professionalActivity?: SortOrder
     isActive?: SortOrder
-    profecionalType?: SortOrder
+    licenseNumber?: SortOrder
     userId?: SortOrderInput | SortOrder
     healthInsuranceProviderId?: SortOrderInput | SortOrder
     _count?: ProfessionalCountOrderByAggregateInput
@@ -19066,9 +21678,123 @@ export namespace Prisma {
     phone?: StringWithAggregatesFilter<"Professional"> | string
     professionalActivity?: StringWithAggregatesFilter<"Professional"> | string
     isActive?: BoolWithAggregatesFilter<"Professional"> | boolean
-    profecionalType?: StringWithAggregatesFilter<"Professional"> | string
+    licenseNumber?: StringWithAggregatesFilter<"Professional"> | string
     userId?: IntNullableWithAggregatesFilter<"Professional"> | number | null
     healthInsuranceProviderId?: IntNullableWithAggregatesFilter<"Professional"> | number | null
+  }
+
+  export type ProfessionalTypeWhereInput = {
+    AND?: ProfessionalTypeWhereInput | ProfessionalTypeWhereInput[]
+    OR?: ProfessionalTypeWhereInput[]
+    NOT?: ProfessionalTypeWhereInput | ProfessionalTypeWhereInput[]
+    id?: IntFilter<"ProfessionalType"> | number
+    name?: StringFilter<"ProfessionalType"> | string
+    description?: StringNullableFilter<"ProfessionalType"> | string | null
+    professionals?: ProfessionalListRelationFilter
+  }
+
+  export type ProfessionalTypeOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    professionals?: ProfessionalOrderByRelationAggregateInput
+  }
+
+  export type ProfessionalTypeWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ProfessionalTypeWhereInput | ProfessionalTypeWhereInput[]
+    OR?: ProfessionalTypeWhereInput[]
+    NOT?: ProfessionalTypeWhereInput | ProfessionalTypeWhereInput[]
+    name?: StringFilter<"ProfessionalType"> | string
+    description?: StringNullableFilter<"ProfessionalType"> | string | null
+    professionals?: ProfessionalListRelationFilter
+  }, "id">
+
+  export type ProfessionalTypeOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrderInput | SortOrder
+    _count?: ProfessionalTypeCountOrderByAggregateInput
+    _avg?: ProfessionalTypeAvgOrderByAggregateInput
+    _max?: ProfessionalTypeMaxOrderByAggregateInput
+    _min?: ProfessionalTypeMinOrderByAggregateInput
+    _sum?: ProfessionalTypeSumOrderByAggregateInput
+  }
+
+  export type ProfessionalTypeScalarWhereWithAggregatesInput = {
+    AND?: ProfessionalTypeScalarWhereWithAggregatesInput | ProfessionalTypeScalarWhereWithAggregatesInput[]
+    OR?: ProfessionalTypeScalarWhereWithAggregatesInput[]
+    NOT?: ProfessionalTypeScalarWhereWithAggregatesInput | ProfessionalTypeScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ProfessionalType"> | number
+    name?: StringWithAggregatesFilter<"ProfessionalType"> | string
+    description?: StringNullableWithAggregatesFilter<"ProfessionalType"> | string | null
+  }
+
+  export type ConsultationPriceWhereInput = {
+    AND?: ConsultationPriceWhereInput | ConsultationPriceWhereInput[]
+    OR?: ConsultationPriceWhereInput[]
+    NOT?: ConsultationPriceWhereInput | ConsultationPriceWhereInput[]
+    id?: IntFilter<"ConsultationPrice"> | number
+    price?: FloatFilter<"ConsultationPrice"> | number
+    currency?: StringFilter<"ConsultationPrice"> | string
+    sessionType?: StringFilter<"ConsultationPrice"> | string
+    createdAt?: DateTimeFilter<"ConsultationPrice"> | Date | string
+    updatedAt?: DateTimeFilter<"ConsultationPrice"> | Date | string
+    professionalId?: IntFilter<"ConsultationPrice"> | number
+    professional?: XOR<ProfessionalScalarRelationFilter, ProfessionalWhereInput>
+  }
+
+  export type ConsultationPriceOrderByWithRelationInput = {
+    id?: SortOrder
+    price?: SortOrder
+    currency?: SortOrder
+    sessionType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    professionalId?: SortOrder
+    professional?: ProfessionalOrderByWithRelationInput
+  }
+
+  export type ConsultationPriceWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ConsultationPriceWhereInput | ConsultationPriceWhereInput[]
+    OR?: ConsultationPriceWhereInput[]
+    NOT?: ConsultationPriceWhereInput | ConsultationPriceWhereInput[]
+    price?: FloatFilter<"ConsultationPrice"> | number
+    currency?: StringFilter<"ConsultationPrice"> | string
+    sessionType?: StringFilter<"ConsultationPrice"> | string
+    createdAt?: DateTimeFilter<"ConsultationPrice"> | Date | string
+    updatedAt?: DateTimeFilter<"ConsultationPrice"> | Date | string
+    professionalId?: IntFilter<"ConsultationPrice"> | number
+    professional?: XOR<ProfessionalScalarRelationFilter, ProfessionalWhereInput>
+  }, "id">
+
+  export type ConsultationPriceOrderByWithAggregationInput = {
+    id?: SortOrder
+    price?: SortOrder
+    currency?: SortOrder
+    sessionType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    professionalId?: SortOrder
+    _count?: ConsultationPriceCountOrderByAggregateInput
+    _avg?: ConsultationPriceAvgOrderByAggregateInput
+    _max?: ConsultationPriceMaxOrderByAggregateInput
+    _min?: ConsultationPriceMinOrderByAggregateInput
+    _sum?: ConsultationPriceSumOrderByAggregateInput
+  }
+
+  export type ConsultationPriceScalarWhereWithAggregatesInput = {
+    AND?: ConsultationPriceScalarWhereWithAggregatesInput | ConsultationPriceScalarWhereWithAggregatesInput[]
+    OR?: ConsultationPriceScalarWhereWithAggregatesInput[]
+    NOT?: ConsultationPriceScalarWhereWithAggregatesInput | ConsultationPriceScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ConsultationPrice"> | number
+    price?: FloatWithAggregatesFilter<"ConsultationPrice"> | number
+    currency?: StringWithAggregatesFilter<"ConsultationPrice"> | string
+    sessionType?: StringWithAggregatesFilter<"ConsultationPrice"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ConsultationPrice"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ConsultationPrice"> | Date | string
+    professionalId?: IntWithAggregatesFilter<"ConsultationPrice"> | number
   }
 
   export type AdmissionWhereInput = {
@@ -19376,6 +22102,7 @@ export namespace Prisma {
     OR?: PaymentWhereInput[]
     NOT?: PaymentWhereInput | PaymentWhereInput[]
     id?: IntFilter<"Payment"> | number
+    amount?: IntFilter<"Payment"> | number
     paymentType?: EnumPaymentTypeFilter<"Payment"> | $Enums.PaymentType
     description?: StringNullableFilter<"Payment"> | string | null
     createdAt?: DateTimeFilter<"Payment"> | Date | string
@@ -19383,6 +22110,7 @@ export namespace Prisma {
 
   export type PaymentOrderByWithRelationInput = {
     id?: SortOrder
+    amount?: SortOrder
     paymentType?: SortOrder
     description?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -19393,6 +22121,7 @@ export namespace Prisma {
     AND?: PaymentWhereInput | PaymentWhereInput[]
     OR?: PaymentWhereInput[]
     NOT?: PaymentWhereInput | PaymentWhereInput[]
+    amount?: IntFilter<"Payment"> | number
     paymentType?: EnumPaymentTypeFilter<"Payment"> | $Enums.PaymentType
     description?: StringNullableFilter<"Payment"> | string | null
     createdAt?: DateTimeFilter<"Payment"> | Date | string
@@ -19400,6 +22129,7 @@ export namespace Prisma {
 
   export type PaymentOrderByWithAggregationInput = {
     id?: SortOrder
+    amount?: SortOrder
     paymentType?: SortOrder
     description?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -19415,6 +22145,7 @@ export namespace Prisma {
     OR?: PaymentScalarWhereWithAggregatesInput[]
     NOT?: PaymentScalarWhereWithAggregatesInput | PaymentScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Payment"> | number
+    amount?: IntWithAggregatesFilter<"Payment"> | number
     paymentType?: EnumPaymentTypeWithAggregatesFilter<"Payment"> | $Enums.PaymentType
     description?: StringNullableWithAggregatesFilter<"Payment"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
@@ -19776,15 +22507,19 @@ export namespace Prisma {
   }
 
   export type HealthInsuranceProviderCreateInput = {
+    nickName?: string | null
     name: string
     description: string
     contractor?: string | null
     subcontractor?: string | null
     cuit: string
     address: string
-    email: string
     phone: string
-    contact: string
+    contact?: string | null
+    webside?: string | null
+    email?: string | null
+    email2?: string | null
+    email3?: string | null
     authorizations?: HealthInsuranceAuthorizationCreateNestedManyWithoutHealthInsuranceProviderInput
     patients?: PatientCreateNestedManyWithoutHealthInsuranceProviderInput
     legalGuardians?: LegalGuardianCreateNestedManyWithoutHealthInsuranceProviderInput
@@ -19793,15 +22528,19 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderUncheckedCreateInput = {
     id?: number
+    nickName?: string | null
     name: string
     description: string
     contractor?: string | null
     subcontractor?: string | null
     cuit: string
     address: string
-    email: string
     phone: string
-    contact: string
+    contact?: string | null
+    webside?: string | null
+    email?: string | null
+    email2?: string | null
+    email3?: string | null
     authorizations?: HealthInsuranceAuthorizationUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
     patients?: PatientUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
     legalGuardians?: LegalGuardianUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
@@ -19809,15 +22548,19 @@ export namespace Prisma {
   }
 
   export type HealthInsuranceProviderUpdateInput = {
+    nickName?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     contractor?: NullableStringFieldUpdateOperationsInput | string | null
     subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
-    contact?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    webside?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    email2?: NullableStringFieldUpdateOperationsInput | string | null
+    email3?: NullableStringFieldUpdateOperationsInput | string | null
     authorizations?: HealthInsuranceAuthorizationUpdateManyWithoutHealthInsuranceProviderNestedInput
     patients?: PatientUpdateManyWithoutHealthInsuranceProviderNestedInput
     legalGuardians?: LegalGuardianUpdateManyWithoutHealthInsuranceProviderNestedInput
@@ -19826,15 +22569,19 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
+    nickName?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     contractor?: NullableStringFieldUpdateOperationsInput | string | null
     subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
-    contact?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    webside?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    email2?: NullableStringFieldUpdateOperationsInput | string | null
+    email3?: NullableStringFieldUpdateOperationsInput | string | null
     authorizations?: HealthInsuranceAuthorizationUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
     patients?: PatientUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
     legalGuardians?: LegalGuardianUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
@@ -19843,40 +22590,52 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderCreateManyInput = {
     id?: number
+    nickName?: string | null
     name: string
     description: string
     contractor?: string | null
     subcontractor?: string | null
     cuit: string
     address: string
-    email: string
     phone: string
-    contact: string
+    contact?: string | null
+    webside?: string | null
+    email?: string | null
+    email2?: string | null
+    email3?: string | null
   }
 
   export type HealthInsuranceProviderUpdateManyMutationInput = {
+    nickName?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     contractor?: NullableStringFieldUpdateOperationsInput | string | null
     subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
-    contact?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    webside?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    email2?: NullableStringFieldUpdateOperationsInput | string | null
+    email3?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type HealthInsuranceProviderUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
+    nickName?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     contractor?: NullableStringFieldUpdateOperationsInput | string | null
     subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
-    contact?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    webside?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    email2?: NullableStringFieldUpdateOperationsInput | string | null
+    email3?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type HealthInsuranceAuthorizationCreateInput = {
@@ -20090,11 +22849,13 @@ export namespace Prisma {
     phone: string
     professionalActivity: string
     isActive?: boolean
-    profecionalType: string
+    licenseNumber: string
     user?: UserCreateNestedOneWithoutProfessionalInput
     events?: EventCreateNestedManyWithoutProfessionalInput
     schedules?: ScheduleCreateNestedManyWithoutProfessionalInput
+    professionalTypes?: ProfessionalTypeCreateNestedManyWithoutProfessionalsInput
     healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutProfessionalsInput
+    consultationPrices?: ConsultationPriceCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalUncheckedCreateInput = {
@@ -20108,11 +22869,13 @@ export namespace Prisma {
     phone: string
     professionalActivity: string
     isActive?: boolean
-    profecionalType: string
+    licenseNumber: string
     userId?: number | null
     healthInsuranceProviderId?: number | null
     events?: EventUncheckedCreateNestedManyWithoutProfessionalInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutProfessionalInput
+    professionalTypes?: ProfessionalTypeUncheckedCreateNestedManyWithoutProfessionalsInput
+    consultationPrices?: ConsultationPriceUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalUpdateInput = {
@@ -20125,11 +22888,13 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    profecionalType?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneWithoutProfessionalNestedInput
     events?: EventUpdateManyWithoutProfessionalNestedInput
     schedules?: ScheduleUpdateManyWithoutProfessionalNestedInput
+    professionalTypes?: ProfessionalTypeUpdateManyWithoutProfessionalsNestedInput
     healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutProfessionalsNestedInput
+    consultationPrices?: ConsultationPriceUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalUncheckedUpdateInput = {
@@ -20143,11 +22908,13 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    profecionalType?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     events?: EventUncheckedUpdateManyWithoutProfessionalNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutProfessionalNestedInput
+    professionalTypes?: ProfessionalTypeUncheckedUpdateManyWithoutProfessionalsNestedInput
+    consultationPrices?: ConsultationPriceUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalCreateManyInput = {
@@ -20161,7 +22928,7 @@ export namespace Prisma {
     phone: string
     professionalActivity: string
     isActive?: boolean
-    profecionalType: string
+    licenseNumber: string
     userId?: number | null
     healthInsuranceProviderId?: number | null
   }
@@ -20176,7 +22943,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    profecionalType?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
   }
 
   export type ProfessionalUncheckedUpdateManyInput = {
@@ -20190,9 +22957,118 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    profecionalType?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
+  }
+
+  export type ProfessionalTypeCreateInput = {
+    name: string
+    description?: string | null
+    professionals?: ProfessionalCreateNestedManyWithoutProfessionalTypesInput
+  }
+
+  export type ProfessionalTypeUncheckedCreateInput = {
+    id?: number
+    name: string
+    description?: string | null
+    professionals?: ProfessionalUncheckedCreateNestedManyWithoutProfessionalTypesInput
+  }
+
+  export type ProfessionalTypeUpdateInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    professionals?: ProfessionalUpdateManyWithoutProfessionalTypesNestedInput
+  }
+
+  export type ProfessionalTypeUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    professionals?: ProfessionalUncheckedUpdateManyWithoutProfessionalTypesNestedInput
+  }
+
+  export type ProfessionalTypeCreateManyInput = {
+    id?: number
+    name: string
+    description?: string | null
+  }
+
+  export type ProfessionalTypeUpdateManyMutationInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ProfessionalTypeUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ConsultationPriceCreateInput = {
+    price: number
+    currency?: string
+    sessionType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    professional: ProfessionalCreateNestedOneWithoutConsultationPricesInput
+  }
+
+  export type ConsultationPriceUncheckedCreateInput = {
+    id?: number
+    price: number
+    currency?: string
+    sessionType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    professionalId: number
+  }
+
+  export type ConsultationPriceUpdateInput = {
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    sessionType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    professional?: ProfessionalUpdateOneRequiredWithoutConsultationPricesNestedInput
+  }
+
+  export type ConsultationPriceUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    sessionType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    professionalId?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ConsultationPriceCreateManyInput = {
+    id?: number
+    price: number
+    currency?: string
+    sessionType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    professionalId: number
+  }
+
+  export type ConsultationPriceUpdateManyMutationInput = {
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    sessionType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConsultationPriceUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    sessionType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    professionalId?: IntFieldUpdateOperationsInput | number
   }
 
   export type AdmissionCreateInput = {
@@ -20489,6 +23365,7 @@ export namespace Prisma {
   }
 
   export type PaymentCreateInput = {
+    amount: number
     paymentType: $Enums.PaymentType
     description?: string | null
     createdAt?: Date | string
@@ -20496,12 +23373,14 @@ export namespace Prisma {
 
   export type PaymentUncheckedCreateInput = {
     id?: number
+    amount: number
     paymentType: $Enums.PaymentType
     description?: string | null
     createdAt?: Date | string
   }
 
   export type PaymentUpdateInput = {
+    amount?: IntFieldUpdateOperationsInput | number
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20509,6 +23388,7 @@ export namespace Prisma {
 
   export type PaymentUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20516,12 +23396,14 @@ export namespace Prisma {
 
   export type PaymentCreateManyInput = {
     id?: number
+    amount: number
     paymentType: $Enums.PaymentType
     description?: string | null
     createdAt?: Date | string
   }
 
   export type PaymentUpdateManyMutationInput = {
+    amount?: IntFieldUpdateOperationsInput | number
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -20529,6 +23411,7 @@ export namespace Prisma {
 
   export type PaymentUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
+    amount?: IntFieldUpdateOperationsInput | number
     paymentType?: EnumPaymentTypeFieldUpdateOperationsInput | $Enums.PaymentType
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21071,15 +23954,19 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderCountOrderByAggregateInput = {
     id?: SortOrder
+    nickName?: SortOrder
     name?: SortOrder
     description?: SortOrder
     contractor?: SortOrder
     subcontractor?: SortOrder
     cuit?: SortOrder
     address?: SortOrder
-    email?: SortOrder
     phone?: SortOrder
     contact?: SortOrder
+    webside?: SortOrder
+    email?: SortOrder
+    email2?: SortOrder
+    email3?: SortOrder
   }
 
   export type HealthInsuranceProviderAvgOrderByAggregateInput = {
@@ -21088,28 +23975,36 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderMaxOrderByAggregateInput = {
     id?: SortOrder
+    nickName?: SortOrder
     name?: SortOrder
     description?: SortOrder
     contractor?: SortOrder
     subcontractor?: SortOrder
     cuit?: SortOrder
     address?: SortOrder
-    email?: SortOrder
     phone?: SortOrder
     contact?: SortOrder
+    webside?: SortOrder
+    email?: SortOrder
+    email2?: SortOrder
+    email3?: SortOrder
   }
 
   export type HealthInsuranceProviderMinOrderByAggregateInput = {
     id?: SortOrder
+    nickName?: SortOrder
     name?: SortOrder
     description?: SortOrder
     contractor?: SortOrder
     subcontractor?: SortOrder
     cuit?: SortOrder
     address?: SortOrder
-    email?: SortOrder
     phone?: SortOrder
     contact?: SortOrder
+    webside?: SortOrder
+    email?: SortOrder
+    email2?: SortOrder
+    email3?: SortOrder
   }
 
   export type HealthInsuranceProviderSumOrderByAggregateInput = {
@@ -21304,7 +24199,27 @@ export namespace Prisma {
     none?: ScheduleWhereInput
   }
 
+  export type ProfessionalTypeListRelationFilter = {
+    every?: ProfessionalTypeWhereInput
+    some?: ProfessionalTypeWhereInput
+    none?: ProfessionalTypeWhereInput
+  }
+
+  export type ConsultationPriceListRelationFilter = {
+    every?: ConsultationPriceWhereInput
+    some?: ConsultationPriceWhereInput
+    none?: ConsultationPriceWhereInput
+  }
+
   export type ScheduleOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ProfessionalTypeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ConsultationPriceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -21319,7 +24234,7 @@ export namespace Prisma {
     phone?: SortOrder
     professionalActivity?: SortOrder
     isActive?: SortOrder
-    profecionalType?: SortOrder
+    licenseNumber?: SortOrder
     userId?: SortOrder
     healthInsuranceProviderId?: SortOrder
   }
@@ -21341,7 +24256,7 @@ export namespace Prisma {
     phone?: SortOrder
     professionalActivity?: SortOrder
     isActive?: SortOrder
-    profecionalType?: SortOrder
+    licenseNumber?: SortOrder
     userId?: SortOrder
     healthInsuranceProviderId?: SortOrder
   }
@@ -21357,7 +24272,7 @@ export namespace Prisma {
     phone?: SortOrder
     professionalActivity?: SortOrder
     isActive?: SortOrder
-    profecionalType?: SortOrder
+    licenseNumber?: SortOrder
     userId?: SortOrder
     healthInsuranceProviderId?: SortOrder
   }
@@ -21366,6 +24281,106 @@ export namespace Prisma {
     id?: SortOrder
     userId?: SortOrder
     healthInsuranceProviderId?: SortOrder
+  }
+
+  export type ProfessionalTypeCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+  }
+
+  export type ProfessionalTypeAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type ProfessionalTypeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+  }
+
+  export type ProfessionalTypeMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    description?: SortOrder
+  }
+
+  export type ProfessionalTypeSumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type ProfessionalScalarRelationFilter = {
+    is?: ProfessionalWhereInput
+    isNot?: ProfessionalWhereInput
+  }
+
+  export type ConsultationPriceCountOrderByAggregateInput = {
+    id?: SortOrder
+    price?: SortOrder
+    currency?: SortOrder
+    sessionType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    professionalId?: SortOrder
+  }
+
+  export type ConsultationPriceAvgOrderByAggregateInput = {
+    id?: SortOrder
+    price?: SortOrder
+    professionalId?: SortOrder
+  }
+
+  export type ConsultationPriceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    price?: SortOrder
+    currency?: SortOrder
+    sessionType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    professionalId?: SortOrder
+  }
+
+  export type ConsultationPriceMinOrderByAggregateInput = {
+    id?: SortOrder
+    price?: SortOrder
+    currency?: SortOrder
+    sessionType?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    professionalId?: SortOrder
+  }
+
+  export type ConsultationPriceSumOrderByAggregateInput = {
+    id?: SortOrder
+    price?: SortOrder
+    professionalId?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type EnumSchoolShiftNullableFilter<$PrismaModel = never> = {
@@ -21513,11 +24528,6 @@ export namespace Prisma {
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
-  }
-
-  export type ProfessionalScalarRelationFilter = {
-    is?: ProfessionalWhereInput
-    isNot?: ProfessionalWhereInput
   }
 
   export type EventCountOrderByAggregateInput = {
@@ -21719,6 +24729,7 @@ export namespace Prisma {
 
   export type PaymentCountOrderByAggregateInput = {
     id?: SortOrder
+    amount?: SortOrder
     paymentType?: SortOrder
     description?: SortOrder
     createdAt?: SortOrder
@@ -21726,10 +24737,12 @@ export namespace Prisma {
 
   export type PaymentAvgOrderByAggregateInput = {
     id?: SortOrder
+    amount?: SortOrder
   }
 
   export type PaymentMaxOrderByAggregateInput = {
     id?: SortOrder
+    amount?: SortOrder
     paymentType?: SortOrder
     description?: SortOrder
     createdAt?: SortOrder
@@ -21737,6 +24750,7 @@ export namespace Prisma {
 
   export type PaymentMinOrderByAggregateInput = {
     id?: SortOrder
+    amount?: SortOrder
     paymentType?: SortOrder
     description?: SortOrder
     createdAt?: SortOrder
@@ -21744,6 +24758,7 @@ export namespace Prisma {
 
   export type PaymentSumOrderByAggregateInput = {
     id?: SortOrder
+    amount?: SortOrder
   }
 
   export type EnumPaymentTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -22534,10 +25549,23 @@ export namespace Prisma {
     connect?: ScheduleWhereUniqueInput | ScheduleWhereUniqueInput[]
   }
 
+  export type ProfessionalTypeCreateNestedManyWithoutProfessionalsInput = {
+    create?: XOR<ProfessionalTypeCreateWithoutProfessionalsInput, ProfessionalTypeUncheckedCreateWithoutProfessionalsInput> | ProfessionalTypeCreateWithoutProfessionalsInput[] | ProfessionalTypeUncheckedCreateWithoutProfessionalsInput[]
+    connectOrCreate?: ProfessionalTypeCreateOrConnectWithoutProfessionalsInput | ProfessionalTypeCreateOrConnectWithoutProfessionalsInput[]
+    connect?: ProfessionalTypeWhereUniqueInput | ProfessionalTypeWhereUniqueInput[]
+  }
+
   export type HealthInsuranceProviderCreateNestedOneWithoutProfessionalsInput = {
     create?: XOR<HealthInsuranceProviderCreateWithoutProfessionalsInput, HealthInsuranceProviderUncheckedCreateWithoutProfessionalsInput>
     connectOrCreate?: HealthInsuranceProviderCreateOrConnectWithoutProfessionalsInput
     connect?: HealthInsuranceProviderWhereUniqueInput
+  }
+
+  export type ConsultationPriceCreateNestedManyWithoutProfessionalInput = {
+    create?: XOR<ConsultationPriceCreateWithoutProfessionalInput, ConsultationPriceUncheckedCreateWithoutProfessionalInput> | ConsultationPriceCreateWithoutProfessionalInput[] | ConsultationPriceUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: ConsultationPriceCreateOrConnectWithoutProfessionalInput | ConsultationPriceCreateOrConnectWithoutProfessionalInput[]
+    createMany?: ConsultationPriceCreateManyProfessionalInputEnvelope
+    connect?: ConsultationPriceWhereUniqueInput | ConsultationPriceWhereUniqueInput[]
   }
 
   export type EventUncheckedCreateNestedManyWithoutProfessionalInput = {
@@ -22552,6 +25580,19 @@ export namespace Prisma {
     connectOrCreate?: ScheduleCreateOrConnectWithoutProfessionalInput | ScheduleCreateOrConnectWithoutProfessionalInput[]
     createMany?: ScheduleCreateManyProfessionalInputEnvelope
     connect?: ScheduleWhereUniqueInput | ScheduleWhereUniqueInput[]
+  }
+
+  export type ProfessionalTypeUncheckedCreateNestedManyWithoutProfessionalsInput = {
+    create?: XOR<ProfessionalTypeCreateWithoutProfessionalsInput, ProfessionalTypeUncheckedCreateWithoutProfessionalsInput> | ProfessionalTypeCreateWithoutProfessionalsInput[] | ProfessionalTypeUncheckedCreateWithoutProfessionalsInput[]
+    connectOrCreate?: ProfessionalTypeCreateOrConnectWithoutProfessionalsInput | ProfessionalTypeCreateOrConnectWithoutProfessionalsInput[]
+    connect?: ProfessionalTypeWhereUniqueInput | ProfessionalTypeWhereUniqueInput[]
+  }
+
+  export type ConsultationPriceUncheckedCreateNestedManyWithoutProfessionalInput = {
+    create?: XOR<ConsultationPriceCreateWithoutProfessionalInput, ConsultationPriceUncheckedCreateWithoutProfessionalInput> | ConsultationPriceCreateWithoutProfessionalInput[] | ConsultationPriceUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: ConsultationPriceCreateOrConnectWithoutProfessionalInput | ConsultationPriceCreateOrConnectWithoutProfessionalInput[]
+    createMany?: ConsultationPriceCreateManyProfessionalInputEnvelope
+    connect?: ConsultationPriceWhereUniqueInput | ConsultationPriceWhereUniqueInput[]
   }
 
   export type UserUpdateOneWithoutProfessionalNestedInput = {
@@ -22592,6 +25633,19 @@ export namespace Prisma {
     deleteMany?: ScheduleScalarWhereInput | ScheduleScalarWhereInput[]
   }
 
+  export type ProfessionalTypeUpdateManyWithoutProfessionalsNestedInput = {
+    create?: XOR<ProfessionalTypeCreateWithoutProfessionalsInput, ProfessionalTypeUncheckedCreateWithoutProfessionalsInput> | ProfessionalTypeCreateWithoutProfessionalsInput[] | ProfessionalTypeUncheckedCreateWithoutProfessionalsInput[]
+    connectOrCreate?: ProfessionalTypeCreateOrConnectWithoutProfessionalsInput | ProfessionalTypeCreateOrConnectWithoutProfessionalsInput[]
+    upsert?: ProfessionalTypeUpsertWithWhereUniqueWithoutProfessionalsInput | ProfessionalTypeUpsertWithWhereUniqueWithoutProfessionalsInput[]
+    set?: ProfessionalTypeWhereUniqueInput | ProfessionalTypeWhereUniqueInput[]
+    disconnect?: ProfessionalTypeWhereUniqueInput | ProfessionalTypeWhereUniqueInput[]
+    delete?: ProfessionalTypeWhereUniqueInput | ProfessionalTypeWhereUniqueInput[]
+    connect?: ProfessionalTypeWhereUniqueInput | ProfessionalTypeWhereUniqueInput[]
+    update?: ProfessionalTypeUpdateWithWhereUniqueWithoutProfessionalsInput | ProfessionalTypeUpdateWithWhereUniqueWithoutProfessionalsInput[]
+    updateMany?: ProfessionalTypeUpdateManyWithWhereWithoutProfessionalsInput | ProfessionalTypeUpdateManyWithWhereWithoutProfessionalsInput[]
+    deleteMany?: ProfessionalTypeScalarWhereInput | ProfessionalTypeScalarWhereInput[]
+  }
+
   export type HealthInsuranceProviderUpdateOneWithoutProfessionalsNestedInput = {
     create?: XOR<HealthInsuranceProviderCreateWithoutProfessionalsInput, HealthInsuranceProviderUncheckedCreateWithoutProfessionalsInput>
     connectOrCreate?: HealthInsuranceProviderCreateOrConnectWithoutProfessionalsInput
@@ -22600,6 +25654,20 @@ export namespace Prisma {
     delete?: HealthInsuranceProviderWhereInput | boolean
     connect?: HealthInsuranceProviderWhereUniqueInput
     update?: XOR<XOR<HealthInsuranceProviderUpdateToOneWithWhereWithoutProfessionalsInput, HealthInsuranceProviderUpdateWithoutProfessionalsInput>, HealthInsuranceProviderUncheckedUpdateWithoutProfessionalsInput>
+  }
+
+  export type ConsultationPriceUpdateManyWithoutProfessionalNestedInput = {
+    create?: XOR<ConsultationPriceCreateWithoutProfessionalInput, ConsultationPriceUncheckedCreateWithoutProfessionalInput> | ConsultationPriceCreateWithoutProfessionalInput[] | ConsultationPriceUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: ConsultationPriceCreateOrConnectWithoutProfessionalInput | ConsultationPriceCreateOrConnectWithoutProfessionalInput[]
+    upsert?: ConsultationPriceUpsertWithWhereUniqueWithoutProfessionalInput | ConsultationPriceUpsertWithWhereUniqueWithoutProfessionalInput[]
+    createMany?: ConsultationPriceCreateManyProfessionalInputEnvelope
+    set?: ConsultationPriceWhereUniqueInput | ConsultationPriceWhereUniqueInput[]
+    disconnect?: ConsultationPriceWhereUniqueInput | ConsultationPriceWhereUniqueInput[]
+    delete?: ConsultationPriceWhereUniqueInput | ConsultationPriceWhereUniqueInput[]
+    connect?: ConsultationPriceWhereUniqueInput | ConsultationPriceWhereUniqueInput[]
+    update?: ConsultationPriceUpdateWithWhereUniqueWithoutProfessionalInput | ConsultationPriceUpdateWithWhereUniqueWithoutProfessionalInput[]
+    updateMany?: ConsultationPriceUpdateManyWithWhereWithoutProfessionalInput | ConsultationPriceUpdateManyWithWhereWithoutProfessionalInput[]
+    deleteMany?: ConsultationPriceScalarWhereInput | ConsultationPriceScalarWhereInput[]
   }
 
   export type EventUncheckedUpdateManyWithoutProfessionalNestedInput = {
@@ -22628,6 +25696,93 @@ export namespace Prisma {
     update?: ScheduleUpdateWithWhereUniqueWithoutProfessionalInput | ScheduleUpdateWithWhereUniqueWithoutProfessionalInput[]
     updateMany?: ScheduleUpdateManyWithWhereWithoutProfessionalInput | ScheduleUpdateManyWithWhereWithoutProfessionalInput[]
     deleteMany?: ScheduleScalarWhereInput | ScheduleScalarWhereInput[]
+  }
+
+  export type ProfessionalTypeUncheckedUpdateManyWithoutProfessionalsNestedInput = {
+    create?: XOR<ProfessionalTypeCreateWithoutProfessionalsInput, ProfessionalTypeUncheckedCreateWithoutProfessionalsInput> | ProfessionalTypeCreateWithoutProfessionalsInput[] | ProfessionalTypeUncheckedCreateWithoutProfessionalsInput[]
+    connectOrCreate?: ProfessionalTypeCreateOrConnectWithoutProfessionalsInput | ProfessionalTypeCreateOrConnectWithoutProfessionalsInput[]
+    upsert?: ProfessionalTypeUpsertWithWhereUniqueWithoutProfessionalsInput | ProfessionalTypeUpsertWithWhereUniqueWithoutProfessionalsInput[]
+    set?: ProfessionalTypeWhereUniqueInput | ProfessionalTypeWhereUniqueInput[]
+    disconnect?: ProfessionalTypeWhereUniqueInput | ProfessionalTypeWhereUniqueInput[]
+    delete?: ProfessionalTypeWhereUniqueInput | ProfessionalTypeWhereUniqueInput[]
+    connect?: ProfessionalTypeWhereUniqueInput | ProfessionalTypeWhereUniqueInput[]
+    update?: ProfessionalTypeUpdateWithWhereUniqueWithoutProfessionalsInput | ProfessionalTypeUpdateWithWhereUniqueWithoutProfessionalsInput[]
+    updateMany?: ProfessionalTypeUpdateManyWithWhereWithoutProfessionalsInput | ProfessionalTypeUpdateManyWithWhereWithoutProfessionalsInput[]
+    deleteMany?: ProfessionalTypeScalarWhereInput | ProfessionalTypeScalarWhereInput[]
+  }
+
+  export type ConsultationPriceUncheckedUpdateManyWithoutProfessionalNestedInput = {
+    create?: XOR<ConsultationPriceCreateWithoutProfessionalInput, ConsultationPriceUncheckedCreateWithoutProfessionalInput> | ConsultationPriceCreateWithoutProfessionalInput[] | ConsultationPriceUncheckedCreateWithoutProfessionalInput[]
+    connectOrCreate?: ConsultationPriceCreateOrConnectWithoutProfessionalInput | ConsultationPriceCreateOrConnectWithoutProfessionalInput[]
+    upsert?: ConsultationPriceUpsertWithWhereUniqueWithoutProfessionalInput | ConsultationPriceUpsertWithWhereUniqueWithoutProfessionalInput[]
+    createMany?: ConsultationPriceCreateManyProfessionalInputEnvelope
+    set?: ConsultationPriceWhereUniqueInput | ConsultationPriceWhereUniqueInput[]
+    disconnect?: ConsultationPriceWhereUniqueInput | ConsultationPriceWhereUniqueInput[]
+    delete?: ConsultationPriceWhereUniqueInput | ConsultationPriceWhereUniqueInput[]
+    connect?: ConsultationPriceWhereUniqueInput | ConsultationPriceWhereUniqueInput[]
+    update?: ConsultationPriceUpdateWithWhereUniqueWithoutProfessionalInput | ConsultationPriceUpdateWithWhereUniqueWithoutProfessionalInput[]
+    updateMany?: ConsultationPriceUpdateManyWithWhereWithoutProfessionalInput | ConsultationPriceUpdateManyWithWhereWithoutProfessionalInput[]
+    deleteMany?: ConsultationPriceScalarWhereInput | ConsultationPriceScalarWhereInput[]
+  }
+
+  export type ProfessionalCreateNestedManyWithoutProfessionalTypesInput = {
+    create?: XOR<ProfessionalCreateWithoutProfessionalTypesInput, ProfessionalUncheckedCreateWithoutProfessionalTypesInput> | ProfessionalCreateWithoutProfessionalTypesInput[] | ProfessionalUncheckedCreateWithoutProfessionalTypesInput[]
+    connectOrCreate?: ProfessionalCreateOrConnectWithoutProfessionalTypesInput | ProfessionalCreateOrConnectWithoutProfessionalTypesInput[]
+    connect?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+  }
+
+  export type ProfessionalUncheckedCreateNestedManyWithoutProfessionalTypesInput = {
+    create?: XOR<ProfessionalCreateWithoutProfessionalTypesInput, ProfessionalUncheckedCreateWithoutProfessionalTypesInput> | ProfessionalCreateWithoutProfessionalTypesInput[] | ProfessionalUncheckedCreateWithoutProfessionalTypesInput[]
+    connectOrCreate?: ProfessionalCreateOrConnectWithoutProfessionalTypesInput | ProfessionalCreateOrConnectWithoutProfessionalTypesInput[]
+    connect?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+  }
+
+  export type ProfessionalUpdateManyWithoutProfessionalTypesNestedInput = {
+    create?: XOR<ProfessionalCreateWithoutProfessionalTypesInput, ProfessionalUncheckedCreateWithoutProfessionalTypesInput> | ProfessionalCreateWithoutProfessionalTypesInput[] | ProfessionalUncheckedCreateWithoutProfessionalTypesInput[]
+    connectOrCreate?: ProfessionalCreateOrConnectWithoutProfessionalTypesInput | ProfessionalCreateOrConnectWithoutProfessionalTypesInput[]
+    upsert?: ProfessionalUpsertWithWhereUniqueWithoutProfessionalTypesInput | ProfessionalUpsertWithWhereUniqueWithoutProfessionalTypesInput[]
+    set?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    disconnect?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    delete?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    connect?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    update?: ProfessionalUpdateWithWhereUniqueWithoutProfessionalTypesInput | ProfessionalUpdateWithWhereUniqueWithoutProfessionalTypesInput[]
+    updateMany?: ProfessionalUpdateManyWithWhereWithoutProfessionalTypesInput | ProfessionalUpdateManyWithWhereWithoutProfessionalTypesInput[]
+    deleteMany?: ProfessionalScalarWhereInput | ProfessionalScalarWhereInput[]
+  }
+
+  export type ProfessionalUncheckedUpdateManyWithoutProfessionalTypesNestedInput = {
+    create?: XOR<ProfessionalCreateWithoutProfessionalTypesInput, ProfessionalUncheckedCreateWithoutProfessionalTypesInput> | ProfessionalCreateWithoutProfessionalTypesInput[] | ProfessionalUncheckedCreateWithoutProfessionalTypesInput[]
+    connectOrCreate?: ProfessionalCreateOrConnectWithoutProfessionalTypesInput | ProfessionalCreateOrConnectWithoutProfessionalTypesInput[]
+    upsert?: ProfessionalUpsertWithWhereUniqueWithoutProfessionalTypesInput | ProfessionalUpsertWithWhereUniqueWithoutProfessionalTypesInput[]
+    set?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    disconnect?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    delete?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    connect?: ProfessionalWhereUniqueInput | ProfessionalWhereUniqueInput[]
+    update?: ProfessionalUpdateWithWhereUniqueWithoutProfessionalTypesInput | ProfessionalUpdateWithWhereUniqueWithoutProfessionalTypesInput[]
+    updateMany?: ProfessionalUpdateManyWithWhereWithoutProfessionalTypesInput | ProfessionalUpdateManyWithWhereWithoutProfessionalTypesInput[]
+    deleteMany?: ProfessionalScalarWhereInput | ProfessionalScalarWhereInput[]
+  }
+
+  export type ProfessionalCreateNestedOneWithoutConsultationPricesInput = {
+    create?: XOR<ProfessionalCreateWithoutConsultationPricesInput, ProfessionalUncheckedCreateWithoutConsultationPricesInput>
+    connectOrCreate?: ProfessionalCreateOrConnectWithoutConsultationPricesInput
+    connect?: ProfessionalWhereUniqueInput
+  }
+
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type ProfessionalUpdateOneRequiredWithoutConsultationPricesNestedInput = {
+    create?: XOR<ProfessionalCreateWithoutConsultationPricesInput, ProfessionalUncheckedCreateWithoutConsultationPricesInput>
+    connectOrCreate?: ProfessionalCreateOrConnectWithoutConsultationPricesInput
+    upsert?: ProfessionalUpsertWithoutConsultationPricesInput
+    connect?: ProfessionalWhereUniqueInput
+    update?: XOR<XOR<ProfessionalUpdateToOneWithWhereWithoutConsultationPricesInput, ProfessionalUpdateWithoutConsultationPricesInput>, ProfessionalUncheckedUpdateWithoutConsultationPricesInput>
   }
 
   export type AdmissionTypeCreateNestedOneWithoutAdmissionsInput = {
@@ -23148,6 +26303,22 @@ export namespace Prisma {
     _max?: NestedEnumLegalGuardianStatusNullableFilter<$PrismaModel>
   }
 
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type NestedEnumSchoolShiftNullableFilter<$PrismaModel = never> = {
     equals?: $Enums.SchoolShift | EnumSchoolShiftFieldRefInput<$PrismaModel> | null
     in?: $Enums.SchoolShift[] | ListEnumSchoolShiftFieldRefInput<$PrismaModel> | null
@@ -23428,10 +26599,12 @@ export namespace Prisma {
     phone: string
     professionalActivity: string
     isActive?: boolean
-    profecionalType: string
+    licenseNumber: string
     events?: EventCreateNestedManyWithoutProfessionalInput
     schedules?: ScheduleCreateNestedManyWithoutProfessionalInput
+    professionalTypes?: ProfessionalTypeCreateNestedManyWithoutProfessionalsInput
     healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutProfessionalsInput
+    consultationPrices?: ConsultationPriceCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalUncheckedCreateWithoutUserInput = {
@@ -23445,10 +26618,12 @@ export namespace Prisma {
     phone: string
     professionalActivity: string
     isActive?: boolean
-    profecionalType: string
+    licenseNumber: string
     healthInsuranceProviderId?: number | null
     events?: EventUncheckedCreateNestedManyWithoutProfessionalInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutProfessionalInput
+    professionalTypes?: ProfessionalTypeUncheckedCreateNestedManyWithoutProfessionalsInput
+    consultationPrices?: ConsultationPriceUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalCreateOrConnectWithoutUserInput = {
@@ -23643,10 +26818,12 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    profecionalType?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
     events?: EventUpdateManyWithoutProfessionalNestedInput
     schedules?: ScheduleUpdateManyWithoutProfessionalNestedInput
+    professionalTypes?: ProfessionalTypeUpdateManyWithoutProfessionalsNestedInput
     healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutProfessionalsNestedInput
+    consultationPrices?: ConsultationPriceUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalUncheckedUpdateWithoutUserInput = {
@@ -23660,10 +26837,12 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    profecionalType?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
     healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     events?: EventUncheckedUpdateManyWithoutProfessionalNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutProfessionalNestedInput
+    professionalTypes?: ProfessionalTypeUncheckedUpdateManyWithoutProfessionalsNestedInput
+    consultationPrices?: ConsultationPriceUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type EventUpsertWithWhereUniqueWithoutCreatedByInput = {
@@ -23874,15 +27053,19 @@ export namespace Prisma {
   }
 
   export type HealthInsuranceProviderCreateWithoutPatientsInput = {
+    nickName?: string | null
     name: string
     description: string
     contractor?: string | null
     subcontractor?: string | null
     cuit: string
     address: string
-    email: string
     phone: string
-    contact: string
+    contact?: string | null
+    webside?: string | null
+    email?: string | null
+    email2?: string | null
+    email3?: string | null
     authorizations?: HealthInsuranceAuthorizationCreateNestedManyWithoutHealthInsuranceProviderInput
     legalGuardians?: LegalGuardianCreateNestedManyWithoutHealthInsuranceProviderInput
     professionals?: ProfessionalCreateNestedManyWithoutHealthInsuranceProviderInput
@@ -23890,15 +27073,19 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderUncheckedCreateWithoutPatientsInput = {
     id?: number
+    nickName?: string | null
     name: string
     description: string
     contractor?: string | null
     subcontractor?: string | null
     cuit: string
     address: string
-    email: string
     phone: string
-    contact: string
+    contact?: string | null
+    webside?: string | null
+    email?: string | null
+    email2?: string | null
+    email3?: string | null
     authorizations?: HealthInsuranceAuthorizationUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
     legalGuardians?: LegalGuardianUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
     professionals?: ProfessionalUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
@@ -24065,15 +27252,19 @@ export namespace Prisma {
   }
 
   export type HealthInsuranceProviderUpdateWithoutPatientsInput = {
+    nickName?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     contractor?: NullableStringFieldUpdateOperationsInput | string | null
     subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
-    contact?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    webside?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    email2?: NullableStringFieldUpdateOperationsInput | string | null
+    email3?: NullableStringFieldUpdateOperationsInput | string | null
     authorizations?: HealthInsuranceAuthorizationUpdateManyWithoutHealthInsuranceProviderNestedInput
     legalGuardians?: LegalGuardianUpdateManyWithoutHealthInsuranceProviderNestedInput
     professionals?: ProfessionalUpdateManyWithoutHealthInsuranceProviderNestedInput
@@ -24081,15 +27272,19 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderUncheckedUpdateWithoutPatientsInput = {
     id?: IntFieldUpdateOperationsInput | number
+    nickName?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     contractor?: NullableStringFieldUpdateOperationsInput | string | null
     subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
-    contact?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    webside?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    email2?: NullableStringFieldUpdateOperationsInput | string | null
+    email3?: NullableStringFieldUpdateOperationsInput | string | null
     authorizations?: HealthInsuranceAuthorizationUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
     legalGuardians?: LegalGuardianUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
     professionals?: ProfessionalUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
@@ -24234,10 +27429,12 @@ export namespace Prisma {
     phone: string
     professionalActivity: string
     isActive?: boolean
-    profecionalType: string
+    licenseNumber: string
     user?: UserCreateNestedOneWithoutProfessionalInput
     events?: EventCreateNestedManyWithoutProfessionalInput
     schedules?: ScheduleCreateNestedManyWithoutProfessionalInput
+    professionalTypes?: ProfessionalTypeCreateNestedManyWithoutProfessionalsInput
+    consultationPrices?: ConsultationPriceCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalUncheckedCreateWithoutHealthInsuranceProviderInput = {
@@ -24251,10 +27448,12 @@ export namespace Prisma {
     phone: string
     professionalActivity: string
     isActive?: boolean
-    profecionalType: string
+    licenseNumber: string
     userId?: number | null
     events?: EventUncheckedCreateNestedManyWithoutProfessionalInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutProfessionalInput
+    professionalTypes?: ProfessionalTypeUncheckedCreateNestedManyWithoutProfessionalsInput
+    consultationPrices?: ConsultationPriceUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalCreateOrConnectWithoutHealthInsuranceProviderInput = {
@@ -24404,21 +27603,25 @@ export namespace Prisma {
     phone?: StringFilter<"Professional"> | string
     professionalActivity?: StringFilter<"Professional"> | string
     isActive?: BoolFilter<"Professional"> | boolean
-    profecionalType?: StringFilter<"Professional"> | string
+    licenseNumber?: StringFilter<"Professional"> | string
     userId?: IntNullableFilter<"Professional"> | number | null
     healthInsuranceProviderId?: IntNullableFilter<"Professional"> | number | null
   }
 
   export type HealthInsuranceProviderCreateWithoutAuthorizationsInput = {
+    nickName?: string | null
     name: string
     description: string
     contractor?: string | null
     subcontractor?: string | null
     cuit: string
     address: string
-    email: string
     phone: string
-    contact: string
+    contact?: string | null
+    webside?: string | null
+    email?: string | null
+    email2?: string | null
+    email3?: string | null
     patients?: PatientCreateNestedManyWithoutHealthInsuranceProviderInput
     legalGuardians?: LegalGuardianCreateNestedManyWithoutHealthInsuranceProviderInput
     professionals?: ProfessionalCreateNestedManyWithoutHealthInsuranceProviderInput
@@ -24426,15 +27629,19 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderUncheckedCreateWithoutAuthorizationsInput = {
     id?: number
+    nickName?: string | null
     name: string
     description: string
     contractor?: string | null
     subcontractor?: string | null
     cuit: string
     address: string
-    email: string
     phone: string
-    contact: string
+    contact?: string | null
+    webside?: string | null
+    email?: string | null
+    email2?: string | null
+    email3?: string | null
     patients?: PatientUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
     legalGuardians?: LegalGuardianUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
     professionals?: ProfessionalUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
@@ -24491,15 +27698,19 @@ export namespace Prisma {
   }
 
   export type HealthInsuranceProviderUpdateWithoutAuthorizationsInput = {
+    nickName?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     contractor?: NullableStringFieldUpdateOperationsInput | string | null
     subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
-    contact?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    webside?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    email2?: NullableStringFieldUpdateOperationsInput | string | null
+    email3?: NullableStringFieldUpdateOperationsInput | string | null
     patients?: PatientUpdateManyWithoutHealthInsuranceProviderNestedInput
     legalGuardians?: LegalGuardianUpdateManyWithoutHealthInsuranceProviderNestedInput
     professionals?: ProfessionalUpdateManyWithoutHealthInsuranceProviderNestedInput
@@ -24507,15 +27718,19 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderUncheckedUpdateWithoutAuthorizationsInput = {
     id?: IntFieldUpdateOperationsInput | number
+    nickName?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     contractor?: NullableStringFieldUpdateOperationsInput | string | null
     subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
-    contact?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    webside?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    email2?: NullableStringFieldUpdateOperationsInput | string | null
+    email3?: NullableStringFieldUpdateOperationsInput | string | null
     patients?: PatientUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
     legalGuardians?: LegalGuardianUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
     professionals?: ProfessionalUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
@@ -24647,15 +27862,19 @@ export namespace Prisma {
   }
 
   export type HealthInsuranceProviderCreateWithoutLegalGuardiansInput = {
+    nickName?: string | null
     name: string
     description: string
     contractor?: string | null
     subcontractor?: string | null
     cuit: string
     address: string
-    email: string
     phone: string
-    contact: string
+    contact?: string | null
+    webside?: string | null
+    email?: string | null
+    email2?: string | null
+    email3?: string | null
     authorizations?: HealthInsuranceAuthorizationCreateNestedManyWithoutHealthInsuranceProviderInput
     patients?: PatientCreateNestedManyWithoutHealthInsuranceProviderInput
     professionals?: ProfessionalCreateNestedManyWithoutHealthInsuranceProviderInput
@@ -24663,15 +27882,19 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderUncheckedCreateWithoutLegalGuardiansInput = {
     id?: number
+    nickName?: string | null
     name: string
     description: string
     contractor?: string | null
     subcontractor?: string | null
     cuit: string
     address: string
-    email: string
     phone: string
-    contact: string
+    contact?: string | null
+    webside?: string | null
+    email?: string | null
+    email2?: string | null
+    email3?: string | null
     authorizations?: HealthInsuranceAuthorizationUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
     patients?: PatientUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
     professionals?: ProfessionalUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
@@ -24787,15 +28010,19 @@ export namespace Prisma {
   }
 
   export type HealthInsuranceProviderUpdateWithoutLegalGuardiansInput = {
+    nickName?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     contractor?: NullableStringFieldUpdateOperationsInput | string | null
     subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
-    contact?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    webside?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    email2?: NullableStringFieldUpdateOperationsInput | string | null
+    email3?: NullableStringFieldUpdateOperationsInput | string | null
     authorizations?: HealthInsuranceAuthorizationUpdateManyWithoutHealthInsuranceProviderNestedInput
     patients?: PatientUpdateManyWithoutHealthInsuranceProviderNestedInput
     professionals?: ProfessionalUpdateManyWithoutHealthInsuranceProviderNestedInput
@@ -24803,15 +28030,19 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderUncheckedUpdateWithoutLegalGuardiansInput = {
     id?: IntFieldUpdateOperationsInput | number
+    nickName?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     contractor?: NullableStringFieldUpdateOperationsInput | string | null
     subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
-    contact?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    webside?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    email2?: NullableStringFieldUpdateOperationsInput | string | null
+    email3?: NullableStringFieldUpdateOperationsInput | string | null
     authorizations?: HealthInsuranceAuthorizationUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
     patients?: PatientUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
     professionals?: ProfessionalUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
@@ -24949,16 +28180,36 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ProfessionalTypeCreateWithoutProfessionalsInput = {
+    name: string
+    description?: string | null
+  }
+
+  export type ProfessionalTypeUncheckedCreateWithoutProfessionalsInput = {
+    id?: number
+    name: string
+    description?: string | null
+  }
+
+  export type ProfessionalTypeCreateOrConnectWithoutProfessionalsInput = {
+    where: ProfessionalTypeWhereUniqueInput
+    create: XOR<ProfessionalTypeCreateWithoutProfessionalsInput, ProfessionalTypeUncheckedCreateWithoutProfessionalsInput>
+  }
+
   export type HealthInsuranceProviderCreateWithoutProfessionalsInput = {
+    nickName?: string | null
     name: string
     description: string
     contractor?: string | null
     subcontractor?: string | null
     cuit: string
     address: string
-    email: string
     phone: string
-    contact: string
+    contact?: string | null
+    webside?: string | null
+    email?: string | null
+    email2?: string | null
+    email3?: string | null
     authorizations?: HealthInsuranceAuthorizationCreateNestedManyWithoutHealthInsuranceProviderInput
     patients?: PatientCreateNestedManyWithoutHealthInsuranceProviderInput
     legalGuardians?: LegalGuardianCreateNestedManyWithoutHealthInsuranceProviderInput
@@ -24966,15 +28217,19 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderUncheckedCreateWithoutProfessionalsInput = {
     id?: number
+    nickName?: string | null
     name: string
     description: string
     contractor?: string | null
     subcontractor?: string | null
     cuit: string
     address: string
-    email: string
     phone: string
-    contact: string
+    contact?: string | null
+    webside?: string | null
+    email?: string | null
+    email2?: string | null
+    email3?: string | null
     authorizations?: HealthInsuranceAuthorizationUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
     patients?: PatientUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
     legalGuardians?: LegalGuardianUncheckedCreateNestedManyWithoutHealthInsuranceProviderInput
@@ -24983,6 +28238,33 @@ export namespace Prisma {
   export type HealthInsuranceProviderCreateOrConnectWithoutProfessionalsInput = {
     where: HealthInsuranceProviderWhereUniqueInput
     create: XOR<HealthInsuranceProviderCreateWithoutProfessionalsInput, HealthInsuranceProviderUncheckedCreateWithoutProfessionalsInput>
+  }
+
+  export type ConsultationPriceCreateWithoutProfessionalInput = {
+    price: number
+    currency?: string
+    sessionType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConsultationPriceUncheckedCreateWithoutProfessionalInput = {
+    id?: number
+    price: number
+    currency?: string
+    sessionType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ConsultationPriceCreateOrConnectWithoutProfessionalInput = {
+    where: ConsultationPriceWhereUniqueInput
+    create: XOR<ConsultationPriceCreateWithoutProfessionalInput, ConsultationPriceUncheckedCreateWithoutProfessionalInput>
+  }
+
+  export type ConsultationPriceCreateManyProfessionalInputEnvelope = {
+    data: ConsultationPriceCreateManyProfessionalInput | ConsultationPriceCreateManyProfessionalInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutProfessionalInput = {
@@ -25070,6 +28352,31 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Schedule"> | Date | string
   }
 
+  export type ProfessionalTypeUpsertWithWhereUniqueWithoutProfessionalsInput = {
+    where: ProfessionalTypeWhereUniqueInput
+    update: XOR<ProfessionalTypeUpdateWithoutProfessionalsInput, ProfessionalTypeUncheckedUpdateWithoutProfessionalsInput>
+    create: XOR<ProfessionalTypeCreateWithoutProfessionalsInput, ProfessionalTypeUncheckedCreateWithoutProfessionalsInput>
+  }
+
+  export type ProfessionalTypeUpdateWithWhereUniqueWithoutProfessionalsInput = {
+    where: ProfessionalTypeWhereUniqueInput
+    data: XOR<ProfessionalTypeUpdateWithoutProfessionalsInput, ProfessionalTypeUncheckedUpdateWithoutProfessionalsInput>
+  }
+
+  export type ProfessionalTypeUpdateManyWithWhereWithoutProfessionalsInput = {
+    where: ProfessionalTypeScalarWhereInput
+    data: XOR<ProfessionalTypeUpdateManyMutationInput, ProfessionalTypeUncheckedUpdateManyWithoutProfessionalsInput>
+  }
+
+  export type ProfessionalTypeScalarWhereInput = {
+    AND?: ProfessionalTypeScalarWhereInput | ProfessionalTypeScalarWhereInput[]
+    OR?: ProfessionalTypeScalarWhereInput[]
+    NOT?: ProfessionalTypeScalarWhereInput | ProfessionalTypeScalarWhereInput[]
+    id?: IntFilter<"ProfessionalType"> | number
+    name?: StringFilter<"ProfessionalType"> | string
+    description?: StringNullableFilter<"ProfessionalType"> | string | null
+  }
+
   export type HealthInsuranceProviderUpsertWithoutProfessionalsInput = {
     update: XOR<HealthInsuranceProviderUpdateWithoutProfessionalsInput, HealthInsuranceProviderUncheckedUpdateWithoutProfessionalsInput>
     create: XOR<HealthInsuranceProviderCreateWithoutProfessionalsInput, HealthInsuranceProviderUncheckedCreateWithoutProfessionalsInput>
@@ -25082,15 +28389,19 @@ export namespace Prisma {
   }
 
   export type HealthInsuranceProviderUpdateWithoutProfessionalsInput = {
+    nickName?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     contractor?: NullableStringFieldUpdateOperationsInput | string | null
     subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
-    contact?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    webside?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    email2?: NullableStringFieldUpdateOperationsInput | string | null
+    email3?: NullableStringFieldUpdateOperationsInput | string | null
     authorizations?: HealthInsuranceAuthorizationUpdateManyWithoutHealthInsuranceProviderNestedInput
     patients?: PatientUpdateManyWithoutHealthInsuranceProviderNestedInput
     legalGuardians?: LegalGuardianUpdateManyWithoutHealthInsuranceProviderNestedInput
@@ -25098,18 +28409,199 @@ export namespace Prisma {
 
   export type HealthInsuranceProviderUncheckedUpdateWithoutProfessionalsInput = {
     id?: IntFieldUpdateOperationsInput | number
+    nickName?: NullableStringFieldUpdateOperationsInput | string | null
     name?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
     contractor?: NullableStringFieldUpdateOperationsInput | string | null
     subcontractor?: NullableStringFieldUpdateOperationsInput | string | null
     cuit?: StringFieldUpdateOperationsInput | string
     address?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
     phone?: StringFieldUpdateOperationsInput | string
-    contact?: StringFieldUpdateOperationsInput | string
+    contact?: NullableStringFieldUpdateOperationsInput | string | null
+    webside?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    email2?: NullableStringFieldUpdateOperationsInput | string | null
+    email3?: NullableStringFieldUpdateOperationsInput | string | null
     authorizations?: HealthInsuranceAuthorizationUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
     patients?: PatientUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
     legalGuardians?: LegalGuardianUncheckedUpdateManyWithoutHealthInsuranceProviderNestedInput
+  }
+
+  export type ConsultationPriceUpsertWithWhereUniqueWithoutProfessionalInput = {
+    where: ConsultationPriceWhereUniqueInput
+    update: XOR<ConsultationPriceUpdateWithoutProfessionalInput, ConsultationPriceUncheckedUpdateWithoutProfessionalInput>
+    create: XOR<ConsultationPriceCreateWithoutProfessionalInput, ConsultationPriceUncheckedCreateWithoutProfessionalInput>
+  }
+
+  export type ConsultationPriceUpdateWithWhereUniqueWithoutProfessionalInput = {
+    where: ConsultationPriceWhereUniqueInput
+    data: XOR<ConsultationPriceUpdateWithoutProfessionalInput, ConsultationPriceUncheckedUpdateWithoutProfessionalInput>
+  }
+
+  export type ConsultationPriceUpdateManyWithWhereWithoutProfessionalInput = {
+    where: ConsultationPriceScalarWhereInput
+    data: XOR<ConsultationPriceUpdateManyMutationInput, ConsultationPriceUncheckedUpdateManyWithoutProfessionalInput>
+  }
+
+  export type ConsultationPriceScalarWhereInput = {
+    AND?: ConsultationPriceScalarWhereInput | ConsultationPriceScalarWhereInput[]
+    OR?: ConsultationPriceScalarWhereInput[]
+    NOT?: ConsultationPriceScalarWhereInput | ConsultationPriceScalarWhereInput[]
+    id?: IntFilter<"ConsultationPrice"> | number
+    price?: FloatFilter<"ConsultationPrice"> | number
+    currency?: StringFilter<"ConsultationPrice"> | string
+    sessionType?: StringFilter<"ConsultationPrice"> | string
+    createdAt?: DateTimeFilter<"ConsultationPrice"> | Date | string
+    updatedAt?: DateTimeFilter<"ConsultationPrice"> | Date | string
+    professionalId?: IntFilter<"ConsultationPrice"> | number
+  }
+
+  export type ProfessionalCreateWithoutProfessionalTypesInput = {
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    birthday: Date | string
+    phone: string
+    professionalActivity: string
+    isActive?: boolean
+    licenseNumber: string
+    user?: UserCreateNestedOneWithoutProfessionalInput
+    events?: EventCreateNestedManyWithoutProfessionalInput
+    schedules?: ScheduleCreateNestedManyWithoutProfessionalInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutProfessionalsInput
+    consultationPrices?: ConsultationPriceCreateNestedManyWithoutProfessionalInput
+  }
+
+  export type ProfessionalUncheckedCreateWithoutProfessionalTypesInput = {
+    id?: number
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    birthday: Date | string
+    phone: string
+    professionalActivity: string
+    isActive?: boolean
+    licenseNumber: string
+    userId?: number | null
+    healthInsuranceProviderId?: number | null
+    events?: EventUncheckedCreateNestedManyWithoutProfessionalInput
+    schedules?: ScheduleUncheckedCreateNestedManyWithoutProfessionalInput
+    consultationPrices?: ConsultationPriceUncheckedCreateNestedManyWithoutProfessionalInput
+  }
+
+  export type ProfessionalCreateOrConnectWithoutProfessionalTypesInput = {
+    where: ProfessionalWhereUniqueInput
+    create: XOR<ProfessionalCreateWithoutProfessionalTypesInput, ProfessionalUncheckedCreateWithoutProfessionalTypesInput>
+  }
+
+  export type ProfessionalUpsertWithWhereUniqueWithoutProfessionalTypesInput = {
+    where: ProfessionalWhereUniqueInput
+    update: XOR<ProfessionalUpdateWithoutProfessionalTypesInput, ProfessionalUncheckedUpdateWithoutProfessionalTypesInput>
+    create: XOR<ProfessionalCreateWithoutProfessionalTypesInput, ProfessionalUncheckedCreateWithoutProfessionalTypesInput>
+  }
+
+  export type ProfessionalUpdateWithWhereUniqueWithoutProfessionalTypesInput = {
+    where: ProfessionalWhereUniqueInput
+    data: XOR<ProfessionalUpdateWithoutProfessionalTypesInput, ProfessionalUncheckedUpdateWithoutProfessionalTypesInput>
+  }
+
+  export type ProfessionalUpdateManyWithWhereWithoutProfessionalTypesInput = {
+    where: ProfessionalScalarWhereInput
+    data: XOR<ProfessionalUpdateManyMutationInput, ProfessionalUncheckedUpdateManyWithoutProfessionalTypesInput>
+  }
+
+  export type ProfessionalCreateWithoutConsultationPricesInput = {
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    birthday: Date | string
+    phone: string
+    professionalActivity: string
+    isActive?: boolean
+    licenseNumber: string
+    user?: UserCreateNestedOneWithoutProfessionalInput
+    events?: EventCreateNestedManyWithoutProfessionalInput
+    schedules?: ScheduleCreateNestedManyWithoutProfessionalInput
+    professionalTypes?: ProfessionalTypeCreateNestedManyWithoutProfessionalsInput
+    healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutProfessionalsInput
+  }
+
+  export type ProfessionalUncheckedCreateWithoutConsultationPricesInput = {
+    id?: number
+    firstName: string
+    lastName: string
+    address: string
+    dni: string
+    cuil: string
+    birthday: Date | string
+    phone: string
+    professionalActivity: string
+    isActive?: boolean
+    licenseNumber: string
+    userId?: number | null
+    healthInsuranceProviderId?: number | null
+    events?: EventUncheckedCreateNestedManyWithoutProfessionalInput
+    schedules?: ScheduleUncheckedCreateNestedManyWithoutProfessionalInput
+    professionalTypes?: ProfessionalTypeUncheckedCreateNestedManyWithoutProfessionalsInput
+  }
+
+  export type ProfessionalCreateOrConnectWithoutConsultationPricesInput = {
+    where: ProfessionalWhereUniqueInput
+    create: XOR<ProfessionalCreateWithoutConsultationPricesInput, ProfessionalUncheckedCreateWithoutConsultationPricesInput>
+  }
+
+  export type ProfessionalUpsertWithoutConsultationPricesInput = {
+    update: XOR<ProfessionalUpdateWithoutConsultationPricesInput, ProfessionalUncheckedUpdateWithoutConsultationPricesInput>
+    create: XOR<ProfessionalCreateWithoutConsultationPricesInput, ProfessionalUncheckedCreateWithoutConsultationPricesInput>
+    where?: ProfessionalWhereInput
+  }
+
+  export type ProfessionalUpdateToOneWithWhereWithoutConsultationPricesInput = {
+    where?: ProfessionalWhereInput
+    data: XOR<ProfessionalUpdateWithoutConsultationPricesInput, ProfessionalUncheckedUpdateWithoutConsultationPricesInput>
+  }
+
+  export type ProfessionalUpdateWithoutConsultationPricesInput = {
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    licenseNumber?: StringFieldUpdateOperationsInput | string
+    user?: UserUpdateOneWithoutProfessionalNestedInput
+    events?: EventUpdateManyWithoutProfessionalNestedInput
+    schedules?: ScheduleUpdateManyWithoutProfessionalNestedInput
+    professionalTypes?: ProfessionalTypeUpdateManyWithoutProfessionalsNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutProfessionalsNestedInput
+  }
+
+  export type ProfessionalUncheckedUpdateWithoutConsultationPricesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    licenseNumber?: StringFieldUpdateOperationsInput | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
+    events?: EventUncheckedUpdateManyWithoutProfessionalNestedInput
+    schedules?: ScheduleUncheckedUpdateManyWithoutProfessionalNestedInput
+    professionalTypes?: ProfessionalTypeUncheckedUpdateManyWithoutProfessionalsNestedInput
   }
 
   export type AdmissionTypeCreateWithoutAdmissionsInput = {
@@ -25427,10 +28919,12 @@ export namespace Prisma {
     phone: string
     professionalActivity: string
     isActive?: boolean
-    profecionalType: string
+    licenseNumber: string
     user?: UserCreateNestedOneWithoutProfessionalInput
     schedules?: ScheduleCreateNestedManyWithoutProfessionalInput
+    professionalTypes?: ProfessionalTypeCreateNestedManyWithoutProfessionalsInput
     healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutProfessionalsInput
+    consultationPrices?: ConsultationPriceCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalUncheckedCreateWithoutEventsInput = {
@@ -25444,10 +28938,12 @@ export namespace Prisma {
     phone: string
     professionalActivity: string
     isActive?: boolean
-    profecionalType: string
+    licenseNumber: string
     userId?: number | null
     healthInsuranceProviderId?: number | null
     schedules?: ScheduleUncheckedCreateNestedManyWithoutProfessionalInput
+    professionalTypes?: ProfessionalTypeUncheckedCreateNestedManyWithoutProfessionalsInput
+    consultationPrices?: ConsultationPriceUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalCreateOrConnectWithoutEventsInput = {
@@ -25562,10 +29058,12 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    profecionalType?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneWithoutProfessionalNestedInput
     schedules?: ScheduleUpdateManyWithoutProfessionalNestedInput
+    professionalTypes?: ProfessionalTypeUpdateManyWithoutProfessionalsNestedInput
     healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutProfessionalsNestedInput
+    consultationPrices?: ConsultationPriceUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalUncheckedUpdateWithoutEventsInput = {
@@ -25579,10 +29077,12 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    profecionalType?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     schedules?: ScheduleUncheckedUpdateManyWithoutProfessionalNestedInput
+    professionalTypes?: ProfessionalTypeUncheckedUpdateManyWithoutProfessionalsNestedInput
+    consultationPrices?: ConsultationPriceUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type PatientUpsertWithoutEventsInput = {
@@ -25719,10 +29219,12 @@ export namespace Prisma {
     phone: string
     professionalActivity: string
     isActive?: boolean
-    profecionalType: string
+    licenseNumber: string
     user?: UserCreateNestedOneWithoutProfessionalInput
     events?: EventCreateNestedManyWithoutProfessionalInput
+    professionalTypes?: ProfessionalTypeCreateNestedManyWithoutProfessionalsInput
     healthInsuranceProvider?: HealthInsuranceProviderCreateNestedOneWithoutProfessionalsInput
+    consultationPrices?: ConsultationPriceCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalUncheckedCreateWithoutSchedulesInput = {
@@ -25736,10 +29238,12 @@ export namespace Prisma {
     phone: string
     professionalActivity: string
     isActive?: boolean
-    profecionalType: string
+    licenseNumber: string
     userId?: number | null
     healthInsuranceProviderId?: number | null
     events?: EventUncheckedCreateNestedManyWithoutProfessionalInput
+    professionalTypes?: ProfessionalTypeUncheckedCreateNestedManyWithoutProfessionalsInput
+    consultationPrices?: ConsultationPriceUncheckedCreateNestedManyWithoutProfessionalInput
   }
 
   export type ProfessionalCreateOrConnectWithoutSchedulesInput = {
@@ -25768,10 +29272,12 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    profecionalType?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneWithoutProfessionalNestedInput
     events?: EventUpdateManyWithoutProfessionalNestedInput
+    professionalTypes?: ProfessionalTypeUpdateManyWithoutProfessionalsNestedInput
     healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutProfessionalsNestedInput
+    consultationPrices?: ConsultationPriceUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalUncheckedUpdateWithoutSchedulesInput = {
@@ -25785,10 +29291,12 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    profecionalType?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
     events?: EventUncheckedUpdateManyWithoutProfessionalNestedInput
+    professionalTypes?: ProfessionalTypeUncheckedUpdateManyWithoutProfessionalsNestedInput
+    consultationPrices?: ConsultationPriceUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type AdmissionCreateWithoutAdmissionTypeInput = {
@@ -26041,7 +29549,7 @@ export namespace Prisma {
     phone: string
     professionalActivity: string
     isActive?: boolean
-    profecionalType: string
+    licenseNumber: string
     userId?: number | null
   }
 
@@ -26201,10 +29709,12 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    profecionalType?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
     user?: UserUpdateOneWithoutProfessionalNestedInput
     events?: EventUpdateManyWithoutProfessionalNestedInput
     schedules?: ScheduleUpdateManyWithoutProfessionalNestedInput
+    professionalTypes?: ProfessionalTypeUpdateManyWithoutProfessionalsNestedInput
+    consultationPrices?: ConsultationPriceUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalUncheckedUpdateWithoutHealthInsuranceProviderInput = {
@@ -26218,10 +29728,12 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    profecionalType?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
     events?: EventUncheckedUpdateManyWithoutProfessionalNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutProfessionalNestedInput
+    professionalTypes?: ProfessionalTypeUncheckedUpdateManyWithoutProfessionalsNestedInput
+    consultationPrices?: ConsultationPriceUncheckedUpdateManyWithoutProfessionalNestedInput
   }
 
   export type ProfessionalUncheckedUpdateManyWithoutHealthInsuranceProviderInput = {
@@ -26235,7 +29747,7 @@ export namespace Prisma {
     phone?: StringFieldUpdateOperationsInput | string
     professionalActivity?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    profecionalType?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
     userId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
@@ -26403,6 +29915,15 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type ConsultationPriceCreateManyProfessionalInput = {
+    id?: number
+    price: number
+    currency?: string
+    sessionType: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type EventUpdateWithoutProfessionalInput = {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -26471,6 +29992,102 @@ export namespace Prisma {
     repeatsWeekly?: BoolFieldUpdateOperationsInput | boolean
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProfessionalTypeUpdateWithoutProfessionalsInput = {
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ProfessionalTypeUncheckedUpdateWithoutProfessionalsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ProfessionalTypeUncheckedUpdateManyWithoutProfessionalsInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ConsultationPriceUpdateWithoutProfessionalInput = {
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    sessionType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConsultationPriceUncheckedUpdateWithoutProfessionalInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    sessionType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ConsultationPriceUncheckedUpdateManyWithoutProfessionalInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    sessionType?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProfessionalUpdateWithoutProfessionalTypesInput = {
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    licenseNumber?: StringFieldUpdateOperationsInput | string
+    user?: UserUpdateOneWithoutProfessionalNestedInput
+    events?: EventUpdateManyWithoutProfessionalNestedInput
+    schedules?: ScheduleUpdateManyWithoutProfessionalNestedInput
+    healthInsuranceProvider?: HealthInsuranceProviderUpdateOneWithoutProfessionalsNestedInput
+    consultationPrices?: ConsultationPriceUpdateManyWithoutProfessionalNestedInput
+  }
+
+  export type ProfessionalUncheckedUpdateWithoutProfessionalTypesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    licenseNumber?: StringFieldUpdateOperationsInput | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
+    events?: EventUncheckedUpdateManyWithoutProfessionalNestedInput
+    schedules?: ScheduleUncheckedUpdateManyWithoutProfessionalNestedInput
+    consultationPrices?: ConsultationPriceUncheckedUpdateManyWithoutProfessionalNestedInput
+  }
+
+  export type ProfessionalUncheckedUpdateManyWithoutProfessionalTypesInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    firstName?: StringFieldUpdateOperationsInput | string
+    lastName?: StringFieldUpdateOperationsInput | string
+    address?: StringFieldUpdateOperationsInput | string
+    dni?: StringFieldUpdateOperationsInput | string
+    cuil?: StringFieldUpdateOperationsInput | string
+    birthday?: DateTimeFieldUpdateOperationsInput | Date | string
+    phone?: StringFieldUpdateOperationsInput | string
+    professionalActivity?: StringFieldUpdateOperationsInput | string
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    licenseNumber?: StringFieldUpdateOperationsInput | string
+    userId?: NullableIntFieldUpdateOperationsInput | number | null
+    healthInsuranceProviderId?: NullableIntFieldUpdateOperationsInput | number | null
   }
 
   export type HealthInsuranceAuthorizationCreateManyAdmissionInput = {
