@@ -81,18 +81,18 @@ export function DashboardSidebar() {
       roles: ["ADMIN", "ROOT"],
     },
     {
-      label: "Pacientes",
+      label: "Concurrentes",
       icon: Smile,
       href: "/dashboard/pacientes",
       active: pathname === "/dashboard/pacientes",
-      roles: ["ADMIN", "ROOT"],
+      roles: ["ADMIN", "ROOT", "CLIENT"],
     },
     {
       label: "Profesionales",
       icon: Smile,
       href: "/dashboard/profesionales",
       active: pathname === "/dashboard/profesionales",
-      roles: ["ADMIN", "ROOT"],
+      roles: ["ADMIN", "ROOT", "CLIENT"],
     },
   ];
 

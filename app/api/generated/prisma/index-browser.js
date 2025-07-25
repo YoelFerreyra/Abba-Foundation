@@ -229,6 +229,32 @@ exports.Prisma.ConsultationPriceScalarFieldEnum = {
   professionalId: 'professionalId'
 };
 
+exports.Prisma.AdminScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  address: 'address',
+  birthday: 'birthday',
+  phone: 'phone',
+  isActive: 'isActive',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.RootScalarFieldEnum = {
+  id: 'id',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  address: 'address',
+  birthday: 'birthday',
+  phone: 'phone',
+  isActive: 'isActive',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.AdmissionScalarFieldEnum = {
   id: 'id',
   operationDate: 'operationDate',
@@ -373,9 +399,8 @@ exports.AdmissionStatus = exports.$Enums.AdmissionStatus = {
 };
 
 exports.EventType = exports.$Enums.EventType = {
-  CONSULTATION: 'CONSULTATION',
-  STUDY: 'STUDY',
-  OTHER: 'OTHER'
+  ONLINE: 'ONLINE',
+  ON_SITE: 'ON_SITE'
 };
 
 exports.EventStatus = exports.$Enums.EventStatus = {
@@ -431,6 +456,8 @@ exports.Prisma.ModelName = {
   Professional: 'Professional',
   ProfessionalType: 'ProfessionalType',
   ConsultationPrice: 'ConsultationPrice',
+  Admin: 'Admin',
+  Root: 'Root',
   Admission: 'Admission',
   Event: 'Event',
   Process: 'Process',

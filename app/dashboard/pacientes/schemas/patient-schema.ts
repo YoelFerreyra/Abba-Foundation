@@ -19,7 +19,9 @@ export const legalGuardianFormSchema = z.object({
   }),
   cuil: z.string().min(1, "El CUIL es obligatorio"),
   phone: z.string().min(7, "El teléfono es obligatorio"),
-  professionalActivity: z.string().optional(),
+  professionalActivity: z
+    .string()
+    .min(1, "La actividad profesional es obligatoria")
 });
 
 export const admissionSchema = z.object({
@@ -31,7 +33,9 @@ export const admissionSchema = z.object({
     .int()
     .positive("Seleccione un tipo de ingreso"),
   isSchoolEnrolled: z.boolean().default(false),
-  schoolShift: z.enum(["MORNING", "AFTERNOON", "FULL_DAY"]).optional(),
+  schoolShift: z.enum(["MORNING", "AFTERNOON", "EVENING", "FULL_DAY"]),
+  schoolStartTime: z.coerce.date().optional(),
+  schoolEndTime: z.coerce.date().optional(),
   cud: z.string().optional(),
   cudExpirationDate: z.coerce.date().optional(),
 });

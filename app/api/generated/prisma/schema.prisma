@@ -18,11 +18,14 @@ model User {
   createdAt   DateTime  @default(now())
   image       String?
 
-  patient          Patient?
-  legalGuardian    LegalGuardian?
-  professional     Professional?
-  createdEvents    Event[]        @relation("EventCreator")
-  createdProcesses Process[]      @relation("ProcessCreator")
+  patient       Patient?
+  legalGuardian LegalGuardian?
+  professional  Professional?
+  admin         Admin?
+  root          Root?
+
+  createdEvents    Event[]   @relation("EventCreator")
+  createdProcesses Process[] @relation("ProcessCreator")
 }
 
 model Patient {
@@ -85,25 +88,21 @@ model HealthInsuranceAuthorization {
   admissionId Int
   admission   Admission @relation(fields: [admissionId], references: [id])
 
-  service      CoverageService
+  coverageServiceId Int
+  coverageService   CoverageService @relation(fields: [coverageServiceId], references: [id])
+
   periodFrom   DateTime
   periodTo     DateTime
   authorizedAt DateTime
 }
 
-enum CoverageService {
-  PSYCHOLOGY
-  PSYCHOPEDAGOGY
-  SPEECH_THERAPY
-  SUPPORT_TEACHER_MODULE
-  OCCUPATIONAL_THERAPY
-  PSYCHOMOTOR_THERAPY
-  THERAPY_TRANSPORT
-  SCHOOL_TRANSPORT
-  INTENSIVE_INTEGRAL_MODULE
-  SIMPLE_INTEGRAL_MODULE
-  SCHOOL_INCLUSION_SUPPORT_MODULE
+model CoverageService {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  authorizations HealthInsuranceAuthorization[]
 }
+
 
 model LegalGuardian {
   id                   Int                  @id @default(autoincrement())
@@ -177,6 +176,38 @@ model ConsultationPrice {
   professional   Professional @relation(fields: [professionalId], references: [id])
 }
 
+model Admin {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  address   String
+  birthday  DateTime
+  phone     String
+  isActive  Boolean  @default(false)
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Root {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  address   String
+  birthday  DateTime
+  phone     String
+  isActive  Boolean  @default(false)
+
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Admission {
   id               Int           @id @default(autoincrement()) // Nro. de ingreso
   operationDate    DateTime      @default(now()) // Fecha operación
@@ -205,7 +236,7 @@ model Event {
   description String?
   startEvent  DateTime
   endEvent    DateTime
-  eventType   EventType   @default(CONSULTATION)
+  eventType   EventType   @default(ON_SITE)
   createdAt   DateTime    @default(now())
   status      EventStatus @default(AVAILABLE)
 
@@ -342,9 +373,8 @@ enum EventStatus {
 }
 
 enum EventType {
-  CONSULTATION
-  STUDY
-  OTHER
+  ONLINE
+  ON_SITE
 }
 
 model AdmissionType {
