@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Sheet,
   SheetContent,
@@ -14,8 +14,13 @@ import {
   SheetTitle,
   SheetDescription,
   SheetClose,
-} from "@/components/ui/sheet"
-import { ProfessionalFormData, professionalFormSchema } from "../schemas/professional-schema"
+} from "@/components/ui/sheet";
+import {
+  ProfessionalFormData,
+  professionalFormSchema,
+} from "../schemas/professional-schema";
+import { useEffect, useState } from "react";
+import { getProfessionalTypes } from "@/actions/professional";
 
 export default function ProfessionalForm({
   defaultValues,
@@ -23,10 +28,10 @@ export default function ProfessionalForm({
   isOpen,
   setIsOpen,
 }: {
-  defaultValues?: ProfessionalFormData
-  onSubmit: (data: ProfessionalFormData) => void
-  isOpen: boolean
-  setIsOpen: (open: boolean) => void
+  defaultValues?: ProfessionalFormData;
+  onSubmit: (data: ProfessionalFormData) => void;
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
 }) {
   const {
     register,
@@ -46,25 +51,43 @@ export default function ProfessionalForm({
       birthday: new Date(),
       phone: "",
       professionalActivity: "",
-      professionalType: "",
+      professionalType: 0,
       healthInsuranceProviderId: null,
       isActive: false,
     },
-  })
+  });
 
   const submitHandler = (data: ProfessionalFormData) => {
-    onSubmit(data)
-    reset()
-    setIsOpen(false)
-  }
+    onSubmit(data);
+    reset();
+    setIsOpen(false);
+  };
 
-  const isActive = watch("isActive")
+  const [professionalTypes, setProfessionalTypes] = useState<
+    { id: number; name: string }[]
+  >([]);
+
+  useEffect(() => {
+    async function fetchTypes() {
+      const types = await getProfessionalTypes();
+      setProfessionalTypes(types);
+    }
+
+    fetchTypes();
+  }, []);
+
+  const isActive = watch("isActive");
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent side="right" className="h-screen max-w-xl w-full overflow-y-auto">
+      <SheetContent
+        side="right"
+        className="h-screen max-w-xl w-full overflow-y-auto"
+      >
         <SheetHeader>
-          <SheetTitle>{defaultValues ? "Editar Profesional" : "Crear Profesional"}</SheetTitle>
+          <SheetTitle>
+            {defaultValues ? "Editar Profesional" : "Crear Profesional"}
+          </SheetTitle>
           <SheetDescription>
             {defaultValues
               ? "Modifica la información del profesional."
@@ -72,62 +95,94 @@ export default function ProfessionalForm({
           </SheetDescription>
         </SheetHeader>
 
-        <form onSubmit={handleSubmit(submitHandler)} className="flex flex-col gap-4 mt-4">
+        <form
+          onSubmit={handleSubmit(submitHandler)}
+          className="flex flex-col gap-4 mt-4"
+        >
           <div>
             <Label htmlFor="firstName">Nombre</Label>
             <Input id="firstName" {...register("firstName")} />
-            {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName.message}</p>}
+            {errors.firstName && (
+              <p className="text-red-500 text-sm">{errors.firstName.message}</p>
+            )}
           </div>
 
           <div>
             <Label htmlFor="lastName">Apellido</Label>
             <Input id="lastName" {...register("lastName")} />
-            {errors.lastName && <p className="text-red-500 text-sm">{errors.lastName.message}</p>}
+            {errors.lastName && (
+              <p className="text-red-500 text-sm">{errors.lastName.message}</p>
+            )}
           </div>
 
           <div>
             <Label htmlFor="address">Dirección</Label>
             <Input id="address" {...register("address")} />
-            {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
+            {errors.address && (
+              <p className="text-red-500 text-sm">{errors.address.message}</p>
+            )}
           </div>
 
           <div>
             <Label htmlFor="dni">DNI</Label>
             <Input id="dni" {...register("dni")} />
-            {errors.dni && <p className="text-red-500 text-sm">{errors.dni.message}</p>}
+            {errors.dni && (
+              <p className="text-red-500 text-sm">{errors.dni.message}</p>
+            )}
           </div>
 
           <div>
             <Label htmlFor="cuil">CUIL</Label>
             <Input id="cuil" {...register("cuil")} />
-            {errors.cuil && <p className="text-red-500 text-sm">{errors.cuil.message}</p>}
+            {errors.cuil && (
+              <p className="text-red-500 text-sm">{errors.cuil.message}</p>
+            )}
+          </div>
+          <div>
+            <Label htmlFor="licenseNumber">Matrícula</Label>
+            <Input
+              type="text"
+              id="licenseNumber"
+              {...register("licenseNumber")}
+              placeholder="Ej. 123456"
+            />
+            {errors.licenseNumber && (
+              <p className="text-red-500 text-sm">
+                {errors.licenseNumber.message}
+              </p>
+            )}
           </div>
 
           <div>
             <Label htmlFor="birthday">Fecha de nacimiento</Label>
-            <Input id="birthday" type="date" {...register("birthday", { valueAsDate: true })} />
-            {errors.birthday && <p className="text-red-500 text-sm">{errors.birthday.message}</p>}
+            <Input
+              id="birthday"
+              type="date"
+              {...register("birthday", { valueAsDate: true })}
+            />
+            {errors.birthday && (
+              <p className="text-red-500 text-sm">{errors.birthday.message}</p>
+            )}
           </div>
 
           <div>
             <Label htmlFor="phone">Teléfono</Label>
             <Input id="phone" {...register("phone")} />
-            {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
-          </div>
-
-          <div>
-            <Label htmlFor="professionalActivity">Actividad profesional</Label>
-            <Input id="professionalActivity" {...register("professionalActivity")} />
-            {errors.professionalActivity && (
-              <p className="text-red-500 text-sm">{errors.professionalActivity.message}</p>
+            {errors.phone && (
+              <p className="text-red-500 text-sm">{errors.phone.message}</p>
             )}
           </div>
 
           <div>
-            <Label htmlFor="professionalType">Tipo de profesional</Label>
-            <Input id="professionalType" {...register("professionalType")} />
-            {errors.professionalType && (
-              <p className="text-red-500 text-sm">{errors.professionalType.message}</p>
+            <Label htmlFor="professionalActivity">Actividad profesional</Label>
+            <Input
+              id="professionalActivity"
+              {...register("professionalActivity")}
+            />
+            {errors.professionalActivity && (
+              <p className="text-red-500 text-sm">
+                {errors.professionalActivity.message}
+              </p>
             )}
           </div>
 
@@ -136,10 +191,14 @@ export default function ProfessionalForm({
             <Input
               id="healthInsuranceProviderId"
               type="number"
-              {...register("healthInsuranceProviderId", { valueAsNumber: true })}
+              {...register("healthInsuranceProviderId", {
+                valueAsNumber: true,
+              })}
             />
             {errors.healthInsuranceProviderId && (
-              <p className="text-red-500 text-sm">{errors.healthInsuranceProviderId.message}</p>
+              <p className="text-red-500 text-sm">
+                {errors.healthInsuranceProviderId.message}
+              </p>
             )}
           </div>
 
@@ -147,19 +206,44 @@ export default function ProfessionalForm({
             <Checkbox
               id="isActive"
               checked={isActive}
-              onCheckedChange={(checked) => setValue("isActive", Boolean(checked))}
+              onCheckedChange={(checked) =>
+                setValue("isActive", Boolean(checked))
+              }
             />
             <Label htmlFor="isActive">Profesional activo</Label>
           </div>
 
+          <div>
+            <Label htmlFor="professionalType">Tipo de profesional</Label>
+            <select
+              id="professionalType"
+              {...register("professionalType")}
+              className="w-full border p-2 rounded"
+            >
+              <option value="">Seleccionar</option>
+              {professionalTypes.map((type) => (
+                <option key={type.id} value={type.id}>
+                  {type.name}
+                </option>
+              ))}
+            </select>
+            {errors.professionalType && (
+              <p className="text-red-500 text-sm">
+                {errors.professionalType.message}
+              </p>
+            )}
+          </div>
+
           <div className="mt-6 flex justify-end gap-2">
             <SheetClose asChild>
-              <Button type="button" variant="outline">Cancelar</Button>
+              <Button type="button" variant="outline">
+                Cancelar
+              </Button>
             </SheetClose>
             <Button type="submit">{defaultValues ? "Guardar" : "Crear"}</Button>
           </div>
         </form>
       </SheetContent>
     </Sheet>
-  )
+  );
 }
