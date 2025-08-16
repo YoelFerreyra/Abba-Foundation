@@ -14,7 +14,6 @@ import {
   addMinutes,
   eachWeekOfInterval,
   addWeeks,
-  set,
 } from "date-fns";
 import { es } from "date-fns/locale/es";
 import {
@@ -49,7 +48,6 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./calendar.css";
 import { toast } from "sonner";
 import { createAppointmentPreference } from "@/actions/appointment";
-import { getAllPatientsAction } from "@/actions/patients";
 
 const localizer = dateFnsLocalizer({
   format,
@@ -110,7 +108,7 @@ type Professional = {
   lastName: string;
 };
 
-export default function ProfessionalCalendar() {
+export default function AdminCalendar() {
   const [allEvents, setAllEvents] = useState<CalendarEvent[]>([]);
   const [scheduleEvents, setScheduleEvents] = useState<CalendarEvent[]>([]);
   const [formData, setFormData] = useState<EventFormData>({
@@ -119,7 +117,6 @@ export default function ProfessionalCalendar() {
     date: "",
     time: "",
   });
-  const [sessionDuration, setSessionDuration] = useState<number>(30);
 
   const { user } = useAuth();
   const [dateRange, setDateRange] = useState<{ start: Date; end: Date } | null>(
@@ -189,30 +186,18 @@ export default function ProfessionalCalendar() {
     return events;
   };
 
-  const [professionals, setProfessionals] = useState<
-    Professional[] | undefined
-  >([]);
-  const [patients, setPatients] = useState<[] | undefined>([]);
+  const [professionals, setProfessionals] = useState<Professional[]>([]);
   const [selectedProfessionalId, setSelectedProfessionalId] = useState<
     number | null
   >(null);
-  const [selectedPatientId, setSelectedPatientId] = useState<number | null>(
-    null
-  );
   const [paymentLink, setPaymentLink] = useState<string | null>(null);
   const [showPayButton, setShowPayButton] = useState(false);
   const [isGeneratingPayment, setIsGeneratingPayment] = useState(false);
+  const [sessionDuration, setSessionDuration] = useState<number>(30);
 
-  const loadEvents = async (selectedProfessionalId: number) => {
+  const loadEvents = async () => {
     try {
-      console.log(
-        "Loading events for professional ID:",
-        selectedProfessionalId
-      );
-
       const events = await getAllEvents(selectedProfessionalId);
-      console.log(events, events.length, "events loaded");
-
       const formatted: CalendarEvent[] = events.map((event) => ({
         id: event.id,
         title: event.title,
@@ -227,6 +212,8 @@ export default function ProfessionalCalendar() {
 
   const loadSchedule = async (professionalId: number) => {
     try {
+      console.log("Loading schedule for professional ID:", professionalId);
+
       const { schedule, sessionTime } = await getWeeklySchedule(professionalId);
 
       if (schedule) {
@@ -246,20 +233,8 @@ export default function ProfessionalCalendar() {
           grouped,
           sessionTime
         );
-
-        debugger;
-        if (allEvents.length === 0) {
-          const freeEvents = generatedEvents.filter((scheduleEvent) => {
-            return !allEvents.some(
-              (realEvent) =>
-                scheduleEvent.start < realEvent.end &&
-                scheduleEvent.end > realEvent.start
-            );
-          });
-
-          setScheduleEvents(freeEvents);
-        }
-        return setScheduleEvents(generatedEvents);
+        setScheduleEvents([]);
+        setScheduleEvents(generatedEvents);
       }
     } catch (err) {
       console.error("Error loading weekly schedule:", err);
@@ -267,60 +242,51 @@ export default function ProfessionalCalendar() {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchProfessionals = async () => {
       try {
-        const professionals = await getAllProfessionalsAction();
-        setProfessionals(professionals);
-        if (professionals && professionals?.length > 0) {
-          setSelectedProfessionalId(professionals[0].id);
-        }
-
-        const patients = await getAllPatientsAction();
-        setPatients(patients);
-        if (patients?.length > 0) {
-          setSelectedPatientId(patients[0].id);
-        }
+        const data = await getAllProfessionalsAction();
+        setProfessionals(data);
+        if (data?.length > 0) setSelectedProfessionalId(data[0].id);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching professionals:", error);
       }
     };
-
-    fetchData();
+    fetchProfessionals();
   }, []);
 
   const handleAddEvent = async () => {
     try {
-      if (!selectedProfessionalId || !selectedPatientId) {
-        toast.error("Debes seleccionar un profesional y concurrente.");
-        return;
-      }
-
       const start = new Date(`${formData.date}T${formData.time}`);
       const end = new Date(start.getTime() + sessionDuration * 60000);
 
-      await createEvent({
-        title: formData.title,
-        description: formData.description,
-        startEvent: start,
-        endEvent: end,
-        eventType: "ON_SITE",
-        createdById: user?.uid,
-        professionalId: selectedProfessionalId,
-        patientId: selectedPatientId,
-        status: "SCHEDULED",
-      });
+      const appointmentInput = {
+        appointmentId: "ID_DE_TU_CITA",
+        doctorName: formData.title,
+        specialty: "Especialidad X",
+        patientName: "Nombre Paciente",
+        date: formData.date,
+        time: formData.time,
+      };
 
-      toast.success("Evento creado exitosamente.");
+      const { success, init_point, error } = await createAppointmentPreference(
+        appointmentInput
+      );
 
-      // Reset
+      if (success) {
+        toast.success("Cita generada. Ya puedes pagarla.");
+        setPaymentLink(init_point);
+        setShowPayButton(true);
+      } else {
+        console.error("Error en la preferencia de pago:", error);
+        toast.error("Error al generar el link de pago");
+      }
+
       setFormData({ title: "", description: "", date: "", time: "" });
-
-      // Recargar eventos y horario
-      await loadEvents(selectedProfessionalId);
-      await loadSchedule(selectedProfessionalId);
+      loadEvents();
+      if (selectedProfessionalId !== null)
+        await loadSchedule(selectedProfessionalId);
     } catch (err) {
-      console.error("Error al crear el evento:", err);
-      toast.error("Hubo un error al crear el evento.");
+      console.error("Error al crear evento o preferencia de pago:", err);
     }
   };
 
@@ -334,18 +300,18 @@ export default function ProfessionalCalendar() {
   const onView = useCallback((newView: View) => {
     setView(newView);
   }, []);
-  const loadEventsData = async (professionalId: number | null) => {
-    await loadEvents(professionalId);
-    await loadSchedule(professionalId);
-  };
+  useEffect(() => {
+    loadEvents();
+  }, []);
+
   useEffect(() => {
     if (selectedProfessionalId !== null) {
-      loadEventsData(selectedProfessionalId);
+      loadSchedule(selectedProfessionalId);
     }
-  }, [selectedProfessionalId, allEvents.length, scheduleEvents.length]);
+  }, [selectedProfessionalId]);
 
   const handleCreateEventFromSelected = async () => {
-    if (!selectedEvent || !selectedProfessionalId || !selectedPatientId) return;
+    if (!selectedEvent || !selectedProfessionalId) return;
 
     try {
       await createEvent({
@@ -356,13 +322,13 @@ export default function ProfessionalCalendar() {
         eventType: "ON_SITE",
         createdById: user?.uid,
         professionalId: selectedProfessionalId,
-        patientId: selectedPatientId,
+        patientId: 1,
         status: "SCHEDULED",
       });
 
       setIsEventModalOpen(false);
       toast.success("Evento crear exitosamente");
-      await loadEvents(selectedProfessionalId);
+      await loadEvents();
       await loadSchedule(selectedProfessionalId);
     } catch (err) {
       console.error("Error al crear evento desde evento seleccionado:", err);
@@ -374,7 +340,7 @@ export default function ProfessionalCalendar() {
     try {
       await deleteCalendarEvent(String(selectedEvent.id));
       toast.success("Cita cancelada");
-      await loadEvents(selectedProfessionalId);
+      await loadEvents();
 
       if (selectedProfessionalId !== null) {
         await loadSchedule(selectedProfessionalId);
@@ -400,7 +366,6 @@ export default function ProfessionalCalendar() {
               <DialogTitle>Nueva cita</DialogTitle>
             </DialogHeader>
             <div className="grid gap-4 py-4">
-              
               <Select
                 value={selectedProfessionalId?.toString() ?? ""}
                 onValueChange={(value) =>
@@ -412,21 +377,6 @@ export default function ProfessionalCalendar() {
                 </SelectTrigger>
                 <SelectContent>
                   {professionals?.map((prof) => (
-                    <SelectItem key={prof.id} value={prof.id.toString()}>
-                      {prof.firstName} {prof.lastName}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <Select
-                value={selectedPatientId?.toString() ?? ""}
-                onValueChange={(value) => setSelectedPatientId(Number(value))}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Seleccionar concurrente" />
-                </SelectTrigger>
-                <SelectContent>
-                  {patients?.map((prof) => (
                     <SelectItem key={prof.id} value={prof.id.toString()}>
                       {prof.firstName} {prof.lastName}
                     </SelectItem>

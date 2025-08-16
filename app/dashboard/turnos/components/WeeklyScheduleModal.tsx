@@ -28,11 +28,11 @@ import {
 } from "@/components/ui/select";
 
 const weekDays = [
-  { label: "Monday", key: "monday" },
-  { label: "Tuesday", key: "tuesday" },
-  { label: "Wednesday", key: "wednesday" },
-  { label: "Thursday", key: "thursday" },
-  { label: "Friday", key: "friday" },
+  { label: "Lunes", key: "monday" },
+  { label: "Martes", key: "tuesday" },
+  { label: "Miercoles", key: "wednesday" },
+  { label: "Jueves", key: "thursday" },
+  { label: "Viernes", key: "friday" },
 ];
 
 type TimeRange = { startTime: string; endTime: string };
@@ -54,7 +54,6 @@ const isTimeRangeValid = (start: string, end: string) => {
   return start < end;
 };
 
-
 export default function WeeklyScheduleModal() {
   const [schedule, setSchedule] = useState<WeeklySchedule>(() =>
     Object.fromEntries(
@@ -69,7 +68,8 @@ export default function WeeklyScheduleModal() {
   const [selectedProfessionalId, setSelectedProfessionalId] = useState<
     number | null
   >(null);
-  
+  const [sessionTime, setSessionTime] = useState(30);
+
   useEffect(() => {
     const fetchProfessionals = async () => {
       try {
@@ -91,9 +91,9 @@ export default function WeeklyScheduleModal() {
 
   const fetchWeeklySchedule = async (professionalId: number) => {
     try {
-      const result = await getWeeklySchedule(professionalId);
+      const { schedule, sessionTime } = await getWeeklySchedule(professionalId);
       const grouped = weekDays.reduce((acc, { key }) => {
-        const daySchedules = result.filter(
+        const daySchedules = schedule.filter(
           (sch: any) => sch.dayOfWeek.toLowerCase() === key
         );
         acc[key] = {
@@ -173,30 +173,36 @@ export default function WeeklyScheduleModal() {
     }));
   };
 
-const handleSubmit = async () => {
-  try {
-    for (const day of Object.keys(schedule)) {
-      if (schedule[day].enabled) {
-        for (const { startTime, endTime } of schedule[day].timeRanges) {
-          if (!startTime || !endTime || !isTimeRangeValid(startTime, endTime)) {
-            alert(
-              `El horario en ${day.charAt(0).toUpperCase() + day.slice(1)} es inválido: la hora de inicio debe ser anterior a la de fin.`
-            );
-            return;
+  const handleSubmit = async () => {
+    try {
+      for (const day of Object.keys(schedule)) {
+        if (schedule[day].enabled) {
+          for (const { startTime, endTime } of schedule[day].timeRanges) {
+            if (
+              !startTime ||
+              !endTime ||
+              !isTimeRangeValid(startTime, endTime)
+            ) {
+              alert(
+                `El horario en ${
+                  day.charAt(0).toUpperCase() + day.slice(1)
+                } es inválido: la hora de inicio debe ser anterior a la de fin.`
+              );
+              return;
+            }
           }
         }
       }
+
+      const result = await upsertWeeklySchedule({
+        professionalId: selectedProfessionalId!,
+        sessionTime,
+        availability: schedule,
+      });
+    } catch (error) {
+      console.error("Error saving schedule:", error);
     }
-
-    const result = await upsertWeeklySchedule({
-      professionalId: selectedProfessionalId!,
-      availability: schedule,
-    });
-  } catch (error) {
-    console.error("Error saving schedule:", error);
-  }
-};
-
+  };
 
   return (
     <Dialog>
@@ -297,6 +303,24 @@ const handleSubmit = async () => {
               )}
             </div>
           ))}
+        </div>
+        <div className="mt-6">
+          <label className="block mb-1 font-medium">
+            Duración de la sesión
+          </label>
+          <Select
+            value={sessionTime.toString()}
+            onValueChange={(value) => setSessionTime(Number(value))}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Seleccionar duración" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="30">30 minutos</SelectItem>
+              <SelectItem value="45">45 minutos</SelectItem>
+              <SelectItem value="60">60 minutos</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         <DialogFooter>

@@ -43,7 +43,6 @@ export default function PatientsPage() {
   const fetchPatients = async () => {
     const data = await getAllPatientsAction();
 
-    // Convertir fechas si vienen como string
     const parsed = data?.map((p: any) => ({
       ...p,
       birthday: new Date(p.birthday),
@@ -60,7 +59,6 @@ export default function PatientsPage() {
   ) => {
     await createHealthInsuranceProvider(values);
     setIsProviderFormOpen(false);
-    // Podés hacer fetch de prestadores si los necesitás en un dropdown, etc.
   };
 
   const handleCreate = () => {
@@ -147,7 +145,7 @@ export default function PatientsPage() {
                   >
                     <DropdownMenuItem
                       onClick={() =>
-                        router.push(`/dashboard/pacientes/${p.id}`)
+                        router.push(`/dashboard/concurrentes/${p.id}`)
                       }
                       className="flex items-center gap-2"
                     >

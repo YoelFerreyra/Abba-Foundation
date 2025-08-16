@@ -2,8 +2,31 @@ import { prisma } from "@/lib/prisma"
 
 async function main() {
 
+  const services = [
+  "PSICOLOGÍA",
+  "PSICOPEDAGOGÍA",
+  "FONOAUDIOLOGÍA",
+  "MÓDULO DE MAESTRO DE APOYO",
+  "TERAPIA OCUPACIONAL",
+  "PSICOMOTRICIDAD",
+  "TRANSPORTE TERAPÉUTICO",
+  "TRANSPORTE ESCOLAR",
+  "MÓDULO INTEGRAL INTENSIVO",
+  "MÓDULO INTEGRAL SIMPLE",
+  "MÓDULO DE APOYO A LA INCLUSIÓN ESCOLAR"
+]
+
+  for (const name of services) {
+    await prisma.coverageService.upsert({
+      where: { name },
+      update: {},
+      create: { name },
+    })
+  }
+
   const admissionTypes = [
     { name: 'Obra Social' },
+    { name: 'Prepaga' },
     { name: 'Particular' },
     { name: 'Familiar' },
     { name: 'Empleado' },
@@ -11,9 +34,7 @@ async function main() {
 
   for (const type of admissionTypes) {
     await prisma.admissionType.create({
-      data: {
-        name: type.name
-      }
+      data: { name: type.name },
     });
   }
 
@@ -25,9 +46,7 @@ async function main() {
 
   for (const type of professionalTypes) {
     await prisma.professionalType.create({
-      data: {
-        name: type.name
-      }
+      data: { name: type.name },
     });
   }
 
@@ -99,6 +118,48 @@ async function main() {
       userId: user.id,
       legalGuardianId: legalGuardian.id,
       healthInsuranceProviderId: provider.id,
+    },
+  })
+
+  const adminUser = await prisma.user.create({
+    data: {
+      firebaseUid: "uid-admin-789",
+      email: "admin@ejemplo.com",
+      role: "ADMIN",
+      isActive: true,
+    },
+  })
+
+  await prisma.admin.create({
+    data: {
+      firstName: "Laura",
+      lastName: "Martínez",
+      address: "Calle Admin 123",
+      birthday: new Date("1985-09-10"),
+      phone: "011-4444-0000",
+      isActive: true,
+      userId: adminUser.id,
+    },
+  })
+
+  const rootUser = await prisma.user.create({
+    data: {
+      firebaseUid: "uid-root-999",
+      email: "root@ejemplo.com",
+      role: "ROOT",
+      isActive: true,
+    },
+  })
+
+  await prisma.root.create({
+    data: {
+      firstName: "Pedro",
+      lastName: "Fernández",
+      address: "Calle Root 456",
+      birthday: new Date("1975-04-22"),
+      phone: "011-9999-8888",
+      isActive: true,
+      userId: rootUser.id,
     },
   })
 

@@ -1,10 +1,12 @@
 "use client";
-import { getAllEvents } from "@/actions/calendar/profesional-events";
+import { getAllEventsByPatientId } from "@/actions/calendar/profesional-events";
+import { useAuth } from "@/context/AuthContext";
 import { format } from "date-fns";
 import { es } from "date-fns/locale/es";
 import { useState, useEffect } from "react";
 
 export default function AppointmentList() {
+  const {user, loading} = useAuth();
   const [events, setEvents] = useState<
     {
       id: number | string;
@@ -17,7 +19,8 @@ export default function AppointmentList() {
   useEffect(() => {
     async function loadEvents() {
       try {
-        const data = await getAllEvents();
+        if (loading || !user?.claims?.patientId) return;
+        const data = await getAllEventsByPatientId(user?.claims?.patientId);
         const formattedEvents = data.map((ev: any) => ({
           id: ev.id,
           title: ev.title,
@@ -31,7 +34,7 @@ export default function AppointmentList() {
     }
 
     loadEvents();
-  }, []);
+  }, [loading, user?.claims?.patientId]);
 
   return (
     <div className="w-full md:w-1/3 bg-gray-100 p-4 rounded shadow">

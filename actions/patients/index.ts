@@ -1,5 +1,5 @@
 "use server"
-import { PatientFormData } from "@/app/dashboard/pacientes/schemas/patient-schema";
+import { PatientFormData } from "@/app/dashboard/concurrentes/schemas/patient-schema";
 import { prisma } from "@/lib/prisma";
 
 export const getAllPatientsAction = async() => {
@@ -80,6 +80,7 @@ export async function editPatientAction(id: string, data: any) {
 
 export async function getScheduleProfesionalAction(id: string) { 
   try {
+    if (!id) return { schedule: [], events: [] };
     const schedule = await prisma.schedule.findMany({
       where: { 
         professionalId: Number(id)
@@ -148,9 +149,9 @@ export async function createPatientWithAdmission(data: PatientFormData) {
       admission: {
         create: {
           admissionDate: data.admission?.admissionDate,
-          admissionTypeId: 1,
+          admissionTypeId: data.admission?.admissionTypeId,
           isSchoolEnrolled: data.admission?.isSchoolEnrolled,
-          schoolShift: "MORNING",
+          schoolShift: data.admission?.schoolShift ,
           cud: data.admission?.cud,
           cudExpirationDate: data.admission?.cudExpirationDate,
         },
@@ -195,5 +196,17 @@ export async function deletePatientByIdAction(id?: string | number) {
   } catch (error) {
     console.error("Error creating HealthInsuranceProvider:", error);
     return { error: { message: "Ocurrió un error al crear el prestador." } };
+  }
+}
+
+export async function getAdmissionTypes() {
+  try {
+    const admissionTypes = await prisma.admissionType.findMany({
+      orderBy: { id: "asc" },
+    });
+    return admissionTypes;
+  } catch (error) {
+    console.error("Error fetching admission types:", error);
+    return [];
   }
 }

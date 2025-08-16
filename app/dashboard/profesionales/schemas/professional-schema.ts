@@ -16,9 +16,17 @@ export const professionalFormSchema = z.object({
   professionalActivity: z
     .string()
     .min(1, "La actividad profesional es obligatoria"),
-  professionalType: z.string().min(1, "El tipo de profesional es obligatorio"), // <-- campo como está en el modelo
+  professionalType: z.coerce.number({
+    required_error: "El tipo de profesional es obligatorio",
+  }),
   healthInsuranceProviderId: z.coerce.number().optional().nullable(),
+  licenseNumber: z
+  .string({
+    required_error: "La matrícula es obligatoria",
+  })
+  .min(4, "La matrícula debe tener al menos 4 caracteres"),
   isActive: z.boolean().default(false),
+  
 });
 
 export type ProfessionalFormData = z.infer<typeof professionalFormSchema>;

@@ -89,7 +89,7 @@ export default function UsersPage() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users?.map(user => (
+          {users && users?.map(user => (
             <TableRow key={user?.name} onClick={() => handleEdit(user)} className="cursor-pointer hover:bg-muted/50">
               <TableCell>{user?.name}</TableCell>
               <TableCell>{user?.email}</TableCell>

@@ -21,22 +21,37 @@ model User {
   patient       Patient?
   legalGuardian LegalGuardian?
   professional  Professional?
+  admin         Admin?
+  root          Root?
+
   createdEvents Event[]     @relation("EventCreator")
   createdProcesses Process[] @relation("ProcessCreator")
+}
+
+model Clinic {
+  id             Int             @id @default(autoincrement())
+  name           String
+  address        String
+  phone          String?
+  isActive       Boolean      @default(false)
+  professionals  Professional[]  @relation("ProfessionalClinics")
+  patients       Patient[]       @relation("PatientClinics")
+  admins         Admin[]         @relation("AdminClinics")
+  roots          Root[]          @relation("RootClinics")
 }
 
 model Patient {
   id                   Int          @id @default(autoincrement())
   firstName            String
   lastName             String
-  address              String
+  address              String 
+  email                String?
   dni                  String       @unique
   cuil                 String       @unique
   dniProcessingNumber  String
   birthday             DateTime
   phone                String
   affiliateNumber      String
-  professionalActivity String?
   patientType          PatientType?
   patientStatus        PatientStatus?
   isActive             Boolean      @default(false)
@@ -53,6 +68,7 @@ model Patient {
 
   healthInsuranceProviderId Int?
   healthInsuranceProvider   HealthInsuranceProvider? @relation(fields: [healthInsuranceProviderId], references: [id])
+  clinics  Clinic[]  @relation("PatientClinics")
 }
 
 model HealthInsuranceProvider {
@@ -135,6 +151,7 @@ model Professional {
   firstName                 String
   lastName                  String
   address                   String
+  email                     String?
   dni                       String    @unique
   cuil                      String    @unique
   birthday                  DateTime
@@ -155,6 +172,7 @@ model Professional {
   healthInsuranceProvider   HealthInsuranceProvider? @relation(fields: [healthInsuranceProviderId], references: [id])
 
   consultationPrices        ConsultationPrice[]
+  clinics  Clinic[]  @relation("ProfessionalClinics")
 }
 
 model ProfessionalType {
@@ -177,6 +195,42 @@ model ConsultationPrice {
   professional   Professional @relation(fields: [professionalId], references: [id])
 }
 
+model Admin {
+  id        Int      @id @default(autoincrement())
+  firstName                 String
+  lastName                  String
+  email                     String?
+  address                   String
+  birthday                  DateTime
+  phone                     String
+  isActive                  Boolean   @default(false)
+
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+
+  clinics  Clinic[]  @relation("AdminClinics")
+
+  createdAt DateTime @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model Root {
+  id        Int      @id @default(autoincrement())
+  firstName                 String
+  lastName                  String
+  email                     String?
+  address                   String
+  birthday                  DateTime
+  phone                     String
+  isActive                  Boolean   @default(false)
+
+  userId    Int      @unique
+  user      User     @relation(fields: [userId], references: [id])
+  clinics  Clinic[]  @relation("RootClinics")
+
+  createdAt DateTime @default(now())
+  updatedAt      DateTime     @updatedAt
+}
 
 model Admission {
   id                    Int                @id @default(autoincrement()) // Nro. de ingreso
@@ -186,10 +240,13 @@ model Admission {
   admissionType         AdmissionType      @relation(fields: [admissionTypeId], references: [id]) // Tipo de ingreso
   isSchoolEnrolled      Boolean                                           // Escolarizado
   schoolShift           SchoolShift?                                     // Turno colegio
+  schoolStartTime       DateTime?                                      // Hora de inicio de clases
+  schoolEndTime         DateTime?                                      // Hora de fin de clases
+
 
   patientId             Int               @unique
   patient               Patient           @relation(fields: [patientId], references: [id])
-  cud                   String?                                           
+  cud                   String?        @unique                                   
   cudExpirationDate     DateTime?                                         
   status                AdmissionStatus?
 
@@ -207,7 +264,7 @@ model Event {
   description    String?
   startEvent     DateTime
   endEvent       DateTime
-  eventType      EventType @default(CONSULTATION)
+  eventType      EventType @default(ON_SITE)
   createdAt      DateTime  @default(now())
   status         EventStatus @default(AVAILABLE)
 
@@ -238,11 +295,14 @@ model Budget {
   budgetStatus   BudgetStatus?
 }
 
-model Payment {
-  id             Int       @id @default(autoincrement())
-  amount         Int
-  paymentType    PaymentType
-  description    String?
+model PaymentEvent {
+  id                Int       @id @default(autoincrement())
+  amount            Int
+  paymentType       PaymentType
+  description       String?
+  status            String?
+  transactionNumber String?
+
   createdAt      DateTime  @default(now())
 }
 
@@ -344,9 +404,8 @@ enum EventStatus {
 }
 
 enum EventType {
-  CONSULTATION
-  STUDY
-  OTHER
+  ONLINE
+  ON_SITE
 }
 
 model AdmissionType {
@@ -360,6 +419,7 @@ enum SchoolShift {
   MORNING
   AFTERNOON
   EVENING
+  FULL_DAY
 }
 
 enum LegalGuardianCondition {

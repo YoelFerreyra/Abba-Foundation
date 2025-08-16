@@ -16,7 +16,13 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { PatientFormData, patientFormSchema } from "../schemas/patient-schema";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getAdmissionTypes } from "@/actions/patients";
+
+type AdmissionType = {
+  id: number;
+  name: string;
+};
 
 export default function PatientForm({
   defaultValues,
@@ -58,6 +64,8 @@ export default function PatientForm({
     }
   }, [defaultValues, reset]);
 
+  const [admissionTypes, setAdmissionTypes] = useState<AdmissionType[]>([]);
+
   const submitHandler = (data: PatientFormData) => {
     onSubmit(data);
     reset();
@@ -67,6 +75,17 @@ export default function PatientForm({
   const isActive = watch("isActive");
   const hasLegalGuardian = watch("hasLegalGuardian");
   const hasAdmission = watch("hasAdmission");
+
+  useEffect(() => {
+    async function fetchAdmissionTypes() {
+      const types = await getAdmissionTypes();
+      setAdmissionTypes(types);
+    }
+
+    if (hasAdmission) {
+      fetchAdmissionTypes();
+    }
+  }, [hasAdmission]);
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -226,10 +245,11 @@ export default function PatientForm({
                   className="w-full border p-2 rounded"
                 >
                   <option value="">Seleccionar</option>
-                  <option value="1">Obra Social</option>
-                  <option value="2">Particular</option>
-                  <option value="3">Empleado</option>
-                  <option value="4">Familiar</option>
+                  {admissionTypes.map((type) => (
+                    <option key={type.id} value={type.id}>
+                      {type.name}
+                    </option>
+                  ))}
                 </select>
                 {errors.admission?.admissionTypeId && (
                   <p className="text-red-500 text-sm">
@@ -261,8 +281,35 @@ export default function PatientForm({
                   <option value="">Seleccionar</option>
                   <option value="MORNING">Mañana</option>
                   <option value="AFTERNOON">Tarde</option>
+                  <option value="EVENING">Noche</option>
                   <option value="FULL_DAY">Jornada Completa</option>
                 </select>
+              </div>
+
+              <div>
+                <Label htmlFor="admission.schoolStartTime">
+                  Hora de inicio de clases
+                </Label>
+                <Input
+                  id="admission.schoolStartTime"
+                  type="time"
+                  {...register("admission.schoolStartTime", {
+                    valueAsDate: true,
+                  })}
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="admission.schoolEndTime">
+                  Hora de fin de clases
+                </Label>
+                <Input
+                  id="admission.schoolEndTime"
+                  type="time"
+                  {...register("admission.schoolEndTime", {
+                    valueAsDate: true,
+                  })}
+                />
               </div>
 
               <div>
@@ -406,16 +453,6 @@ export default function PatientForm({
                     {errors.legalGuardian.phone.message}
                   </p>
                 )}
-              </div>
-
-              <div>
-                <Label htmlFor="legalGuardian.professionalActivity">
-                  Actividad Profesional
-                </Label>
-                <Input
-                  id="legalGuardian.professionalActivity"
-                  {...register("legalGuardian.professionalActivity")}
-                />
               </div>
             </div>
           )}
