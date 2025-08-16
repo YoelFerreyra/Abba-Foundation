@@ -36,3 +36,15 @@ export async function getProfessionalTypes() {
     return []
   }
 }
+
+export async function getAllProfessionalType() {
+  try {
+    const types = await prisma.professionalType.findMany({
+      orderBy: { name: "asc" },
+    })
+    return types
+  } catch (error) {
+    console.error("Error fetching professional types:", error)
+    return []
+  }
+}

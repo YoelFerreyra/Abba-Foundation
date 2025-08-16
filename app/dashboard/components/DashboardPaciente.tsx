@@ -12,7 +12,7 @@ import { DashboardHeader } from "@/components/dashboard-header"
 import { DashboardStats } from "@/components/dashboard-stats"
 import { AppointmentList } from "@/components/appointment-list"
 
-export default function DashboardPaciente() {
+export default function DashboardPatient() {
   return (
     <div className="flex flex-col gap-5">
       <DashboardHeader

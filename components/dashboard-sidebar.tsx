@@ -64,7 +64,7 @@ export function DashboardSidebar() {
       icon: ChartColumn,
       href: "/dashboard/finanzas",
       active: pathname === "/dashboard/finanzas",
-      roles: ["ADMIN", "ROOT"],
+      roles: ["ADMIN", "ROOT", "CLIENT"],
     },
     {
       label: "Historial Médico",
@@ -83,8 +83,8 @@ export function DashboardSidebar() {
     {
       label: "Concurrentes",
       icon: Smile,
-      href: "/dashboard/pacientes",
-      active: pathname === "/dashboard/pacientes",
+      href: "/dashboard/concurrentes",
+      active: pathname === "/dashboard/concurrentes",
       roles: ["ADMIN", "ROOT", "CLIENT"],
     },
     {

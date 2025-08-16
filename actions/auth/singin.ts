@@ -23,8 +23,22 @@ export async function signInWithFirebase(uid: string) {
             id: true,
             firstName: true,
             lastName: true,
-        }
-      },
+          },
+        },
+        admin: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
+        root: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+          },
+        },
       },
     });
 
@@ -32,9 +46,14 @@ export async function signInWithFirebase(uid: string) {
       throw new Error("User not found");
     }
 
+    const roleData =
+      user.patient || user.professional || user.admin || user.root;
+
     const customClaims = {
-      role: user?.role,
-      name: `${user?.patient?.firstName} ${user?.patient?.lastName}`,
+      role: user.role,
+      name: roleData
+        ? `${roleData.firstName} ${roleData.lastName}`
+        : null,
     };
 
     const currentUser = await authServer.getUserByEmail(user?.email || "");
@@ -58,7 +77,10 @@ type LoginDNIParams = {
   password: string;
 };
 
-export async function loginWithDniOrCuil({ dniOrCuil, password }: LoginDNIParams) {
+export async function loginWithDniOrCuil({
+  dniOrCuil,
+  password,
+}: LoginDNIParams) {
   if (!dniOrCuil || !password) {
     return { error: "DNI, CUIL y contraseña son requeridos" };
   }
@@ -66,12 +88,14 @@ export async function loginWithDniOrCuil({ dniOrCuil, password }: LoginDNIParams
   try {
     const user = await prisma.user.findFirst({
       where: {
-        OR: [
-          { patient: { dni: dniOrCuil } },
-          { patient: { cuil: dniOrCuil } },
-        ],
+        OR: [{ patient: { dni: dniOrCuil } }, { patient: { cuil: dniOrCuil } }],
       },
-      select: { email: true, firebaseUid: true, role: true, patient: { select: { id: true, firstName: true, lastName: true } } },
+      select: {
+        email: true,
+        firebaseUid: true,
+        role: true,
+        patient: { select: { id: true, firstName: true, lastName: true } },
+      },
     });
 
     if (!user?.email) {
@@ -104,7 +128,9 @@ export async function loginWithDniOrCuil({ dniOrCuil, password }: LoginDNIParams
       patientId: user?.patient?.id,
     };
 
-    const customToken = await admin.auth().createCustomToken(user.firebaseUid, customClaims);
+    const customToken = await admin
+      .auth()
+      .createCustomToken(user.firebaseUid, customClaims);
 
     return { token: customToken, success: true };
   } catch (err: any) {

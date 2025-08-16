@@ -23,17 +23,16 @@ export async function createAppointmentPreference(input: AppointmentInput) {
     const preference = {
       items: [
         {
-          id: input.appointmentId,
-          title: `Consulta con ${input.doctorName} (${input.specialty})`,
-          description: `Paciente: ${input.patientName} - Fecha: ${input.date} ${input.time}`,
+          id: "1",
+          title: `Consulta con ${input.doctorName} (${input.specialty}), Fecha: ${input.date} Hora: ${input.time} - ${"js"}`,
           quantity: 1,
           currency_id: "ARS",
-          unit_price: input.price,
+          unit_price: 100,
         },
       ],
       payer: {
-        email: input.patientEmail,
-        name: input.patientName,
+        email: "test@gmail.com",
+        name: "input.patientName",
       },
       external_reference: input.appointmentId,
       back_urls: {
@@ -45,7 +44,7 @@ export async function createAppointmentPreference(input: AppointmentInput) {
     }
 
     const result = await preferences.create({ body: preference })
-    return { ok: true, init_point: result.init_point }
+    return { success: true, init_point: result.init_point }
   } catch (error) {
     console.error("Error al crear preferencia:", error)
     return { ok: false, error: "No se pudo generar la preferencia de pago." }

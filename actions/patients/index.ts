@@ -1,5 +1,5 @@
 "use server"
-import { PatientFormData } from "@/app/dashboard/pacientes/schemas/patient-schema";
+import { PatientFormData } from "@/app/dashboard/concurrentes/schemas/patient-schema";
 import { prisma } from "@/lib/prisma";
 
 export const getAllPatientsAction = async() => {
@@ -80,6 +80,7 @@ export async function editPatientAction(id: string, data: any) {
 
 export async function getScheduleProfesionalAction(id: string) { 
   try {
+    if (!id) return { schedule: [], events: [] };
     const schedule = await prisma.schedule.findMany({
       where: { 
         professionalId: Number(id)

@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 
-export async function getAllEvents() {
+export async function getAllEvents(professionalId: number) {
   try {
     const events = await prisma.event.findMany({
       include: {
@@ -12,6 +12,31 @@ export async function getAllEvents() {
       },
       orderBy: {
         startEvent: "asc",
+      },
+      where: {
+        professionalId: Number(professionalId),
+      },
+    });
+    return events;
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    throw error;
+  }
+}
+
+export async function getAllEventsByPatientId(patientId: number) {
+  try {
+    const events = await prisma.event.findMany({
+      include: {
+        professional: true,
+        patient: true,
+        createdBy: true,
+      },
+      orderBy: {
+        startEvent: "asc",
+      },
+      where: {
+        patientId: Number(patientId),
       },
     });
     return events;
@@ -36,35 +61,58 @@ export async function createEvent(data: {
   description?: string;
   startEvent: Date;
   endEvent: Date;
-  eventType: "CONSULTATION" | "STUDY" | "OTHER";
+  eventType: "ONLINE" | "ON_SITE";
   createdById: string | undefined;
   professionalId?: number | null;
   patientId: number;
   status?: "AVAILABLE" | "SCHEDULED" | "CANCELLED" | "COMPLETED";
 }) {
   try {
-    
     if (!data.professionalId) return { error: "Professional ID is required" };
-  
+
     if (!data.createdById) {
       return { error: "Created By ID is required" };
     }
+
     const user = await prisma.user.findUnique({
       where: { firebaseUid: data.createdById },
     });
-  
+
     if (!user) {
       return { error: "User not found" };
     }
-  
+
+    const overlappingEvent = await prisma.event.findFirst({
+      where: {
+        professionalId: data.professionalId,
+        status: {
+          not: "CANCELLED",
+        },
+        startEvent: {
+          lt: data.endEvent,
+        },
+        endEvent: {
+          gt: data.startEvent,
+        },
+      },
+    });
+
+    if (overlappingEvent) {
+      return {
+        error:
+          "Ya existe un evento activo en este horario. Por favor, elige otro.",
+      };
+    }
+
     return await prisma.event.create({
       data: {
         ...data,
-        createdById: user?.id,
+        createdById: user.id,
       },
     });
   } catch (error) {
-    throw error
+    console.error("Error creating event:", error);
+    throw error;
   }
 }
 
@@ -159,26 +207,32 @@ export async function upsertWeeklySchedule({
   }
 }
 
-
 export async function getWeeklySchedule(professionalId: number) {
   try {
     const schedule = await prisma.schedule.findMany({
       where: { professionalId },
       orderBy: { dayOfWeek: "asc" },
     });
-    return schedule;
+    const sessionTime = schedule.find(
+      (s) => s.sessionTime != null
+    )?.sessionTime;
+
+    return { schedule, sessionTime };
   } catch (error) {
     console.error("Error fetching weekly schedule:", error);
     throw error;
   }
 }
 
-export async function deleteCalendarEvent(id: string){
+export async function deleteCalendarEvent(id: string) {
   try {
-    if (!id) throw "Id is required"
-    const event = await prisma.event.delete({where: {
-      id: Number(id)
-    }})
+    if (!id) throw "Id is required";
+    const event = await prisma.event.update({
+      where: { id: Number(id) },
+      data: {
+        status: "CANCELLED",
+      },
+    });
   } catch (error) {
     console.error("Error deleting event", error);
     throw error;

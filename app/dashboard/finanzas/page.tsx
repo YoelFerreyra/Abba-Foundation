@@ -1,8 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { createAppointmentPreference } from '@/actions/appointment'
 
 const patientBilling = [
   { name: 'Juan Pérez', date: '2025-06-01', service: 'Consulta General', amount: 8000 },
@@ -30,6 +31,13 @@ const expensePieData = adminExpenses.map((g, index) => ({
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658']
 
 export default function BillingDashboard() {
+  useEffect(() => {
+    const createPreference = async () => {
+      console.log('Creating appointment preference...');      
+      await createAppointmentPreference({})
+    }
+    createPreference()
+  })
   return (
     <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
       {/* Facturación de pacientes */}

@@ -28,11 +28,24 @@ model User {
   createdProcesses Process[] @relation("ProcessCreator")
 }
 
+model Clinic {
+  id             Int             @id @default(autoincrement())
+  name           String
+  address        String
+  phone          String?
+  isActive       Boolean      @default(false)
+  professionals  Professional[]  @relation("ProfessionalClinics")
+  patients       Patient[]       @relation("PatientClinics")
+  admins         Admin[]         @relation("AdminClinics")
+  roots          Root[]          @relation("RootClinics")
+}
+
 model Patient {
   id                   Int          @id @default(autoincrement())
   firstName            String
   lastName             String
-  address              String
+  address              String 
+  email                String?
   dni                  String       @unique
   cuil                 String       @unique
   dniProcessingNumber  String
@@ -55,6 +68,7 @@ model Patient {
 
   healthInsuranceProviderId Int?
   healthInsuranceProvider   HealthInsuranceProvider? @relation(fields: [healthInsuranceProviderId], references: [id])
+  clinics  Clinic[]  @relation("PatientClinics")
 }
 
 model HealthInsuranceProvider {
@@ -137,6 +151,7 @@ model Professional {
   firstName                 String
   lastName                  String
   address                   String
+  email                     String?
   dni                       String    @unique
   cuil                      String    @unique
   birthday                  DateTime
@@ -157,6 +172,7 @@ model Professional {
   healthInsuranceProvider   HealthInsuranceProvider? @relation(fields: [healthInsuranceProviderId], references: [id])
 
   consultationPrices        ConsultationPrice[]
+  clinics  Clinic[]  @relation("ProfessionalClinics")
 }
 
 model ProfessionalType {
@@ -183,6 +199,7 @@ model Admin {
   id        Int      @id @default(autoincrement())
   firstName                 String
   lastName                  String
+  email                     String?
   address                   String
   birthday                  DateTime
   phone                     String
@@ -190,6 +207,8 @@ model Admin {
 
   userId    Int      @unique
   user      User     @relation(fields: [userId], references: [id])
+
+  clinics  Clinic[]  @relation("AdminClinics")
 
   createdAt DateTime @default(now())
   updatedAt      DateTime     @updatedAt
@@ -199,6 +218,7 @@ model Root {
   id        Int      @id @default(autoincrement())
   firstName                 String
   lastName                  String
+  email                     String?
   address                   String
   birthday                  DateTime
   phone                     String
@@ -206,6 +226,7 @@ model Root {
 
   userId    Int      @unique
   user      User     @relation(fields: [userId], references: [id])
+  clinics  Clinic[]  @relation("RootClinics")
 
   createdAt DateTime @default(now())
   updatedAt      DateTime     @updatedAt

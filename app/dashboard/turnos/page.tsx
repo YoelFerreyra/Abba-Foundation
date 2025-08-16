@@ -2,10 +2,14 @@
 import { DashboardHeader } from "@/components/dashboard-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import MedicalCalendar from "./components/medCalendar"
+import ProfessionalCalendar from "./components/medCalendar"
 import AppointmentList from "./components/turnos-list";
+import { useAuth } from "@/context/AuthContext";
+import PatientCalendar from "./components/patientCalendar";
+import AdminCalendar from "./components/adminCalendar";
 
 export default function TurnosPage() {
+  const { user, loading } = useAuth();
   return (
     <div className="flex flex-col gap-5">
       <DashboardHeader title="Gestión de Turnos" description="Administra tus citas médicas y reserva nuevos turnos" />
@@ -23,7 +27,15 @@ export default function TurnosPage() {
               <CardDescription>Visualiza y gestiona tus citas en el calendario</CardDescription>
             </CardHeader>
             <CardContent>
-              <MedicalCalendar />
+              {
+                user?.claims?.role === "CLIENT" && <ProfessionalCalendar />
+              }
+              {
+                user?.claims?.role === "PROFESSIONAL" && <PatientCalendar />
+              }
+              {
+                user?.claims?.role === "ADMIN" && <AdminCalendar />
+              }
             </CardContent>
           </Card>
         </TabsContent>

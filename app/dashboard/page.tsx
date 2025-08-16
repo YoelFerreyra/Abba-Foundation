@@ -1,7 +1,7 @@
 "use client"
 import { useAuth } from "@/context/AuthContext"
 import DashboardProfesional from "./components/DashboardProfesional"
-import DashboardPaciente from "./components/DashboardPaciente"
+import DashboardPatient from "./components/DashboardPaciente"
 
 export default function DashboardPage() {
   const { user } = useAuth()
@@ -9,13 +9,16 @@ export default function DashboardPage() {
   if (!user) return null
 
   return (
-    user?.claims?.role === "PROFESSIONAL"
-      ? <DashboardProfesional />
-      : user?.claims?.role === "CLIENT"
-        ? <DashboardPaciente />
-        : user?.claims?.role === "ROOT" || user?.claims?.role === "ADMIN"
-          ? <DashboardProfesional />
-          : <DashboardPaciente />
-
+    <>
+    {
+      user?.claims?.role === "PROFESSIONAL"
+        ? <DashboardProfesional />
+        : user?.claims?.role === "CLIENT"
+          ? <DashboardPatient />
+          : user?.claims?.role === "ROOT" || user?.claims?.role === "ADMIN"
+            ? <DashboardProfesional />
+            : <DashboardPatient />
+    }
+    </>
   )
 }
