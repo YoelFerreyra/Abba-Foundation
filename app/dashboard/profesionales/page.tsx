@@ -9,20 +9,21 @@ import { Button } from "@/components/ui/button"
 import ProfessionalForm from "./components/user-form"
 import { createProfessionalAction, getAllProfessionalsAction } from "@/actions/professional"
 import { ProfessionalFormData } from "./schemas/professional-schema"
+import { toast } from "sonner"
 
 export default function ProfessionalPage() {
   const [professional, setProfessional] = useState<ProfessionalFormData[]>([])
   const [editingPatient, setEditingPatient] = useState<ProfessionalFormData | null>(null)
   const [isOpen, setIsOpen] = useState(false)
 
-  const fetchPatients = async () => {
+  const fetchProfessionals = async () => {
     const data = await getAllProfessionalsAction()
 
     setProfessional(data || [])
   }
 
   useEffect(() => {
-    fetchPatients()
+    fetchProfessionals()
   }, [])
 
   const handleCreate = () => {
@@ -38,12 +39,28 @@ export default function ProfessionalPage() {
     setIsOpen(true)
   }
 
-  const handleSubmit = async (data: ProfessionalFormData) => {
-    const result = await createProfessionalAction(data)
-    console.log(result);
-    await fetchPatients()
-    setIsOpen(false)
+const handleSubmit = async (data: ProfessionalFormData) => {
+  try {
+const payload = {
+      ...data,
+      professionalTypes: {
+        connect: [{ id: data.professionalTypes }]
+      },
+    };
+
+    const {success, data} = await createProfessionalAction(payload);
+    if(!success) throw new Error(data as string);
+    toast.success("Profesional creado correctamente");
+    await fetchProfessionals();
+    setIsOpen(false);
+  } catch (error: any) {
+    console.error("Error creando profesional:", error);
+    toast.error(
+      error?.message || "Ocurrió un error al crear el profesional"
+    );
   }
+};
+
 
   return (
     <div className="flex flex-col gap-5">

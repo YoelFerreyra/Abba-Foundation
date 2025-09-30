@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sheet";
 import { PatientFormData, patientFormSchema } from "../schemas/patient-schema";
 import { useEffect, useState } from "react";
-import { getAdmissionTypes } from "@/actions/patients";
+import { getAdmissionTypes, getAllClinicsAction } from "@/actions/patients";
 
 type AdmissionType = {
   id: number;
@@ -65,6 +65,21 @@ export default function PatientForm({
   }, [defaultValues, reset]);
 
   const [admissionTypes, setAdmissionTypes] = useState<AdmissionType[]>([]);
+  const [clinics, setClinics] = useState<{ id: number; name: string }[]>([]);
+
+  useEffect(() => {
+    async function fetchClinics() {
+      const clinicsData = await getAllClinicsAction();
+      setClinics(clinicsData);
+
+      // Si hay defaultValues, setear clinicId
+      if (defaultValues?.clinicId) {
+        setValue("clinicId", defaultValues.clinicId);
+      }
+    }
+
+    fetchClinics();
+  }, [defaultValues, setValue]);
 
   const submitHandler = (data: PatientFormData) => {
     onSubmit(data);
@@ -75,6 +90,21 @@ export default function PatientForm({
   const isActive = watch("isActive");
   const hasLegalGuardian = watch("hasLegalGuardian");
   const hasAdmission = watch("hasAdmission");
+
+  useEffect(() => {
+    if (hasAdmission) {
+      setValue("admission", {
+        admissionDate: new Date(),
+        admissionTypeId: undefined,
+        isSchoolEnrolled: false,
+        schoolShift: "MORNING",
+        schoolStartTime: "",
+        schoolEndTime: "",
+        cud: "",
+        cudExpirationDate: undefined,
+      });
+    }
+  }, [hasAdmission, setValue]);
 
   useEffect(() => {
     async function fetchAdmissionTypes() {
@@ -109,13 +139,30 @@ export default function PatientForm({
           className="flex flex-col gap-4 mt-4"
         >
           <div>
+            <Label htmlFor="clinicId">Clínica</Label>
+            <select
+              id="clinicId"
+              {...register("clinicId")}
+              className="w-full border p-2 rounded"
+            >
+              <option value="">Seleccionar</option>
+              {clinics.map((clinic) => (
+                <option key={clinic.id} value={clinic.id}>
+                  {clinic.name}
+                </option>
+              ))}
+            </select>
+            {errors.clinicId && (
+              <p className="text-red-500 text-sm">{errors.clinicId.message}</p>
+            )}
+          </div>
+          <div>
             <Label htmlFor="firstName">Nombre</Label>
             <Input id="firstName" {...register("firstName")} />
             {errors.firstName && (
               <p className="text-red-500 text-sm">{errors.firstName.message}</p>
             )}
           </div>
-
           <div>
             <Label htmlFor="lastName">Apellido</Label>
             <Input id="lastName" {...register("lastName")} />
@@ -123,7 +170,6 @@ export default function PatientForm({
               <p className="text-red-500 text-sm">{errors.lastName.message}</p>
             )}
           </div>
-
           <div>
             <Label htmlFor="address">Dirección</Label>
             <Input id="address" {...register("address")} />
@@ -131,7 +177,6 @@ export default function PatientForm({
               <p className="text-red-500 text-sm">{errors.address.message}</p>
             )}
           </div>
-
           <div>
             <Label htmlFor="dni">DNI</Label>
             <Input id="dni" {...register("dni")} />
@@ -139,7 +184,6 @@ export default function PatientForm({
               <p className="text-red-500 text-sm">{errors.dni.message}</p>
             )}
           </div>
-
           <div>
             <Label htmlFor="cuil">CUIL</Label>
             <Input id="cuil" {...register("cuil")} />
@@ -147,7 +191,6 @@ export default function PatientForm({
               <p className="text-red-500 text-sm">{errors.cuil.message}</p>
             )}
           </div>
-
           <div>
             <Label htmlFor="dniProcessingNumber">Nº de trámite</Label>
             <Input
@@ -160,7 +203,6 @@ export default function PatientForm({
               </p>
             )}
           </div>
-
           <div>
             <Label htmlFor="birthday">Fecha de nacimiento</Label>
             <Input
@@ -172,7 +214,6 @@ export default function PatientForm({
               <p className="text-red-500 text-sm">{errors.birthday.message}</p>
             )}
           </div>
-
           <div>
             <Label htmlFor="phone">Teléfono</Label>
             <Input id="phone" {...register("phone")} />
@@ -180,7 +221,6 @@ export default function PatientForm({
               <p className="text-red-500 text-sm">{errors.phone.message}</p>
             )}
           </div>
-
           <div>
             <Label htmlFor="affiliateNumber">Nº de afiliado</Label>
             <Input id="affiliateNumber" {...register("affiliateNumber")} />
@@ -190,7 +230,6 @@ export default function PatientForm({
               </p>
             )}
           </div>
-
           <div className="flex items-center space-x-2">
             <Checkbox
               id="isActive"
@@ -201,7 +240,6 @@ export default function PatientForm({
             />
             <Label htmlFor="isActive">Paciente activo</Label>
           </div>
-
           <div className="flex items-center space-x-2">
             <Checkbox
               id="hasAdmission"
@@ -212,7 +250,6 @@ export default function PatientForm({
             />
             <Label htmlFor="hasAdmission">¿Agregar datos de ingreso?</Label>
           </div>
-
           {hasAdmission && (
             <div className="space-y-4 border p-4 rounded-lg bg-gray-50">
               <h3 className="text-lg font-semibold">Datos de Ingreso</h3>
@@ -293,9 +330,7 @@ export default function PatientForm({
                 <Input
                   id="admission.schoolStartTime"
                   type="time"
-                  {...register("admission.schoolStartTime", {
-                    valueAsDate: true,
-                  })}
+                  {...register("admission.schoolStartTime")}
                 />
               </div>
 
@@ -306,9 +341,7 @@ export default function PatientForm({
                 <Input
                   id="admission.schoolEndTime"
                   type="time"
-                  {...register("admission.schoolEndTime", {
-                    valueAsDate: true,
-                  })}
+                  {...register("admission.schoolEndTime")}
                 />
               </div>
 
@@ -331,7 +364,6 @@ export default function PatientForm({
               </div>
             </div>
           )}
-
           <div className="flex items-center space-x-2">
             <Checkbox
               id="hasLegalGuardian"
@@ -456,7 +488,6 @@ export default function PatientForm({
               </div>
             </div>
           )}
-
           <div className="mt-6 flex justify-end gap-2">
             <SheetClose asChild>
               <Button type="button" variant="outline">

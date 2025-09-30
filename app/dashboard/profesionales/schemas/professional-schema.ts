@@ -16,7 +16,7 @@ export const professionalFormSchema = z.object({
   professionalActivity: z
     .string()
     .min(1, "La actividad profesional es obligatoria"),
-  professionalType: z.coerce.number({
+  professionalTypes: z.coerce.number({
     required_error: "El tipo de profesional es obligatorio",
   }),
   healthInsuranceProviderId: z.coerce.number().optional().nullable(),

@@ -130,18 +130,26 @@ exports.Prisma.UserScalarFieldEnum = {
   image: 'image'
 };
 
+exports.Prisma.ClinicScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  address: 'address',
+  phone: 'phone',
+  isActive: 'isActive'
+};
+
 exports.Prisma.PatientScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
   lastName: 'lastName',
   address: 'address',
+  email: 'email',
   dni: 'dni',
   cuil: 'cuil',
   dniProcessingNumber: 'dniProcessingNumber',
   birthday: 'birthday',
   phone: 'phone',
   affiliateNumber: 'affiliateNumber',
-  professionalActivity: 'professionalActivity',
   patientType: 'patientType',
   patientStatus: 'patientStatus',
   isActive: 'isActive',
@@ -172,10 +180,15 @@ exports.Prisma.HealthInsuranceAuthorizationScalarFieldEnum = {
   id: 'id',
   healthInsuranceProviderId: 'healthInsuranceProviderId',
   admissionId: 'admissionId',
-  service: 'service',
+  coverageServiceId: 'coverageServiceId',
   periodFrom: 'periodFrom',
   periodTo: 'periodTo',
   authorizedAt: 'authorizedAt'
+};
+
+exports.Prisma.CoverageServiceScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
 };
 
 exports.Prisma.LegalGuardianScalarFieldEnum = {
@@ -202,6 +215,7 @@ exports.Prisma.ProfessionalScalarFieldEnum = {
   firstName: 'firstName',
   lastName: 'lastName',
   address: 'address',
+  email: 'email',
   dni: 'dni',
   cuil: 'cuil',
   birthday: 'birthday',
@@ -233,6 +247,7 @@ exports.Prisma.AdminScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
   lastName: 'lastName',
+  email: 'email',
   address: 'address',
   birthday: 'birthday',
   phone: 'phone',
@@ -246,6 +261,7 @@ exports.Prisma.RootScalarFieldEnum = {
   id: 'id',
   firstName: 'firstName',
   lastName: 'lastName',
+  email: 'email',
   address: 'address',
   birthday: 'birthday',
   phone: 'phone',
@@ -262,6 +278,8 @@ exports.Prisma.AdmissionScalarFieldEnum = {
   admissionTypeId: 'admissionTypeId',
   isSchoolEnrolled: 'isSchoolEnrolled',
   schoolShift: 'schoolShift',
+  schoolStartTime: 'schoolStartTime',
+  schoolEndTime: 'schoolEndTime',
   patientId: 'patientId',
   cud: 'cud',
   cudExpirationDate: 'cudExpirationDate',
@@ -281,7 +299,8 @@ exports.Prisma.EventScalarFieldEnum = {
   status: 'status',
   createdById: 'createdById',
   professionalId: 'professionalId',
-  patientId: 'patientId'
+  patientId: 'patientId',
+  clinicId: 'clinicId'
 };
 
 exports.Prisma.ProcessScalarFieldEnum = {
@@ -299,11 +318,13 @@ exports.Prisma.BudgetScalarFieldEnum = {
   budgetStatus: 'budgetStatus'
 };
 
-exports.Prisma.PaymentScalarFieldEnum = {
+exports.Prisma.PaymentEventScalarFieldEnum = {
   id: 'id',
   amount: 'amount',
   paymentType: 'paymentType',
   description: 'description',
+  status: 'status',
+  transactionNumber: 'transactionNumber',
   createdAt: 'createdAt'
 };
 
@@ -358,20 +379,6 @@ exports.PatientStatus = exports.$Enums.PatientStatus = {
   PENDING: 'PENDING'
 };
 
-exports.CoverageService = exports.$Enums.CoverageService = {
-  PSYCHOLOGY: 'PSYCHOLOGY',
-  PSYCHOPEDAGOGY: 'PSYCHOPEDAGOGY',
-  SPEECH_THERAPY: 'SPEECH_THERAPY',
-  SUPPORT_TEACHER_MODULE: 'SUPPORT_TEACHER_MODULE',
-  OCCUPATIONAL_THERAPY: 'OCCUPATIONAL_THERAPY',
-  PSYCHOMOTOR_THERAPY: 'PSYCHOMOTOR_THERAPY',
-  THERAPY_TRANSPORT: 'THERAPY_TRANSPORT',
-  SCHOOL_TRANSPORT: 'SCHOOL_TRANSPORT',
-  INTENSIVE_INTEGRAL_MODULE: 'INTENSIVE_INTEGRAL_MODULE',
-  SIMPLE_INTEGRAL_MODULE: 'SIMPLE_INTEGRAL_MODULE',
-  SCHOOL_INCLUSION_SUPPORT_MODULE: 'SCHOOL_INCLUSION_SUPPORT_MODULE'
-};
-
 exports.LegalGuardianType = exports.$Enums.LegalGuardianType = {
   PARENT: 'PARENT',
   SIBLING: 'SIBLING',
@@ -388,7 +395,8 @@ exports.LegalGuardianStatus = exports.$Enums.LegalGuardianStatus = {
 exports.SchoolShift = exports.$Enums.SchoolShift = {
   MORNING: 'MORNING',
   AFTERNOON: 'AFTERNOON',
-  EVENING: 'EVENING'
+  EVENING: 'EVENING',
+  FULL_DAY: 'FULL_DAY'
 };
 
 exports.AdmissionStatus = exports.$Enums.AdmissionStatus = {
@@ -449,9 +457,11 @@ exports.WeekDay = exports.$Enums.WeekDay = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  Clinic: 'Clinic',
   Patient: 'Patient',
   HealthInsuranceProvider: 'HealthInsuranceProvider',
   HealthInsuranceAuthorization: 'HealthInsuranceAuthorization',
+  CoverageService: 'CoverageService',
   LegalGuardian: 'LegalGuardian',
   Professional: 'Professional',
   ProfessionalType: 'ProfessionalType',
@@ -462,7 +472,7 @@ exports.Prisma.ModelName = {
   Event: 'Event',
   Process: 'Process',
   Budget: 'Budget',
-  Payment: 'Payment',
+  PaymentEvent: 'PaymentEvent',
   Schedule: 'Schedule',
   AdmissionType: 'AdmissionType'
 };
