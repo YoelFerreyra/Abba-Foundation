@@ -34,8 +34,8 @@ export const admissionSchema = z.object({
     .positive("Seleccione un tipo de ingreso"),
   isSchoolEnrolled: z.boolean().default(false),
   schoolShift: z.enum(["MORNING", "AFTERNOON", "EVENING", "FULL_DAY"]),
-  schoolStartTime: z.coerce.date().optional(),
-  schoolEndTime: z.coerce.date().optional(),
+  schoolStartTime: z.string().optional(),
+  schoolEndTime: z.string().optional(),
   cud: z.string().optional(),
   cudExpirationDate: z.coerce.date().optional(),
 });
@@ -45,6 +45,7 @@ export const patientFormSchema = z.object({
   firstName: z.string().min(1, "El nombre es obligatorio"),
   lastName: z.string().min(1, "El apellido es obligatorio"),
   address: z.string().min(1, "La dirección es obligatoria"),
+  clinicId: z.coerce.number().int().positive("Seleccione una clínica").optional(),
   dni: z
     .string()
     .min(7, { message: "El DNI debe tener al menos 7 dígitos" })

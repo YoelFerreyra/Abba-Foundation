@@ -80,24 +80,27 @@ export default function PatientsPage() {
     setIsOpen(true);
   };
 
-  const handleSubmit = async (data: PatientFormData) => {
-    if (editingPatient) {
-      const updatedData = {
-        ...editingPatient,
-        ...data,
-        birthday: data.birthday.toISOString(),
-      };
-      //const result = await createPatientAction(updatedData);
-    }
-    //const result = await createPatientAction(data);
-    console.log(data);
-    
-    const result = await createPatientWithAdmission({
-      ...data,
-    });
-    await fetchPatients();
-    setIsOpen(false);
+const handleSubmit = async (data: PatientFormData) => {
+  const admissionPayload = data.admission
+    ? {
+        ...data.admission,
+        admissionDate: new Date(data.admission.admissionDate),
+        cudExpirationDate: data.admission.cudExpirationDate
+          ? new Date(data.admission.cudExpirationDate)
+          : undefined,
+      }
+    : undefined;
+
+  const payload = {
+    ...data,
+    admission: admissionPayload,
   };
+
+  const result = await createPatientWithAdmission(payload);
+  await fetchPatients();
+  setIsOpen(false);
+};
+
 
   return (
     <div className="flex flex-col gap-5">

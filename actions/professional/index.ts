@@ -19,9 +19,10 @@ export const getAllProfessionalsAction = async() => {
 export const createProfessionalAction = async (data: ProfessionalFormData) => {
   try {
     const professional = await prisma.professional.create({ data });
-    return professional;
+    return {success: true, data: "Profesional creado correctamente"};
   } catch (error) {
     console.log(error);
+    return {success: false, data: "Ocurrió un error al crear el profesional"};
   }
 };
 

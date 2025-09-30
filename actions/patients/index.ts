@@ -1,8 +1,8 @@
-"use server"
+"use server";
 import { PatientFormData } from "@/app/dashboard/concurrentes/schemas/patient-schema";
 import { prisma } from "@/lib/prisma";
 
-export const getAllPatientsAction = async() => {
+export const getAllPatientsAction = async () => {
   try {
     const patients = await prisma.patient.findMany({
       select: {
@@ -15,9 +15,8 @@ export const getAllPatientsAction = async() => {
         address: true,
         dni: true,
         isActive: true,
-      }
-    }
-    );
+      },
+    });
     return patients;
   } catch (error) {
     console.log(error);
@@ -33,7 +32,7 @@ export const createPatientAction = async (data: any) => {
   }
 };
 
-export async function getPatientById(id: number | string| undefined) {
+export async function getPatientById(id: number | string | undefined) {
   if (!id) {
     throw new Error("Patient ID is required");
   }
@@ -43,28 +42,29 @@ export async function getPatientById(id: number | string| undefined) {
   if (isNaN(patientId)) {
     throw new Error("Invalid Patient ID");
   }
-  
-    const patient = await prisma.patient.findUnique({
-      where: { id: patientId },
-      include: {
-        user: true,
-        legalGuardian: true,
-        admission: {
-          include: {
-            admissionType: true,
-            legalGuardian: true,
-            healthInsuranceAuthorizations: {
-              include: {
-                healthInsuranceProvider: true,
-              },
+
+  const patient = await prisma.patient.findUnique({
+    where: { id: patientId },
+    include: {
+      user: true,
+      legalGuardian: true,
+      clinics: { select: { id: true, name: true } },
+      admission: {
+        include: {
+          admissionType: true,
+          legalGuardian: true,
+          healthInsuranceAuthorizations: {
+            include: {
+              healthInsuranceProvider: true,
             },
           },
         },
       },
-    });
-  
-    return patient;
-  }
+    },
+  });
+
+  return patient;
+}
 
 export async function editPatientAction(id: string, data: any) {
   try {
@@ -78,14 +78,14 @@ export async function editPatientAction(id: string, data: any) {
   }
 }
 
-export async function getScheduleProfesionalAction(id: string) { 
+export async function getScheduleProfesionalAction(id: string) {
   try {
     if (!id) return { schedule: [], events: [] };
     const schedule = await prisma.schedule.findMany({
-      where: { 
-        professionalId: Number(id)
+      where: {
+        professionalId: Number(id),
       },
-      orderBy: { startTime: 'asc' },
+      orderBy: { startTime: "asc" },
     });
 
     const events = await prisma.event.findMany({
@@ -93,7 +93,7 @@ export async function getScheduleProfesionalAction(id: string) {
         professionalId: Number(id),
         startEvent: { gte: new Date() },
       },
-      orderBy: { startEvent: 'asc' },
+      orderBy: { startEvent: "asc" },
     });
 
     return { schedule, events };
@@ -102,14 +102,16 @@ export async function getScheduleProfesionalAction(id: string) {
   }
 }
 
-export async function getFutureEventsByProfessional(professionalId: number | string) {
+export async function getFutureEventsByProfessional(
+  professionalId: number | string
+) {
   try {
     const events = await prisma.event.findMany({
       where: {
         professionalId: Number(professionalId),
         startEvent: { gte: new Date() },
       },
-      orderBy: { startEvent: 'asc' },
+      orderBy: { startEvent: "asc" },
     });
     return events;
   } catch (error) {
@@ -119,7 +121,6 @@ export async function getFutureEventsByProfessional(professionalId: number | str
 }
 
 export async function createPatientWithAdmission(data: PatientFormData) {
-
   let legalGuardianId = null;
 
   if (data.hasLegalGuardian && data.legalGuardian) {
@@ -128,10 +129,10 @@ export async function createPatientWithAdmission(data: PatientFormData) {
         ...data.legalGuardian,
       },
     });
-  
+
     legalGuardianId = tutor.id;
   }
-  
+
   const result = await prisma.patient.create({
     data: {
       firstName: data.firstName,
@@ -145,27 +146,34 @@ export async function createPatientWithAdmission(data: PatientFormData) {
       affiliateNumber: data.affiliateNumber,
       isActive: data.isActive,
       legalGuardianId: legalGuardianId,
+      clinics: data.clinicId
+        ? {
+            connect: { id: data.clinicId },
+          }
+        : undefined,
 
-      admission: {
-        create: {
-          admissionDate: data.admission?.admissionDate,
-          admissionTypeId: data.admission?.admissionTypeId,
-          isSchoolEnrolled: data.admission?.isSchoolEnrolled,
-          schoolShift: data.admission?.schoolShift ,
-          cud: data.admission?.cud,
-          cudExpirationDate: data.admission?.cudExpirationDate,
-        },
-      },
+      admission: data.admission
+        ? {
+            create: {
+              admissionDate: data.admission.admissionDate || new Date(),
+              isSchoolEnrolled: data.admission.isSchoolEnrolled || false,
+              schoolShift: data.admission.schoolShift,
+              cud: data.admission.cud,
+              cudExpirationDate: data.admission.cudExpirationDate,
+              admissionType: {
+                connect: { id: data.admission.admissionTypeId },
+              },
+            },
+          }
+        : undefined,
     },
   });
 
   return result;
 }
 
-
 export async function createHealthInsuranceProvider(data: unknown) {
   try {
-    
     const newProvider = await prisma.healthInsuranceProvider.create({
       data: data,
     });
@@ -183,13 +191,13 @@ export async function deletePatientByIdAction(id?: string | number) {
       return { error: { message: "Ocurrió un error al crear el prestador." } };
     }
     await prisma.admission.deleteMany({
-      where: { patientId: Number(id) }
+      where: { patientId: Number(id) },
     });
-    
+
     const newProvider = await prisma.patient.delete({
       where: {
-        id: Number(id)
-      }
+        id: Number(id),
+      },
     });
 
     return { data: newProvider };
@@ -207,6 +215,18 @@ export async function getAdmissionTypes() {
     return admissionTypes;
   } catch (error) {
     console.error("Error fetching admission types:", error);
+    return [];
+  }
+}
+
+export async function getAllClinicsAction() {
+  try {
+    const clinics = await prisma.clinic.findMany({
+      orderBy: { name: "asc" },
+    });
+    return clinics;
+  } catch (error) {
+    console.error("Error fetching clinics:", error);
     return [];
   }
 }

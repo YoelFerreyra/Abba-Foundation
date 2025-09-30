@@ -11,12 +11,31 @@ export const getAllEventsAction = async() => {
   }
 };
 
-
-export const getAllSitesAction = async() => {
+export const getAllEventsFromUserAction = async(patientId: number) => {
   try {
-    //const sites = await prisma.site.findMany();
+    const events = await prisma.event.findMany(
+      {
+        where: {
+          patientId: patientId
+        },
+        include: {
+          patient: true,
+          clinic: true,
+        },
+      }
+    );
 
-    //return sites
+    return events;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAllClinicsAction = async() => {
+  try {
+    const clinics = await prisma.clinic.findMany();
+
+    return clinics
   } catch (error) {
     console.log(error);
   }

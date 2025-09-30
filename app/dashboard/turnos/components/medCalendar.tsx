@@ -247,7 +247,6 @@ export default function ProfessionalCalendar() {
           sessionTime
         );
 
-        debugger;
         if (allEvents.length === 0) {
           const freeEvents = generatedEvents.filter((scheduleEvent) => {
             return !allEvents.some(
@@ -426,7 +425,7 @@ export default function ProfessionalCalendar() {
                   <SelectValue placeholder="Seleccionar concurrente" />
                 </SelectTrigger>
                 <SelectContent>
-                  {patients?.map((prof) => (
+                  {patients?.map((prof: any) => (
                     <SelectItem key={prof.id} value={prof.id.toString()}>
                       {prof.firstName} {prof.lastName}
                     </SelectItem>

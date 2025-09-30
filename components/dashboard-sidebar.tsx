@@ -78,7 +78,7 @@ export function DashboardSidebar() {
       icon: User2,
       href: "/dashboard/usuarios",
       active: pathname === "/dashboard/usuarios",
-      roles: ["ADMIN", "ROOT"],
+      roles: ["ADMIN", "ROOT", "CLIENT"],
     },
     {
       label: "Concurrentes",
